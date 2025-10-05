@@ -106,48 +106,71 @@ Each implementation phase has detailed documentation:
 
 ## 📊 Project Status
 
-| Phase | Status | Description |
-|-------|--------|-------------|
-| Phase 0 | ✅ Complete | Discovery & Guardrails |
-| Phase 1 | ✅ Complete | Platform Scaffolding (Documentation) |
-| Phase 2 | 🚧 In Progress | Domain & Contracts (Implementation) |
-| Phase 3 | ⏳ Planned | Application Layer |
-| Phase 4 | ⏳ Planned | Web Adapters |
-| Phase 5 | ⏳ Planned | Infrastructure |
-| Phase 6 | ⏳ Planned | Release Readiness |
+| Phase | Status | Completion | Description |
+|-------|--------|------------|-------------|
+| Phase 0 | ✅ Complete | 2025-10-05 | Discovery & Guardrails |
+| Phase 1 | ⏳ Up Next | - | Core Domain Abstractions |
+| Phase 2 | ⏳ Planned | - | Application Layer & CQRS Pipeline |
+| Phase 3 | ⏳ Planned | - | Infrastructure & Persistence |
+| Phase 4 | ⏳ Planned | - | Web Integration & APIs |
+| Phase 5 | ⏳ Planned | - | Advanced Features |
+| Phase 6 | ⏳ Planned | - | Release Readiness |
 
-**Documentation**: ✅ 100% Complete (10,000+ lines)  
-**Implementation**: 🚧 In Progress
+**Phase 0 Deliverables** (Complete):
+- ✅ 5 foundational ADRs accepted
+- ✅ Solution structure with `src/Idevs` and `tests/Idevs.Tests`
+- ✅ Build system: Directory.Build.props, Directory.Packages.props
+- ✅ CI/CD: GitHub Actions workflows for build, test, release
+- ✅ GitVersion configured for semantic versioning
+- ✅ Baseline code: `Guard` class, `IIdevsMarker` interface
+- ✅ Test suite: 15 tests with 100% branch coverage
+- ✅ Development guidelines: CONTRIBUTING.md
+
+**Current Implementation Status**:
+- **Build System**: ✅ Operational
+- **Test Coverage**: ✅ 100% (baseline)
+- **CI/CD**: ✅ Configured
+- **Documentation**: ✅ Complete
+- **Next**: Phase 1 - Core Domain Abstractions
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our [contribution guidelines](./AGENTS.md) first.
+Contributions are welcome! Please read our [contributing guidelines](./CONTRIBUTING.md) and [repository guidelines](./AGENTS.md) first.
 
 ### Development Requirements
 
-- .NET 8.0 SDK or later
-- PostgreSQL 15+ (for integration tests)
-- Docker (optional, for Testcontainers)
+- **.NET SDK 9.0** or later (targets .NET 8.0)
+- **PostgreSQL 15+** (for integration tests when implemented)
+- **Docker** (optional, for Testcontainers)
 
 ### Getting Started
 
 ```bash
 # Clone the repository
-git clone https://github.com/klomkling/idevs-core.git
-cd idevs-core
+git clone https://github.com/klomkling/warp-idevs-core.git
+cd warp-idevs-core
 
 # Checkout develop branch
 git checkout develop
 
-# Restore dependencies (when projects are created)
+# Restore dependencies
 dotnet restore
 
-# Build
-dotnet build
+# Build (Release mode with CI settings)
+dotnet build -c Release
 
-# Run tests
-dotnet test
+# Run tests with coverage
+dotnet test -c Release -p:CollectCoverage=true -p:Threshold=80 -p:ThresholdType=branch
+
+# Pack NuGet packages
+dotnet pack -c Release -o artifacts/packages
+
+# Check semantic version
+dotnet tool restore
+dotnet gitversion
 ```
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed development workflow, Git Flow branching, conventional commits, and PR guidelines.
 
 ## 📝 License
 
