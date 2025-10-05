@@ -128,7 +128,7 @@ jobs:
       - name: Verify ADR Documents
         run: |
           echo "Checking for ADR documents..."
-          adr_dir="docs/adr"
+          adr_dir="docs/context/adrs"
           
           if [ ! -d "$adr_dir" ]; then
             echo "❌ ADR directory does not exist: $adr_dir"
