@@ -171,3 +171,8 @@ logs/
 ## Keep important files
 !.gitkeep
 !.editorconfig
+
+# Backup files
+*.backup
+*.bak
+GIT-SETUP-COMPLETE.md
