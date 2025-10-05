@@ -1,0 +1,71 @@
+# Dependabot configuration for automated dependency updates
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # NuGet package updates
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "klomkling"
+    assignees:
+      - "klomkling"
+    labels:
+      - "dependencies"
+      - "nuget"
+    commit-message:
+      prefix: "build"
+      prefix-development: "build"
+      include: "scope"
+    # Group updates for related packages
+    groups:
+      testing:
+        patterns:
+          - "xunit*"
+          - "*.Test.Sdk"
+          - "coverlet*"
+          - "Shouldly"
+          - "NSubstitute"
+      microsoft-extensions:
+        patterns:
+          - "Microsoft.Extensions.*"
+      entity-framework:
+        patterns:
+          - "Microsoft.EntityFrameworkCore*"
+          - "Npgsql.EntityFrameworkCore*"
+      logging:
+        patterns:
+          - "Serilog*"
+          - "OpenTelemetry*"
+    # Ignore major version updates for stable packages during active development
+    ignore:
+      - dependency-name: "Microsoft.NET.Test.Sdk"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "xunit"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions updates
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "klomkling"
+    assignees:
+      - "klomkling"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
