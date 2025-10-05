@@ -8,29 +8,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Initial repository setup with comprehensive documentation
-- Complete documentation for all 7 implementation phases (10,000+ lines)
-- Architecture Decision Records (ADR-0001 through ADR-0005)
-- CI/CD workflows for documentation validation and .NET build checks
-- Git Flow branching structure (main, develop)
-- Apache License 2.0
-- README.md with project overview and badges
-- .gitignore for .NET, Rider, VSCode, and Zed
-- AGENTS.md with repository guidelines and coding standards
+- .NET solution structure with `Idevs` core library and `Idevs.Tests` test project
+- Guard class with `NotNull<T>` and `NotNullOrWhiteSpace` methods using .NET 8 helpers
+- IIdevsMarker interface for assembly identification
+- Comprehensive test suite with 14 tests achieving 100% branch coverage
+- Central Package Management via Directory.Packages.props
+- Shared build configuration with Directory.Build.props
+- Code style enforcement via .editorconfig
+- GitVersion configuration for semantic versioning
+- CI workflow with build, test, and coverage gating (≥80%)
+- Release workflow for GitHub Packages and NuGet.org publishing
+- Dependabot configuration for automated dependency updates
+- CONTRIBUTING.md with development guidelines
+- Phase 0 implementation plan and execution log
+- Phase 0 completion summary document
+
+### Changed
+- Accepted ADR-0002, ADR-0003, ADR-0004, and ADR-0005 (previously proposed)
+- Normalized formatting across all ADRs
+- Updated Phase 0 status to Complete in all documentation
+- Updated project status in README with Phase 0 deliverables
+- Updated context documentation with accurate phase tracking
 
 ### Documentation
-- Phase 0: Discovery & Guardrails
+- Phase 0: ✅ Complete (Discovery & Guardrails)
 - Phase 1: Platform Scaffold & Build Infrastructure
 - Phase 2: Domain & Contracts
 - Phase 3: Application Layer & Execution Pipeline
 - Phase 4: Web Adapters & Sync Endpoints
 - Phase 5: Infrastructure Extensibility & Persistence
 - Phase 6: Documentation, Samples & Release Readiness
-- ADR-0001: Tenancy Strategy (PostgreSQL RLS)
-- ADR-0002: Audit Logging (EF Core Interceptors)
-- ADR-0003: Soft Delete (Query Filters)
-- ADR-0004: Release Governance (Git Flow, GitVersion)
-- ADR-0005: DI Container Strategy (No Reflection)
+- ADR-0001: ✅ Accepted - Tenancy Strategy (PostgreSQL RLS)
+- ADR-0002: ✅ Accepted - Audit Logging (EF Core Interceptors)
+- ADR-0003: ✅ Accepted - Soft Delete (Query Filters)
+- ADR-0004: ✅ Accepted - Release Governance (Git Flow, GitVersion)
+- ADR-0005: ✅ Accepted - DI Container Strategy (No Reflection)
 
 ---
 
