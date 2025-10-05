@@ -1,0 +1,65 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- Language and Framework Settings -->
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>net8.0</TargetFramework>
+    
+    <!-- Code Quality Settings -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    
+    <!-- Suppress NuGet warnings for CPM -->
+    <NoWarn>$(NoWarn);NU1604;NU1701</NoWarn>
+    
+    <!-- Deterministic Build Settings -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- Package Metadata (for packable projects) -->
+  <PropertyGroup>
+    <Authors>Idevs</Authors>
+    <Company>Idevs</Company>
+    <Product>Idevs Framework</Product>
+    <Copyright>Copyright © Idevs 2025</Copyright>
+    <Description>Building blocks for modern .NET applications with CQRS, DDD, and multi-tenancy support.</Description>
+    
+    <!-- Repository Information -->
+    <RepositoryUrl>https://github.com/klomkling/warp-idevs-core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    
+    <!-- Package Settings -->
+    <PackageProjectUrl>https://github.com/klomkling/warp-idevs-core</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>cqrs;ddd;multi-tenancy;dotnet;framework;building-blocks</PackageTags>
+    <PackageReleaseNotes>See CHANGELOG.md for release notes.</PackageReleaseNotes>
+    
+    <!-- Symbol Package Settings -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    
+    <!-- Source Link -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+  <!-- Disable Packaging for Test Projects -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <!-- Include README in packages -->
+  <ItemGroup Condition="'$(IsPackable)' == 'true' AND Exists('$(MSBuildProjectDirectory)/README.md')">
+    <None Include="$(MSBuildProjectDirectory)/README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+</Project>
