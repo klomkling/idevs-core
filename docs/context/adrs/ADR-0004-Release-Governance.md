@@ -1,9 +1,10 @@
 # ADR-0004: Release Governance
 
-**Status**: Proposed  
+**Status**: Accepted  
 **Date**: 2025-10-04  
+**Decision Date**: 2025-10-05  
 **Deciders**: Architecture Team, Platform Lead, DevOps Team  
-**Related**: Phase 1 (Platform Scaffold), AGENTS.md Repository Guidelines
+**Related**: Phase 1 (Platform Scaffold), AGENTS.md Repository Guidelines, Phase 0 (Discovery)
 
 ---
 

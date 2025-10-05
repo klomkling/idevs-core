@@ -1,7 +1,8 @@
 # ADR-0005: Dependency Injection Container Strategy
 
-**Status**: Proposed  
+**Status**: Accepted  
 **Date**: 2025-10-04  
+**Decision Date**: 2025-10-05  
 **Deciders**: Architecture Team, Platform Lead  
 **Related**: ADR-0001 (Tenancy), Phase 0 (Design Principles)
 

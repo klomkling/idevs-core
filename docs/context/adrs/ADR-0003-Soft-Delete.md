@@ -1,7 +1,8 @@
 # ADR-0003: Soft Delete Strategy
 
-**Status**: Proposed  
+**Status**: Accepted  
 **Date**: 2025-10-04  
+**Decision Date**: 2025-10-05  
 **Deciders**: Architecture Team, Platform Lead, Operations Team  
 **Related**: ADR-0001 (Tenancy Strategy), ADR-0002 (Audit Logging), Phase 0 (Discovery)
 

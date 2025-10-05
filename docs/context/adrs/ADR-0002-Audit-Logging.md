@@ -1,7 +1,8 @@
 # ADR-0002: Audit Logging Strategy
 
-**Status**: Proposed  
+**Status**: Accepted  
 **Date**: 2025-10-04  
+**Decision Date**: 2025-10-05  
 **Deciders**: Architecture Team, Security Team, Compliance Team  
 **Related**: ADR-0001 (Tenancy Strategy), Phase 0 (Discovery), Threat Model, Discovery Summary (Regulated Tenant Persona)
 
