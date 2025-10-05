@@ -1,0 +1,247 @@
+name: Documentation Validation
+
+on:
+  push:
+    branches: [main, develop, 'feature/**', 'release/**']
+    paths:
+      - 'docs/**'
+      - '**.md'
+      - '.github/workflows/docs-validation.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'docs/**'
+      - '**.md'
+
+jobs:
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install markdownlint-cli
+        run: npm install -g markdownlint-cli
+
+      - name: Create markdownlint config
+        run: |
+          cat > .markdownlint.json << 'EOF'
+          {
+            "default": true,
+            "MD013": false,
+            "MD033": false,
+            "MD041": false,
+            "MD024": {
+              "siblings_only": true
+            }
+          }
+          EOF
+
+      - name: Run markdownlint
+        run: markdownlint '**/*.md' --ignore node_modules --config .markdownlint.json
+
+  link-check:
+    name: Link Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install markdown-link-check
+        run: npm install -g markdown-link-check
+
+      - name: Create link check config
+        run: |
+          cat > .markdown-link-check.json << 'EOF'
+          {
+            "ignorePatterns": [
+              {
+                "pattern": "^http://localhost"
+              },
+              {
+                "pattern": "^https://localhost"
+              }
+            ],
+            "timeout": "20s",
+            "retryOn429": true,
+            "retryCount": 3,
+            "fallbackRetryDelay": "30s",
+            "aliveStatusCodes": [200, 206]
+          }
+          EOF
+
+      - name: Check links in markdown files
+        run: |
+          find . -name '*.md' -not -path './node_modules/*' -not -path './samples/*' | while read file; do
+            echo "Checking links in: $file"
+            markdown-link-check "$file" --config .markdown-link-check.json
+          done
+
+  docs-structure:
+    name: Documentation Structure Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify Phase Documents Exist
+        run: |
+          echo "Checking for required phase documents..."
+          required_files=(
+            "docs/context/phase-0-discovery/phase-0-discovery.md"
+            "docs/context/phase-1-platform/phase-1-platform.md"
+            "docs/context/phase-2-domain/phase-2-domain.md"
+            "docs/context/glossary.md"
+            "docs/context/README.md"
+          )
+          
+          missing_files=()
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Missing: $file"
+              missing_files+=("$file")
+            else
+              echo "✅ Found: $file"
+            fi
+          done
+          
+          if [ ${#missing_files[@]} -gt 0 ]; then
+            echo ""
+            echo "Error: Missing required documentation files"
+            exit 1
+          fi
+          
+          echo ""
+          echo "✅ All required documentation files exist"
+
+      - name: Verify ADR Documents
+        run: |
+          echo "Checking for ADR documents..."
+          adr_dir="docs/adr"
+          
+          if [ ! -d "$adr_dir" ]; then
+            echo "❌ ADR directory does not exist: $adr_dir"
+            exit 1
+          fi
+          
+          adr_count=$(find "$adr_dir" -name "ADR-*.md" | wc -l)
+          echo "Found $adr_count ADR documents"
+          
+          if [ $adr_count -lt 5 ]; then
+            echo "⚠️  Warning: Expected at least 5 ADR documents, found $adr_count"
+          else
+            echo "✅ ADR count is sufficient"
+          fi
+
+      - name: Check Phase Folder Structure
+        run: |
+          echo "Verifying phase folder structure per Rule O0ZNnt24TgX8z0X4uQpRsH..."
+          phases=("phase-0-discovery" "phase-1-platform" "phase-2-domain")
+          
+          for phase in "${phases[@]}"; do
+            phase_dir="docs/context/$phase"
+            if [ ! -d "$phase_dir" ]; then
+              echo "❌ Phase folder missing: $phase_dir"
+              exit 1
+            fi
+            
+            phase_doc="$phase_dir/$phase.md"
+            if [ ! -f "$phase_doc" ]; then
+              echo "❌ Phase document missing: $phase_doc"
+              exit 1
+            fi
+            
+            echo "✅ $phase structure is correct"
+          done
+          
+          echo ""
+          echo "✅ All phase folders follow the required structure"
+
+  docs-quality:
+    name: Documentation Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for TODO/FIXME markers
+        run: |
+          echo "Checking for unresolved TODO/FIXME markers in documentation..."
+          todos=$(grep -r "TODO\|FIXME" docs/ --include="*.md" || true)
+          
+          if [ -n "$todos" ]; then
+            echo "⚠️  Found TODO/FIXME markers:"
+            echo "$todos"
+            echo ""
+            echo "Consider resolving these before merging to main"
+          else
+            echo "✅ No unresolved TODO/FIXME markers found"
+          fi
+
+      - name: Check Document Length
+        run: |
+          echo "Checking document lengths for Phase 2..."
+          phase2_doc="docs/context/phase-2-domain/phase-2-domain.md"
+          
+          if [ -f "$phase2_doc" ]; then
+            line_count=$(wc -l < "$phase2_doc")
+            echo "Phase 2 document: $line_count lines"
+            
+            if [ $line_count -lt 1000 ]; then
+              echo "⚠️  Document may be incomplete (< 1000 lines)"
+              exit 1
+            elif [ $line_count -gt 3000 ]; then
+              echo "⚠️  Document may be too verbose (> 3000 lines)"
+            else
+              echo "✅ Document length is within acceptable range"
+            fi
+          fi
+
+      - name: Verify References Validation
+        run: |
+          echo "Checking for REFERENCES-VALIDATED.md..."
+          ref_doc="docs/context/phase-2-domain/REFERENCES-VALIDATED.md"
+          
+          if [ -f "$ref_doc" ]; then
+            echo "✅ References validation document exists"
+          else
+            echo "⚠️  References validation document not found"
+          fi
+
+  summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [markdown-lint, link-check, docs-structure, docs-quality]
+    if: always()
+    steps:
+      - name: Check All Jobs Status
+        run: |
+          echo "📊 Documentation Validation Summary"
+          echo "===================================="
+          echo ""
+          echo "Markdown Lint: ${{ needs.markdown-lint.result }}"
+          echo "Link Check: ${{ needs.link-check.result }}"
+          echo "Docs Structure: ${{ needs.docs-structure.result }}"
+          echo "Docs Quality: ${{ needs.docs-quality.result }}"
+          echo ""
+          
+          if [ "${{ needs.markdown-lint.result }}" != "success" ] || \
+             [ "${{ needs.link-check.result }}" != "success" ] || \
+             [ "${{ needs.docs-structure.result }}" != "success" ] || \
+             [ "${{ needs.docs-quality.result }}" != "success" ]; then
+            echo "❌ Documentation validation failed"
+            exit 1
+          fi
+          
+          echo "✅ All documentation validation checks passed"

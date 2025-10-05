@@ -1,0 +1,224 @@
+name: .NET Build and Validation
+
+on:
+  push:
+    branches: [main, develop, 'feature/**', 'release/**']
+    paths:
+      - 'src/**'
+      - 'samples/**'
+      - '**.csproj'
+      - '**.sln'
+      - '.github/workflows/dotnet-build.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'src/**'
+      - 'samples/**'
+      - '**.csproj'
+      - '**.sln'
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    name: Build .NET Projects
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --configuration ${{ matrix.configuration }} --no-restore
+
+      - name: Run tests
+        run: dotnet test --configuration ${{ matrix.configuration }} --no-build --verbosity normal
+
+  reflection-check:
+    name: Check for Reflection Usage (ADR-0005)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for System.Reflection usage
+        run: |
+          echo "🔍 Checking for System.Reflection usage per ADR-0005..."
+          echo "Rule: Do not use System.Reflection in DotNet Project if possible"
+          echo ""
+          
+          # Search for System.Reflection imports
+          reflection_imports=$(grep -r "using System.Reflection" src/ --include="*.cs" || true)
+          
+          # Search for Reflection API calls
+          reflection_calls=$(grep -r "GetType()\|typeof(" src/ --include="*.cs" | grep -v "// allow-reflection" || true)
+          
+          if [ -n "$reflection_imports" ]; then
+            echo "❌ Found System.Reflection imports:"
+            echo "$reflection_imports"
+            echo ""
+            echo "Per ADR-0005: Use explicit registration and source generators instead"
+            exit 1
+          fi
+          
+          # Type checks are allowed, but warn if excessive
+          if [ -n "$reflection_calls" ]; then
+            call_count=$(echo "$reflection_calls" | wc -l)
+            if [ $call_count -gt 10 ]; then
+              echo "⚠️  Found $call_count typeof/GetType calls - consider if these can be eliminated"
+              echo "$reflection_calls"
+            else
+              echo "✅ Minimal type checking found ($call_count calls)"
+            fi
+          else
+            echo "✅ No System.Reflection usage detected"
+          fi
+
+      - name: Check for MediatR usage
+        run: |
+          echo ""
+          echo "🔍 Checking for MediatR usage (should use direct handler invocation)..."
+          
+          mediatr_usage=$(grep -r "MediatR\|IMediator\|IRequest\|INotification" src/ --include="*.cs" --include="*.csproj" || true)
+          
+          if [ -n "$mediatr_usage" ]; then
+            echo "❌ Found MediatR usage:"
+            echo "$mediatr_usage"
+            echo ""
+            echo "Per ADR-0005 and CQRS Framework Plan: Use direct handler invocation instead"
+            exit 1
+          else
+            echo "✅ No MediatR usage detected"
+          fi
+
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Check C# version
+        run: |
+          echo "📊 Checking C# language version..."
+          csproj_files=$(find . -name "*.csproj")
+          
+          for file in $csproj_files; do
+            echo "Checking: $file"
+            lang_version=$(grep -oP '(?<=<LangVersion>)[^<]+' "$file" || echo "not specified")
+            echo "  Language Version: $lang_version"
+            
+            if [ "$lang_version" != "12.0" ] && [ "$lang_version" != "12" ] && [ "$lang_version" != "latest" ]; then
+              echo "  ⚠️  Consider upgrading to C# 12 for modern features"
+            fi
+          done
+
+      - name: Check nullable reference types
+        run: |
+          echo ""
+          echo "📊 Checking nullable reference type settings..."
+          csproj_files=$(find . -name "*.csproj")
+          
+          for file in $csproj_files; do
+            echo "Checking: $file"
+            nullable=$(grep -oP '(?<=<Nullable>)[^<]+' "$file" || echo "not specified")
+            echo "  Nullable: $nullable"
+            
+            if [ "$nullable" != "enable" ]; then
+              echo "  ⚠️  Nullable reference types should be enabled"
+            fi
+          done
+
+      - name: Check TreatWarningsAsErrors
+        run: |
+          echo ""
+          echo "📊 Checking TreatWarningsAsErrors setting..."
+          csproj_files=$(find src/ -name "*.csproj" 2>/dev/null || echo "")
+          
+          if [ -z "$csproj_files" ]; then
+            echo "ℹ️  No source projects found yet (Phase 2 is contracts only)"
+          else
+            for file in $csproj_files; do
+              echo "Checking: $file"
+              warnings_as_errors=$(grep -oP '(?<=<TreatWarningsAsErrors>)[^<]+' "$file" || echo "false")
+              echo "  TreatWarningsAsErrors: $warnings_as_errors"
+              
+              if [ "$warnings_as_errors" != "true" ]; then
+                echo "  ⚠️  Consider enabling TreatWarningsAsErrors for stricter quality"
+              fi
+            done
+          fi
+
+  multi-tenancy-check:
+    name: Multi-Tenancy Validation (ADR-0001)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for tenant isolation
+        run: |
+          echo "🔍 Validating multi-tenancy implementation per ADR-0001..."
+          echo ""
+          
+          # Check for ITenantEntity usage
+          tenant_entities=$(find src/ samples/ -name "*.cs" -exec grep -l "ITenantEntity" {} \; 2>/dev/null || true)
+          
+          if [ -n "$tenant_entities" ]; then
+            echo "✅ Found tenant entity implementations:"
+            echo "$tenant_entities"
+          else
+            echo "ℹ️  No tenant entities found yet (Phase 2 in progress)"
+          fi
+          
+          # Check for TenantId property
+          tenant_ids=$(grep -r "TenantId" src/ samples/ --include="*.cs" 2>/dev/null || true)
+          
+          if [ -n "$tenant_ids" ]; then
+            echo ""
+            echo "✅ TenantId properties found in:"
+            echo "$tenant_ids" | head -5
+          fi
+
+  summary:
+    name: Build Summary
+    runs-on: ubuntu-latest
+    needs: [build, reflection-check, code-quality, multi-tenancy-check]
+    if: always()
+    steps:
+      - name: Check All Jobs Status
+        run: |
+          echo "📊 .NET Build and Validation Summary"
+          echo "====================================="
+          echo ""
+          echo "Build: ${{ needs.build.result }}"
+          echo "Reflection Check: ${{ needs.reflection-check.result }}"
+          echo "Code Quality: ${{ needs.code-quality.result }}"
+          echo "Multi-Tenancy Check: ${{ needs.multi-tenancy-check.result }}"
+          echo ""
+          
+          if [ "${{ needs.build.result }}" != "success" ] || \
+             [ "${{ needs.reflection-check.result }}" != "success" ]; then
+            echo "❌ Build validation failed"
+            exit 1
+          fi
+          
+          echo "✅ All build validation checks passed"
