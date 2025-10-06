@@ -29,22 +29,8 @@ jobs:
       - name: Install markdownlint-cli
         run: npm install -g markdownlint-cli
 
-      - name: Create markdownlint config
-        run: |
-          cat > .markdownlint.json << 'EOF'
-          {
-            "default": true,
-            "MD013": false,
-            "MD033": false,
-            "MD041": false,
-            "MD024": {
-              "siblings_only": true
-            }
-          }
-          EOF
-
       - name: Run markdownlint
-        run: markdownlint '**/*.md' --ignore node_modules --config .markdownlint.json
+        run: markdownlint '**/*.md' --ignore node_modules
 
   link-check:
     name: Link Check
