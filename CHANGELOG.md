@@ -10,19 +10,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - .NET solution structure with `Idevs` core library and `Idevs.Tests` test project
-- Guard class with `NotNull<T>` and `NotNullOrWhiteSpace` methods using .NET 8 helpers
 - IIdevsMarker interface for assembly identification
-- Comprehensive test suite with 14 tests achieving 100% branch coverage
 - Central Package Management via Directory.Packages.props
 - Shared build configuration with Directory.Build.props
 - Code style enforcement via .editorconfig
 - GitVersion configuration for semantic versioning
-- CI workflow with build, test, and coverage gating (≥80%)
+- Multi-platform CI workflow (Linux, Windows, macOS) with build, test, and coverage gating (≥80%)
+- Multi-platform testing in release workflow before publishing
 - Release workflow for GitHub Packages and NuGet.org publishing
 - Dependabot configuration for automated dependency updates
 - CONTRIBUTING.md with development guidelines
 - Phase 0 implementation plan and execution log
 - Phase 0 completion summary document
+- Documentation validation workflow with markdownlint
+- CI matrix strategy implementation documentation
 
 ### Changed
 
@@ -31,6 +32,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated Phase 0 status to Complete in all documentation
 - Updated project status in README with Phase 0 deliverables
 - Updated context documentation with accurate phase tracking
+- CI/CD workflows to use GitVersion environment variables instead of step outputs
+- Release workflow to require multi-platform test success before publishing
+- Documentation to recommend Ardalis.GuardClauses for input validation
+- Relaxed markdownlint rules for practical documentation maintenance
+
+### Removed
+
+- Guard class (replaced with built-in .NET methods and recommendation for Ardalis.GuardClauses)
+- GuardTests.cs (no longer needed after Guard class removal)
+
+### Fixed
+
+- MSB4044 build error caused by empty Version parameter in CI (#1)
+- Cross-platform compatibility issues with PowerShell commands in CI
+- Markdownlint configuration conflicts between repository and workflow
+- Multiple markdown formatting issues (1,256 auto-fixed, 84 manually resolved)
+- Missing fenced code block language specifiers (MD040)
 
 ### Documentation
 
@@ -141,4 +159,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 **Maintained by**: idevs.work team  
-**Last Updated**: 2025-10-05
+**Last Updated**: 2025-10-07
