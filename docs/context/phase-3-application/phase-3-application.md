@@ -128,7 +128,7 @@ public abstract class CommandHandler<TCommand, TResponse> : ICommandHandler<TCom
         TCommand command,
         CancellationToken cancellationToken = default);
 }
-```
+```text
 
 #### QueryHandler Base Class
 
@@ -151,9 +151,10 @@ public abstract class QueryHandler<TQuery, TResponse> : IQueryHandler<TQuery, TR
         TQuery query,
         CancellationToken cancellationToken = default);
 }
-```
+```text
 
 **Design Decisions**:
+
 - ✅ Base classes inject `ITenantContext` for tenant isolation
 - ✅ Base classes inject `ILogger` for structured logging
 - ✅ Abstract `HandleAsync` forces implementation
@@ -194,7 +195,7 @@ public interface IQueryBehavior<in TQuery, TResponse> where TQuery : IQuery<TRes
         Func<Task<Result<TResponse>>> next,
         CancellationToken cancellationToken = default);
 }
-```
+```text
 
 #### Pipeline Execution
 
@@ -218,14 +219,15 @@ public interface IQueryExecutor
         TQuery query,
         CancellationToken cancellationToken = default) where TQuery : IQuery<TResponse>;
 }
-```
+```text
 
 **Pipeline Flow**:
-```
+
+```text
 Web Layer → Executor → [Behaviors Chain] → Handler → Result
                        ↓
                    Logging → Metrics → Validation → Authorization → Transaction → Handler
-```
+```text
 
 ---
 
@@ -281,7 +283,7 @@ public sealed class ValidationBehavior<TCommand> : ICommandBehavior<TCommand>
         return await next();
     }
 }
-```
+```text
 
 #### Example Validator
 
@@ -304,14 +306,14 @@ public sealed class CreateOrderCommandValidator : AbstractValidator<CreateOrderC
             .Length(3).WithMessage("Currency must be 3 characters (ISO 4217)");
     }
 }
-```
+```text
 
 #### DI Registration
 
 ```csharp
 services.AddValidatorsFromAssemblyContaining<CreateOrderCommandValidator>();
 services.AddScoped(typeof(ICommandBehavior<>), typeof(ValidationBehavior<>));
-```
+```text
 
 ---
 
@@ -375,7 +377,7 @@ public sealed class AuthorizationBehavior<TCommand> : ICommandBehavior<TCommand>
         return await next();
     }
 }
-```
+```text
 
 #### Policy Definition
 
@@ -401,7 +403,7 @@ services.AddAuthorization(options =>
     options.AddPolicy(Policies.DeleteOrder, policy =>
         policy.RequireClaim("permission", "orders:delete"));
 });
-```
+```text
 
 #### Example Authorized Command
 
@@ -413,7 +415,7 @@ public sealed record CreateOrderCommand(
     string CustomerEmail,
     decimal TotalAmount,
     string Currency) : ICommand<Guid>;
-```
+```text
 
 ---
 
@@ -494,7 +496,7 @@ public sealed class LoggingBehavior<TCommand> : ICommandBehavior<TCommand>
         }
     }
 }
-```
+```text
 
 ---
 
@@ -573,7 +575,7 @@ public sealed class MetricsBehavior<TCommand> : ICommandBehavior<TCommand>
         }
     }
 }
-```
+```text
 
 ---
 
@@ -640,7 +642,7 @@ public sealed class TransactionBehavior<TCommand> : ICommandBehavior<TCommand>
         }
     }
 }
-```
+```text
 
 #### Transactional Attribute
 
@@ -651,7 +653,7 @@ namespace Idevs.Application.Attributes;
 public sealed class TransactionalAttribute : Attribute
 {
 }
-```
+```text
 
 #### Example Transactional Command
 
@@ -662,7 +664,7 @@ public sealed record CreateOrderCommand(
     string CustomerEmail,
     decimal TotalAmount,
     string Currency) : ICommand<Guid>;
-```
+```text
 
 ---
 
@@ -728,7 +730,7 @@ public sealed class ExceptionHandlingBehavior<TCommand> : ICommandBehavior<TComm
         }
     }
 }
-```
+```text
 
 ---
 
@@ -799,7 +801,7 @@ public static class ApplicationServiceExtensions
         return services;
     }
 }
-```
+```text
 
 #### Usage in Program.cs
 
@@ -811,7 +813,7 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddCommandHandler<CreateOrderCommand, Guid, CreateOrderHandler>();
 builder.Services.AddCommandHandler<UpdateOrderCommand, UpdateOrderHandler>();
 builder.Services.AddQueryHandler<GetOrderQuery, OrderDto, GetOrderQueryHandler>();
-```
+```text
 
 ---
 
@@ -870,7 +872,7 @@ public sealed class CommandExecutor : ICommandExecutor
         return await handlerFunc();
     }
 }
-```
+```text
 
 ---
 
@@ -975,18 +977,21 @@ public sealed class CommandExecutor : ICommandExecutor
 ## Tracking Checklist
 
 ### Handler Abstractions
+
 - [ ] Define `CommandHandler<TCommand>` base class
 - [ ] Define `CommandHandler<TCommand, TResponse>` base class
 - [ ] Define `QueryHandler<TQuery, TResponse>` base class
 - [ ] Add base class tests
 
 ### Decorator Base Classes
+
 - [ ] Define `ICommandBehavior<TCommand>` interface
 - [ ] Define `ICommandBehavior<TCommand, TResponse>` interface
 - [ ] Define `IQueryBehavior<TQuery, TResponse>` interface
 - [ ] Add decorator interface tests
 
 ### Validation Behaviors
+
 - [ ] Implement `ValidationBehavior` for commands
 - [ ] Implement `ValidationBehavior` for queries
 - [ ] Integrate FluentValidation
@@ -994,6 +999,7 @@ public sealed class CommandExecutor : ICommandExecutor
 - [ ] Document validator registration patterns
 
 ### Authorization Behaviors
+
 - [ ] Implement `AuthorizationBehavior` for commands
 - [ ] Implement `AuthorizationBehavior` for queries
 - [ ] Define policy constants
@@ -1001,6 +1007,7 @@ public sealed class CommandExecutor : ICommandExecutor
 - [ ] Document resource-based authorization
 
 ### Logging Decorators
+
 - [ ] Implement `LoggingBehavior` for commands
 - [ ] Implement `LoggingBehavior` for queries
 - [ ] Add correlation ID support
@@ -1008,6 +1015,7 @@ public sealed class CommandExecutor : ICommandExecutor
 - [ ] Document structured logging patterns
 
 ### Metrics Decorators
+
 - [ ] Implement `MetricsBehavior` for commands
 - [ ] Implement `MetricsBehavior` for queries
 - [ ] Define RED metrics (Rate, Errors, Duration)
@@ -1015,12 +1023,14 @@ public sealed class CommandExecutor : ICommandExecutor
 - [ ] Document metrics collection
 
 ### Transaction Decorators
+
 - [ ] Implement `TransactionBehavior` for commands
 - [ ] Define `[Transactional]` attribute
 - [ ] Add transaction behavior tests
 - [ ] Document transaction boundaries
 
 ### Error Handling
+
 - [ ] Implement `ExceptionHandlingBehavior`
 - [ ] Map domain exceptions to Result
 - [ ] Map infrastructure exceptions to Result
@@ -1028,6 +1038,7 @@ public sealed class CommandExecutor : ICommandExecutor
 - [ ] Document error codes
 
 ### DI Registration
+
 - [ ] Implement `AddCommandHandler` extension
 - [ ] Implement `AddQueryHandler` extension
 - [ ] Implement `AddCommandBehavior` extension
@@ -1036,6 +1047,7 @@ public sealed class CommandExecutor : ICommandExecutor
 - [ ] Document explicit registration patterns
 
 ### Pipeline Composition
+
 - [ ] Implement `CommandExecutor`
 - [ ] Implement `QueryExecutor`
 - [ ] Define decorator ordering strategy
@@ -1043,12 +1055,14 @@ public sealed class CommandExecutor : ICommandExecutor
 - [ ] Document behavior ordering
 
 ### Behavior Ordering
+
 - [ ] Define canonical decorator order
 - [ ] Implement configurable ordering
 - [ ] Add ordering validation
 - [ ] Document ordering rationale
 
 ### Testing Patterns
+
 - [ ] Create test fixtures for behaviors
 - [ ] Add unit tests for each decorator
 - [ ] Add integration tests for pipeline
@@ -1057,6 +1071,7 @@ public sealed class CommandExecutor : ICommandExecutor
 - [ ] Document testing strategies
 
 ### Performance Validation
+
 - [ ] Benchmark decorator chain overhead
 - [ ] Profile memory allocations
 - [ ] Optimize hot paths
@@ -1064,6 +1079,7 @@ public sealed class CommandExecutor : ICommandExecutor
 - [ ] Document performance characteristics
 
 ### Documentation Review
+
 - [ ] Review all code examples for accuracy
 - [ ] Validate all internal links
 - [ ] Check ADR references
@@ -1077,16 +1093,19 @@ public sealed class CommandExecutor : ICommandExecutor
 ### Prerequisites
 
 #### Phase 0: Discovery & Guardrails
+
 - Multi-tenancy requirements
 - Security guardrails
 - Observability strategy
 
 #### Phase 1: Platform Scaffolding
+
 - Build infrastructure
 - Testing framework (xUnit, Shouldly, NSubstitute)
 - CI/CD pipelines
 
 #### Phase 2: Domain & Contracts
+
 - `ICommand` and `IQuery` interfaces
 - `ICommandHandler` and `IQueryHandler` interfaces
 - `Result` and `Result<T>` patterns
@@ -1095,6 +1114,7 @@ public sealed class CommandExecutor : ICommandExecutor
 - Domain exceptions
 
 #### ADR Dependencies
+
 - **ADR-0001**: Tenant context injection in handlers
 - **ADR-0002**: Audit context in logging behavior
 - **ADR-0005**: No reflection in handler registration
@@ -1102,16 +1122,19 @@ public sealed class CommandExecutor : ICommandExecutor
 ### Outputs to Other Phases
 
 #### Phase 4: Web Adapters
+
 - Command/Query executors for web controllers
 - Result-to-HTTP mapping patterns
 - Authorization integration
 
 #### Phase 5: Infrastructure
+
 - UnitOfWork implementation for transaction behavior
 - Repository implementations for handlers
 - Database context configuration
 
 #### Phase 6: Release
+
 - Example applications using pipeline
 - Performance benchmarks
 - Troubleshooting guides
@@ -1162,29 +1185,35 @@ public sealed class CommandExecutor : ICommandExecutor
 ### External References
 
 #### FluentValidation
+
 - [FluentValidation Documentation](https://docs.fluentvalidation.net/)
 - [Integrating FluentValidation with ASP.NET Core](https://docs.fluentvalidation.net/en/latest/aspnet.html)
 
 #### Decorator Pattern
+
 - [Decorator Pattern (Gang of Four)](https://refactoring.guru/design-patterns/decorator)
 - [Pipeline Pattern](https://www.dofactory.com/net/pipeline-design-pattern)
 
 #### Authorization
+
 - [ASP.NET Core Authorization](https://learn.microsoft.com/en-us/aspnet/core/security/authorization/)
 - [Policy-Based Authorization](https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies)
 - [Resource-Based Authorization](https://learn.microsoft.com/en-us/aspnet/core/security/authorization/resourcebased)
 
 #### Observability
+
 - [Structured Logging with Serilog](https://serilog.net/)
 - [OpenTelemetry .NET](https://opentelemetry.io/docs/instrumentation/net/)
 - [RED Metrics](https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/)
 
 #### .NET 8
+
 - [.NET 8 Documentation](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-8)
 - [Dependency Injection in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection)
 - [Open Generic Registration](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection#register-groups-of-services-with-extension-methods)
 
 #### Testing
+
 - [xUnit Documentation](https://xunit.net/)
 - [Shouldly Documentation](https://docs.shouldly.org/)
 - [NSubstitute Documentation](https://nsubstitute.github.io/)
@@ -1267,7 +1296,7 @@ public sealed class CreateOrderHandler : CommandHandler<CreateOrderCommand, Guid
         return Result<Guid>.Success(order.Id);
     }
 }
-```
+```text
 
 ### B. Query Example
 
@@ -1311,7 +1340,7 @@ public sealed class GetOrderQueryHandler : QueryHandler<GetOrderQuery, OrderDto>
         return Result<OrderDto>.Success(dto);
     }
 }
-```
+```text
 
 ### C. DI Registration Example
 
@@ -1338,7 +1367,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy(Policies.ViewOrders, policy =>
         policy.RequireClaim("permission", "orders:read"));
 });
-```
+```text
 
 ### D. Usage in Web Controller
 
@@ -1399,7 +1428,7 @@ public sealed class OrdersController : ControllerBase
             });
     }
 }
-```
+```text
 
 ### E. Testing Behavior Example
 
@@ -1467,7 +1496,7 @@ public sealed record TestCommand : ICommand
 {
     public int Value { get; init; }
 }
-```
+```text
 
 ### F. Performance Benchmarking
 
@@ -1506,7 +1535,7 @@ public class BehaviorPipelineBenchmarks
         await _executor.ExecuteAsync(_command);
     }
 }
-```
+```text
 
 ---
 

@@ -10,6 +10,7 @@
 ## Context
 
 The Idevs framework must support multiple tenancy models to serve diverse customer needs:
+
 - **Small businesses**: Cost-efficient shared infrastructure
 - **Enterprise customers**: Dedicated resources with strong isolation
 - **Regulated industries**: Enhanced isolation with RLS
@@ -53,7 +54,7 @@ CREATE TABLE orders (
 );
 
 CREATE INDEX idx_orders_tenant_id ON orders(tenant_id);
-```
+```text
 
 ### Automatic Filtering
 
@@ -72,7 +73,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     
     // ... apply to all tenant-scoped entities
 }
-```
+```text
 
 **Layer 2: Repository-Level Filtering**
 
@@ -96,7 +97,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         return _context.Set<TEntity>().AsQueryable();
     }
 }
-```
+```text
 
 **Layer 3: Optional PostgreSQL RLS (Enhanced Isolation)**
 
@@ -112,7 +113,7 @@ CREATE POLICY tenant_isolation_policy ON orders
 
 -- Grant access
 GRANT ALL ON orders TO app_role;
-```
+```text
 
 Application sets tenant context per connection:
 
@@ -121,11 +122,11 @@ Application sets tenant context per connection:
 await connection.ExecuteAsync(
     "SELECT set_config('app.current_tenant_id', @tenantId, false)",
     new { tenantId = _tenantContext.TenantId });
-```
+```text
 
 ### Tenant Resolution Precedence
 
-```
+```text
 1. Explicit Header: X-Tenant-Id (highest priority)
    ↓
 2. JWT Token Claim: "tenant_id" claim
@@ -135,7 +136,7 @@ await connection.ExecuteAsync(
 4. Query Parameter: ?tenantId= (development/testing only)
    ↓
 5. Fallback/Error: No tenant resolved → 401 Unauthorized
-```
+```text
 
 ### Configuration-Based Isolation Levels
 
@@ -149,7 +150,7 @@ await connection.ExecuteAsync(
     "AllowTenantSwitching": false   // Security: prevent mid-request switching
   }
 }
-```
+```text
 
 ---
 
@@ -190,6 +191,7 @@ await connection.ExecuteAsync(
    - **Mitigation 2**: Repository abstraction (Layer 2)
    - **Mitigation 3**: Optional RLS (Layer 3 - PostgreSQL enforces at DB level)
    - **Mitigation 4**: Architecture tests validate filters:
+
      ```csharp
      [Fact]
      public void All_Entities_With_TenantId_Must_Have_Query_Filter()
@@ -219,6 +221,7 @@ await connection.ExecuteAsync(
 3. **Unique Constraints Complexity**
    - **Risk**: `UNIQUE` constraints must be tenant-scoped
    - **Example Problem**:
+
      ```sql
      -- ❌ Wrong: Global unique email (cross-tenant)
      CREATE UNIQUE INDEX idx_users_email ON users(email);
@@ -227,16 +230,20 @@ await connection.ExecuteAsync(
      CREATE UNIQUE INDEX idx_users_email_per_tenant 
          ON users(tenant_id, email);
      ```
+
    - **Mitigation**: Code review checklist for unique indexes
 
 4. **Soft-Delete + Unique Index**
    - **Risk**: Soft-deleted records block unique constraints
    - **Example**:
+
      ```sql
      -- Customer deletes account (soft-delete)
      -- Later tries to re-register with same email → fails!
      ```
+
    - **Mitigation**: Partial unique indexes:
+
      ```sql
      CREATE UNIQUE INDEX idx_users_email_active 
          ON users(tenant_id, email) 
@@ -263,14 +270,16 @@ CREATE TABLE tenant_acme.orders (...);
 
 CREATE SCHEMA tenant_xyz;
 CREATE TABLE tenant_xyz.orders (...);
-```
+```text
 
 **Pros**:
+
 - Stronger isolation than row-level
 - Easier to backup/restore individual tenants
 - Can use standard `UNIQUE` constraints without `tenant_id`
 
 **Cons**:
+
 - ❌ Connection string must include schema: `SET search_path = tenant_acme`
 - ❌ Migration complexity: Must run migration for each schema
 - ❌ Cross-tenant reporting requires complex queries across schemas
@@ -284,18 +293,20 @@ CREATE TABLE tenant_xyz.orders (...);
 
 **Approach**: Each tenant gets its own PostgreSQL database
 
-```
+```text
 postgresql://host/tenant_acme
 postgresql://host/tenant_xyz
-```
+```text
 
 **Pros**:
+
 - Maximum isolation
 - Easy to backup/restore individual tenants
 - Can host tenants on different database servers
 - Regulatory compliance easier (physical separation)
 
 **Cons**:
+
 - ❌ Connection pool per database (resource intensive)
 - ❌ Must manage hundreds/thousands of databases
 - ❌ Cross-tenant reporting nearly impossible
@@ -315,9 +326,10 @@ modelBuilder.Entity<Order>()
     .HasDiscriminator<string>("TenantType")
     .HasValue<OrderAcme>("Acme")
     .HasValue<OrderXyz>("Xyz");
-```
+```text
 
 **Cons**:
+
 - ❌ Requires separate entity type per tenant (doesn't scale)
 - ❌ Code generation complexity
 - ❌ Not a standard multi-tenancy pattern
@@ -351,7 +363,7 @@ public class Order : IEntity<Guid>, ITenantEntity, IAuditableEntity, ISoftDeleta
     public DateTime? DeletedAt { get; set; }
     public string? DeletedBy { get; set; }
 }
-```
+```text
 
 ### 2. Migration Template
 
@@ -390,7 +402,7 @@ public partial class CreateOrders : Migration
             columns: new[] { "tenant_id", "customer_id" });
     }
 }
-```
+```text
 
 ### 3. Testing Tenant Isolation
 
@@ -436,7 +448,7 @@ public class TenantIsolationTests : IClassFixture<DatabaseFixture>
         }
     }
 }
-```
+```text
 
 ---
 

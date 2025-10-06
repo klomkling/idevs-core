@@ -6,6 +6,7 @@
 ## Internal Documents - Status
 
 ### ADRs (Architecture Decision Records)
+
 - ✅ [ADR-0001: Tenancy Strategy](../adrs/ADR-0001-Tenancy-Strategy.md) - EXISTS
   - Referenced for: ITenantEntity design, multi-tenant patterns
   - Key sections: Lines 74-86 (entity interfaces), lines 1-200 (tenancy strategy)
@@ -24,6 +25,7 @@
   - Key sections: Manual registration patterns, decorator pattern
 
 ### Core Documentation
+
 - ✅ [Phase 0: Discovery & Guardrails](../phase-0-discovery/phase-0-discovery.md) - EXISTS
   - Referenced for: Design principles, stakeholder requirements
   
@@ -40,6 +42,7 @@
   - Referenced for: Overall roadmap, Phase 2 objectives
 
 ### Future Phases
+
 - ⏳ [Phase 3: Application Layer](../phase-3-application/phase-3-application.md) - NOT YET CREATED
   - Status: Pending - will be created in future
   - Referenced as "Next Phase"
@@ -47,6 +50,7 @@
 ## External References - Planned
 
 ### .NET & C# Documentation
+
 - 📚 [C# 12 Features](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12)
   - Primary constructors, collection expressions, required members
   
@@ -54,6 +58,7 @@
   - Framework features, performance improvements
 
 ### DDD & CQRS Resources
+
 - 📚 [Domain-Driven Design by Eric Evans](https://www.domainlanguage.com/ddd/)
   - Aggregates, entities, value objects, repositories
   
@@ -67,6 +72,7 @@
   - Command Query Responsibility Segregation
 
 ### Patterns & Architecture
+
 - 📚 [Specification Pattern](https://en.wikipedia.org/wiki/Specification_pattern)
   - Composable query specifications
   
@@ -74,6 +80,7 @@
   - Microsoft's microservices guidance
 
 ### EF Core & PostgreSQL
+
 - 📚 EF Core 8.0 Documentation
   - Expression trees, query filters, interceptors
   
@@ -85,21 +92,26 @@
 All namespaces follow the `Idevs.*` pattern per ADR and Phase 1 conventions:
 
 ✅ **Core Domain**
+
 - `Idevs.Domain.Abstractions` - Entity interfaces (IEntity, IAuditableEntity, etc.)
 - `Idevs.Domain.Primitives` - Base classes (Entity, ValueObject, AggregateRoot)
 - `Idevs.Domain.Results` - Result types (Result, Result<T>, PagedResult<T>)
 - `Idevs.Domain.ValueObjects` - Concrete value objects (Money, Email, etc.)
 
 ✅ **CQRS**
+
 - `Idevs.Domain.Cqrs` - CQRS contracts (ICommand, IQuery, handlers)
 
 ✅ **Repositories**
+
 - `Idevs.Domain.Repositories` - Repository interfaces (IRepository, IUnitOfWork)
 
 ✅ **Specifications**
+
 - `Idevs.Domain.Specifications` - Specification pattern (ISpecification<T>)
 
 ✅ **Events**
+
 - `Idevs.Domain.Events` - Domain events (IDomainEvent, IDomainEventPublisher)
 
 ## PostgreSQL Alignment Notes
@@ -107,6 +119,7 @@ All namespaces follow the `Idevs.*` pattern per ADR and Phase 1 conventions:
 Per Phase 1 and ADRs, these PostgreSQL conventions are documented:
 
 ✅ **Data Types**
+
 - Entity IDs: `Guid` → PostgreSQL `UUID`
 - Tenant IDs: `Guid` → PostgreSQL `UUID`
 - User IDs: `Guid` → PostgreSQL `UUID` (default), or `int`/`string` via generic
@@ -114,11 +127,13 @@ Per Phase 1 and ADRs, these PostgreSQL conventions are documented:
 - Soft delete flag: `bool` → PostgreSQL `boolean`
 
 ✅ **Indexes**
+
 - Composite indexes on (tenant_id, id) for all tenant entities
 - Partial indexes for soft delete: `WHERE is_deleted = false`
 - Unique constraints filtered by soft delete
 
 ✅ **Constraints**
+
 - Foreign keys enforced at database level
 - Check constraints for domain rules where applicable
 - NOT NULL constraints for required audit fields
@@ -126,16 +141,19 @@ Per Phase 1 and ADRs, these PostgreSQL conventions are documented:
 ## Modern C# Features Usage
 
 ✅ **C# 12 Features Applied**
+
 - Primary constructors: Value object and record types
 - Collection expressions: `[]` for empty collections
 - Required members: `required` keyword for essential properties
 - Pattern matching: Enhanced switch expressions in Result handling
 
 ✅ **C# 11 Features**
+
 - Raw string literals: Multi-line code examples
 - Generic attributes: For testing and validation
 
 ✅ **C# 10+ Features**
+
 - Global usings: Implicit for common namespaces
 - File-scoped namespaces: Reduce indentation
 - Record types: Immutable value objects and events
@@ -144,6 +162,7 @@ Per Phase 1 and ADRs, these PostgreSQL conventions are documented:
 ## Testing Framework References
 
 ✅ **Testing Tools**
+
 - xUnit 2.6.2 - Test framework
 - Shouldly 4.2.1 - Fluent assertions
 - NSubstitute 5.1.0 - Mocking framework
@@ -152,6 +171,7 @@ Per Phase 1 and ADRs, these PostgreSQL conventions are documented:
 - Testcontainers - PostgreSQL E2E tests (Phase 5)
 
 ✅ **Testing Strategy**
+
 - TDD workflow: Red → Green → Refactor
 - Coverage target: ≥80% branch coverage
 - Unit tests: Domain logic in isolation
@@ -174,6 +194,7 @@ Per Phase 1 and ADRs, these PostgreSQL conventions are documented:
 ## Action Items
 
 ✅ **Completed**
+
 - [x] Validate all internal document links
 - [x] Confirm ADR references are accurate
 - [x] Document namespace conventions
@@ -182,6 +203,7 @@ Per Phase 1 and ADRs, these PostgreSQL conventions are documented:
 - [x] Catalog modern C# features used
 
 ⏳ **Future**
+
 - [ ] Create Phase 3 documentation (reference target)
 - [ ] Validate external URLs are accessible
 - [ ] Add tool version references to Phase 1

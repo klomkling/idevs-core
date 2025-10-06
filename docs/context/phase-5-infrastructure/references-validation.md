@@ -23,36 +23,43 @@
 ### Phase Documents
 
 ✅ **Phase 0: Discovery & Guardrails**
+
 - Path: `../phase-0-discovery/phase-0-discovery.md`
 - Referenced for: Multi-tenancy strategy, Audit logging requirements, Soft delete strategy
 - Status: ✅ Valid
 
 ✅ **Phase 1: Platform Scaffold**
+
 - Path: `../phase-1-platform/phase-1-platform.md`
 - Referenced for: Build infrastructure, Testing framework, CI/CD pipelines
 - Status: ✅ Valid
 
 ✅ **Phase 2: Domain & Contracts**
+
 - Path: `../phase-2-domain/phase-2-domain.md`
 - Referenced for: IAggregateRoot, ITenantEntity, IAuditable, ISoftDeletable interfaces
 - Status: ✅ Valid
 
 ✅ **Phase 3: Application Layer**
+
 - Path: `../phase-3-application/phase-3-application.md`
 - Referenced for: ICorrelationContext, ICurrentUser, IDateTimeProvider
 - Status: ✅ Valid
 
 ✅ **Phase 4: Web Adapters**
+
 - Path: `../phase-4-web/phase-4-web.md`
 - Referenced for: ITenantContext from middleware, Health check infrastructure
 - Status: ✅ Valid
 
 ✅ **Glossary**
+
 - Path: `../glossary.md`
 - Referenced for: Term definitions
 - Status: ✅ Valid
 
 ✅ **Context README**
+
 - Path: `../README.md`
 - Referenced for: Phase overview
 - Status: ✅ Valid
@@ -62,21 +69,25 @@
 ## Architecture Decision Record References
 
 ✅ **ADR-0001: Tenancy Strategy**
+
 - Path: `../../adr/ADR-0001-tenancy-strategy.md`
 - Referenced for: Row-level security implementation, tenant isolation patterns
 - Status: ✅ Valid
 
 ✅ **ADR-0002: Audit Logging**
+
 - Path: `../../adr/ADR-0002-audit-logging.md`
 - Referenced for: Audit interceptor design, correlation tracking
 - Status: ✅ Valid
 
 ✅ **ADR-0003: Soft Delete**
+
 - Path: `../../adr/ADR-0003-soft-delete.md`
 - Referenced for: Soft delete query filters, purge policy
 - Status: ✅ Valid
 
 ✅ **ADR-0005: DI Container Strategy**
+
 - Path: `../../adr/ADR-0005-di-container-strategy.md`
 - Referenced for: Explicit repository registration without reflection
 - Status: ✅ Valid
@@ -88,78 +99,92 @@
 ### Entity Framework Core
 
 ✅ **EF Core 8 Documentation**
-- URL: https://learn.microsoft.com/en-us/ef/core/
+
+- URL: <https://learn.microsoft.com/en-us/ef/core/>
 - Status: ✅ Active (Verified 2025-10-04)
 - Referenced for: Core framework concepts
 
 ✅ **DbContext Configuration**
-- URL: https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/
+
+- URL: <https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/>
 - Status: ✅ Active
 - Referenced for: DbContext setup and configuration patterns
 
 ✅ **Query Filters**
-- URL: https://learn.microsoft.com/en-us/ef/core/querying/filters
+
+- URL: <https://learn.microsoft.com/en-us/ef/core/querying/filters>
 - Status: ✅ Active
 - Referenced for: Global query filters for multi-tenancy and soft delete
 
 ✅ **Shadow Properties**
-- URL: https://learn.microsoft.com/en-us/ef/core/modeling/shadow-properties
+
+- URL: <https://learn.microsoft.com/en-us/ef/core/modeling/shadow-properties>
 - Status: ✅ Active
 - Referenced for: Tenant ID, audit, and soft delete metadata
 
 ✅ **Interceptors**
-- URL: https://learn.microsoft.com/en-us/ef/core/logging-events-diagnostics/interceptors
+
+- URL: <https://learn.microsoft.com/en-us/ef/core/logging-events-diagnostics/interceptors>
 - Status: ✅ Active
 - Referenced for: Connection and SaveChanges interceptors
 
 ### PostgreSQL
 
 ✅ **Npgsql Documentation**
-- URL: https://www.npgsql.org/doc/
+
+- URL: <https://www.npgsql.org/doc/>
 - Status: ✅ Active (Official documentation)
 - Referenced for: PostgreSQL .NET provider
 
 ✅ **Row-Level Security (RLS)**
-- URL: https://www.postgresql.org/docs/current/ddl-rowsecurity.html
+
+- URL: <https://www.postgresql.org/docs/current/ddl-rowsecurity.html>
 - Status: ✅ Active (PostgreSQL official docs)
 - Referenced for: Multi-tenant data isolation
 
 ✅ **JSONB Type**
-- URL: https://www.postgresql.org/docs/current/datatype-json.html
+
+- URL: <https://www.postgresql.org/docs/current/datatype-json.html>
 - Status: ✅ Active
 - Referenced for: Flexible schema support
 
 ✅ **Connection Pooling**
-- URL: https://www.npgsql.org/doc/connection-string-parameters.html#pooling
+
+- URL: <https://www.npgsql.org/doc/connection-string-parameters.html#pooling>
 - Status: ✅ Active
 - Referenced for: Connection pool configuration
 
 ### Design Patterns
 
 ✅ **Repository Pattern**
-- URL: https://martinfowler.com/eaaCatalog/repository.html
+
+- URL: <https://martinfowler.com/eaaCatalog/repository.html>
 - Status: ✅ Active (Martin Fowler)
 - Referenced for: Repository pattern design
 
 ✅ **Specification Pattern**
-- URL: https://en.wikipedia.org/wiki/Specification_pattern
+
+- URL: <https://en.wikipedia.org/wiki/Specification_pattern>
 - Status: ✅ Active
 - Referenced for: Complex query composition
 
 ✅ **Unit of Work Pattern**
-- URL: https://martinfowler.com/eaaCatalog/unitOfWork.html
+
+- URL: <https://martinfowler.com/eaaCatalog/unitOfWork.html>
 - Status: ✅ Active (Martin Fowler)
 - Referenced for: Transaction coordination
 
 ### Caching
 
 ✅ **Distributed Caching**
-- URL: https://learn.microsoft.com/en-us/aspnet/core/performance/caching/distributed
+
+- URL: <https://learn.microsoft.com/en-us/aspnet/core/performance/caching/distributed>
 - Status: ✅ Active
 - Referenced for: IDistributedCache implementation
 
 ✅ **Redis Cache**
-- URL: https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/
+
+- URL: <https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/>
 - Status: ✅ Active
 - Referenced for: Redis as cache backend
 
@@ -170,42 +195,52 @@
 All code examples use consistent namespaces:
 
 ✅ **Idevs.Infrastructure.Persistence**
+
 - Usage: BaseDbContext, ApplicationDbContext, UnitOfWork
 - Consistent: Yes
 
 ✅ **Idevs.Infrastructure.Persistence.Configurations**
+
 - Usage: Entity type configurations (OrderConfiguration, etc.)
 - Consistent: Yes
 
 ✅ **Idevs.Infrastructure.Persistence.Repositories**
+
 - Usage: Repository implementations
 - Consistent: Yes
 
 ✅ **Idevs.Infrastructure.Persistence.Specifications**
+
 - Usage: SpecificationEvaluator
 - Consistent: Yes
 
 ✅ **Idevs.Infrastructure.Persistence.Interceptors**
+
 - Usage: TenantConnectionInterceptor
 - Consistent: Yes
 
 ✅ **Idevs.Infrastructure.Persistence.Seeding**
+
 - Usage: DataSeeder
 - Consistent: Yes
 
 ✅ **Idevs.Infrastructure.Caching**
+
 - Usage: CacheService
 - Consistent: Yes
 
 ✅ **Idevs.Infrastructure.Extensions**
+
 - Usage: DbContextExtensions, RepositoryExtensions
 - Consistent: Yes
 
 ✅ **Idevs.Application.Abstractions.Persistence**
+
 - Usage: IRepository<T>, ISpecification<T>, IUnitOfWork
 - Consistent: Yes
 
 ✅ **Idevs.Application.Abstractions.Caching**
+
 - Usage: ICacheService
 - Consistent: Yes
 
@@ -214,6 +249,7 @@ All code examples use consistent namespaces:
 ## Code Example Compilation Status
 
 All 13 C# code examples have been validated for:
+
 1. **Syntax Correctness**: ✅ No syntax errors
 2. **Namespace Resolution**: ✅ All namespaces compatible with .NET 8
 3. **API Compatibility**: ✅ Compatible with EF Core 8.0 and Npgsql 8.0
@@ -253,34 +289,42 @@ All 13 C# code examples have been validated for:
 All referenced packages are available and compatible with .NET 8:
 
 ✅ **Microsoft.EntityFrameworkCore** (8.0+)
+
 - Usage: Core EF functionality
 - Status: Available and stable
 
 ✅ **Npgsql.EntityFrameworkCore.PostgreSQL** (8.0+)
+
 - Usage: PostgreSQL provider
 - Status: Available and stable
 
 ✅ **Npgsql** (8.0+)
+
 - Usage: PostgreSQL connection and RLS
 - Status: Available and stable
 
 ✅ **Microsoft.Extensions.Caching.StackExchangeRedis** (8.0+)
+
 - Usage: Redis distributed cache
 - Status: Available and stable
 
 ✅ **Microsoft.Extensions.Caching.Abstractions** (8.0+)
+
 - Usage: IDistributedCache interface
 - Status: Built-in
 
 ✅ **Polly** (8.0+)
+
 - Usage: Resilience policies (referenced but not implemented in examples)
 - Status: Available and stable
 
 ✅ **NodaTime** (3.1+)
+
 - Usage: Date/time handling
 - Status: Available and stable
 
 ✅ **Npgsql.NodaTime** (8.0+)
+
 - Usage: NodaTime support for Npgsql
 - Status: Available and stable
 
@@ -291,21 +335,25 @@ All referenced packages are available and compatible with .NET 8:
 ### From Phase 2: Domain & Contracts
 
 ✅ **IAggregateRoot**
+
 - Expected namespace: `Idevs.Domain.Primitives`
 - Usage: Repository constraint
 - Status: ✅ Defined in Phase 2
 
 ✅ **ITenantEntity**
+
 - Expected namespace: `Idevs.Domain.Primitives`
 - Usage: Multi-tenant entities
 - Status: ✅ Defined in Phase 2
 
 ✅ **IAuditable**
+
 - Expected namespace: `Idevs.Domain.Primitives`
 - Usage: Audit trail support
 - Status: ✅ Defined in Phase 2
 
 ✅ **ISoftDeletable**
+
 - Expected namespace: `Idevs.Domain.Primitives`
 - Usage: Soft delete support
 - Status: ✅ Defined in Phase 2
@@ -313,16 +361,19 @@ All referenced packages are available and compatible with .NET 8:
 ### From Phase 3: Application Layer
 
 ✅ **ICorrelationContext**
+
 - Expected namespace: `Idevs.Application.Abstractions`
 - Usage: Audit correlation tracking
 - Status: ✅ Defined in Phase 3
 
 ✅ **ICurrentUser**
+
 - Expected namespace: `Idevs.Application.Abstractions`
 - Usage: User identity for audit
 - Status: ✅ Defined in Phase 3
 
 ✅ **IDateTimeProvider**
+
 - Expected namespace: `Idevs.Application.Abstractions`
 - Usage: Testable timestamp generation
 - Status: ✅ Defined in Phase 3
@@ -330,6 +381,7 @@ All referenced packages are available and compatible with .NET 8:
 ### From Phase 4: Web Adapters
 
 ✅ **ITenantContext**
+
 - Expected namespace: `Idevs.Application.Abstractions`
 - Usage: Tenant resolution from middleware
 - Status: ✅ Defined in Phase 4
@@ -341,6 +393,7 @@ All referenced packages are available and compatible with .NET 8:
 ### DbContext Pattern
 
 ✅ **BaseDbContext Architecture**
+
 - Inherits from DbContext
 - Constructor injection of contexts
 - Global query filters applied
@@ -350,6 +403,7 @@ All referenced packages are available and compatible with .NET 8:
 ### Repository Pattern
 
 ✅ **Generic Repository**
+
 - Implements IRepository<T>
 - Constraint on IAggregateRoot
 - Specification pattern support
@@ -359,6 +413,7 @@ All referenced packages are available and compatible with .NET 8:
 ### Specification Pattern
 
 ✅ **Specification Design**
+
 - Criteria expression
 - Include support (eager loading)
 - Ordering support
@@ -368,6 +423,7 @@ All referenced packages are available and compatible with .NET 8:
 ### Unit of Work Pattern
 
 ✅ **UoW Implementation**
+
 - Transaction coordination
 - Repository access via generic method
 - Commit/rollback support
@@ -376,6 +432,7 @@ All referenced packages are available and compatible with .NET 8:
 ### PostgreSQL RLS
 
 ✅ **RLS Configuration**
+
 - Connection interceptor sets tenant context
 - SQL policy uses current_setting()
 - Tenant ID parameter passed on connection open
@@ -400,12 +457,14 @@ All referenced packages are available and compatible with .NET 8:
 ## SQL Script Validation
 
 ✅ **RLS Migration Script**
+
 ```sql
 ALTER TABLE sales."Orders" ENABLE ROW LEVEL SECURITY;
 CREATE POLICY tenant_isolation_policy ON sales."Orders"
     USING ("TenantId" = current_setting('app.current_tenant_id')::uuid);
 GRANT SELECT, INSERT, UPDATE, DELETE ON sales."Orders" TO app_user;
 ```
+
 - Syntax: ✅ Valid PostgreSQL 12+
 - Security: ✅ Proper tenant isolation
 - Permissions: ✅ Appropriate grants
@@ -435,6 +494,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON sales."Orders" TO app_user;
 ## Recommendations
 
 ### Immediate Actions
+
 ✅ **None Required** - All references are valid and accessible
 
 ### Future Considerations

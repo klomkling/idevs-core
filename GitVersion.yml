@@ -1,0 +1,46 @@
+mode: ContinuousDeployment
+tag-prefix: v
+commit-message-incrementing: Enabled
+
+branches:
+  main:
+    regex: ^main$
+    mode: ContinuousDelivery
+    label: ''
+    increment: Patch
+    prevent-increment:
+      of-merged-branch: true
+  
+  develop:
+    regex: ^develop$
+    mode: ContinuousDeployment
+    label: alpha
+    increment: Patch
+    track-merge-target: true
+  
+  feature:
+    regex: ^feature[/-]
+    mode: ContinuousDeployment
+    label: 'feat-{BranchName}'
+    increment: Patch
+  
+  hotfix:
+    regex: ^hotfix[/-]
+    mode: ContinuousDeployment
+    label: beta
+    increment: Patch
+  
+  release:
+    regex: ^release[/-]
+    mode: ContinuousDeployment
+    label: rc
+    increment: None
+  
+  pull-request:
+    regex: ^(pull|pull-requests|pr)[/-]
+    mode: ContinuousDeployment
+    label: 'pr'
+    increment: Inherit
+
+ignore:
+  sha: []

@@ -11,6 +11,7 @@
 Phase 2 establishes the foundational domain contracts and abstractions required for building a multi-tenant, CQRS-based SaaS/ERP platform on .NET 8 with PostgreSQL.
 
 ### Primary Deliverable
+
 **Document**: [phase-2-domain.md](./phase-2-domain.md) (1,325 lines)
 
 ---
@@ -18,24 +19,28 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 ## ✅ Completed Deliverables
 
 ### 1. Core Documentation
+
 - ✅ **Phase 2 Implementation Plan** - Comprehensive 1,325-line document
 - ✅ **References Validation** - All internal/external links validated
 - ✅ **Review & Sign-Off Framework** - Stakeholder review checklist created
 - ✅ **CI/CD Workflows** - GitHub Actions for automation
 
 ### 2. Entity Interfaces
+
 - ✅ `IEntity<TKey>` - Base entity with identity
 - ✅ `ITenantEntity<TKey>` - Multi-tenant entity marker (ADR-0001)
 - ✅ `IAuditableEntity<TKey>` - Audit trail tracking (ADR-0002)
 - ✅ `ISoftDeletableEntity<TKey>` - Soft delete support (ADR-0003)
 
 ### 3. Value Objects
+
 - ✅ Base value object pattern with structural equality
 - ✅ Examples: Money, Address, DateRange, Email
 - ✅ Immutability and validation strategies
 - ✅ C# 12 primary constructors and required members
 
 ### 4. Aggregate Roots
+
 - ✅ Base aggregate root abstraction
 - ✅ Domain event collection and dispatch
 - ✅ Invariant enforcement patterns
@@ -43,6 +48,7 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 - ✅ Validation layering strategy
 
 ### 5. Result Patterns
+
 - ✅ `Result` - Success/failure without value
 - ✅ `Result<T>` - Success/failure with value
 - ✅ `PagedResult<T>` - Paginated query results
@@ -50,6 +56,7 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 - ✅ Error codes and messages strategy
 
 ### 6. CQRS Contracts
+
 - ✅ `ICommand` and `IQuery<TResult>` interfaces
 - ✅ `ICommandHandler<TCommand>` contracts
 - ✅ `IQueryHandler<TQuery, TResult>` contracts
@@ -58,6 +65,7 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 - ✅ Explicit DI registration strategy (ADR-0005)
 
 ### 7. Repository Patterns
+
 - ✅ `IReadOnlyRepository<TEntity>` - Query operations
 - ✅ `IRepository<TEntity>` - Full CRUD operations
 - ✅ `IUnitOfWork` - Transaction boundaries
@@ -65,6 +73,7 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 - ✅ Aggregate root-only exposure
 
 ### 8. Specification Pattern
+
 - ✅ `ISpecification<T>` - Composable query criteria
 - ✅ Criteria, includes, ordering, paging support
 - ✅ Combinators: And, Or, Not
@@ -72,6 +81,7 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 - ✅ Unit testing strategies
 
 ### 9. Domain Events
+
 - ✅ `IDomainEvent` - Base domain event interface
 - ✅ Event collection on aggregates
 - ✅ Deferred dispatch until SaveChanges
@@ -79,6 +89,7 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 - ✅ No reflection-based discovery
 
 ### 10. Modern C# Features
+
 - ✅ C# 12 language features documented
 - ✅ Primary constructors for immutable types
 - ✅ Required members for construction safety
@@ -87,6 +98,7 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 - ✅ Nullable reference types enforced
 
 ### 11. Testing Strategy
+
 - ✅ TDD workflow defined
 - ✅ xUnit, Shouldly, NSubstitute tooling
 - ✅ 100% domain logic coverage target
@@ -94,6 +106,7 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 - ✅ Deterministic test patterns
 
 ### 12. CI/CD Automation
+
 - ✅ **Documentation Validation Workflow**
   - Markdown linting
   - Link checking
@@ -112,6 +125,7 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 ## 📊 Success Metrics - ACHIEVED
 
 ### Quantitative Metrics
+
 | Metric | Target | Actual | Status |
 |--------|--------|--------|--------|
 | Document Length | 1,500-2,000 lines | 1,325 lines | ✅ |
@@ -122,6 +136,7 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 | CI Workflows | 2+ | 2 | ✅ |
 
 ### Qualitative Metrics
+
 | Metric | Status | Notes |
 |--------|--------|-------|
 | Consistent with Phase 0/1 | ✅ | Same structure, tone, and formatting |
@@ -147,7 +162,7 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 
 ## 📁 File Structure
 
-```
+```text
 docs/context/phase-2-domain/
 ├── phase-2-domain.md           # Main implementation plan (1,325 lines)
 ├── REFERENCES-VALIDATED.md     # Link and reference validation
@@ -166,13 +181,14 @@ samples/Phase2.Domain.Samples/  # Sample project (partial)
 │   ├── IAuditableEntity.cs
 │   └── ISoftDeletableEntity.cs
 └── Phase2.Domain.Samples.csproj
-```
+```text
 
 ---
 
 ## 🎓 Key Learnings
 
 ### Architectural Decisions
+
 1. **No MediatR**: Direct handler invocation reduces complexity and startup time
 2. **No Reflection**: Explicit registration improves performance and maintainability
 3. **Result Pattern**: Non-exception error flow improves clarity and performance
@@ -180,6 +196,7 @@ samples/Phase2.Domain.Samples/  # Sample project (partial)
 5. **PostgreSQL-Aligned**: Domain guidance considers PostgreSQL capabilities
 
 ### Technical Patterns
+
 1. **Generic Interfaces**: `IEntity<TKey>` supports flexible key types
 2. **Marker Interfaces**: `IEntity : IEntity<Guid>` for common case convenience
 3. **Composition**: Entities can implement multiple traits (tenant, audit, soft delete)
@@ -187,6 +204,7 @@ samples/Phase2.Domain.Samples/  # Sample project (partial)
 5. **Domain Events**: Deferred dispatch prevents partial state persistence
 
 ### Documentation Best Practices
+
 1. **Folder-per-Phase**: Enables easy extension and organization
 2. **Reference Validation**: Prevents broken links and dead references
 3. **CI Automation**: Catches issues early in the development cycle
@@ -198,17 +216,20 @@ samples/Phase2.Domain.Samples/  # Sample project (partial)
 ## 🚀 Next Steps
 
 ### Immediate (Phase 2 Finalization)
+
 1. ⬜ **Stakeholder Reviews** - Architecture, Engineering, Documentation
 2. ⬜ **Address Feedback** - Incorporate review comments
 3. ⬜ **Final Sign-Off** - Phase owner approval
 
 ### Phase 3 Preparation
+
 1. ⬜ **Application Layer Design** - Commands, queries, handlers
 2. ⬜ **Execution Pipeline** - Decorator chain implementation
 3. ⬜ **Validation Framework** - FluentValidation integration
 4. ⬜ **Authorization Framework** - Policy-based authorization
 
 ### Long-Term Implementation
+
 1. ⬜ **Source Generator** - Auto-register handlers per ADR-0005
 2. ⬜ **EF Core Interceptors** - Audit and soft delete automation
 3. ⬜ **Specification-to-EF** - Expression tree translation
@@ -219,6 +240,7 @@ samples/Phase2.Domain.Samples/  # Sample project (partial)
 ## 📚 Related Resources
 
 ### Internal Documentation
+
 - [Phase 0: Discovery & Guardrails](../phase-0-discovery/phase-0-discovery.md)
 - [Phase 1: Platform Scaffold](../phase-1-platform/phase-1-platform.md)
 - [Glossary](../glossary.md)
@@ -226,6 +248,7 @@ samples/Phase2.Domain.Samples/  # Sample project (partial)
 - [Context README](../README.md)
 
 ### Architecture Decision Records
+
 - [ADR-0001: Tenancy Strategy](../../adr/ADR-0001-tenancy-strategy.md)
 - [ADR-0002: Audit Logging](../../adr/ADR-0002-audit-logging.md)
 - [ADR-0003: Soft Delete](../../adr/ADR-0003-soft-delete.md)
@@ -233,11 +256,13 @@ samples/Phase2.Domain.Samples/  # Sample project (partial)
 - [ADR-0005: DI Container Strategy](../../adr/ADR-0005-di-container-strategy.md)
 
 ### CI/CD Resources
+
 - [GitHub Actions Workflows](../../../.github/workflows/README.md)
 - [Documentation Validation Workflow](../../../.github/workflows/docs-validation.yml)
 - [.NET Build Workflow](../../../.github/workflows/dotnet-build.yml)
 
 ### External References
+
 - [.NET 8 Documentation](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-8)
 - [C# 12 Features](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12)
 - [Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html)
@@ -250,18 +275,21 @@ samples/Phase2.Domain.Samples/  # Sample project (partial)
 ## 🎉 Achievements
 
 ### Documentation Excellence
+
 - 📄 **1,325 lines** of comprehensive domain guidance
 - 🔗 **100% validated** internal and external links
 - ✅ **Zero lint errors** in markdown formatting
 - 📚 **5 ADRs** fully integrated and referenced
 
 ### Architectural Rigor
+
 - 🏛️ **DDD patterns** clearly defined and exampled
 - 🔀 **CQRS contracts** without reflection overhead
 - 🏢 **Multi-tenancy** built into every entity
 - 🛡️ **Security** considerations throughout
 
 ### Automation & Quality
+
 - 🤖 **2 CI workflows** enforcing quality gates
 - 🚫 **Reflection detection** preventing ADR violations
 - ✅ **Automated validation** of docs and code

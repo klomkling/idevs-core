@@ -53,7 +53,7 @@ Phase 1 establishes the **platform foundation** for the **Idevs** framework (rep
 
 #### Recommended Structure
 
-```
+```text
 idevs-core/
 ├── src/
 │   ├── Idevs/                               # Core package (abstractions + domain)
@@ -83,24 +83,27 @@ idevs-core/
 ├── GitVersion.yml                           # GitVersion configuration (future)
 ├── global.json                              # .NET SDK version pinning
 └── idevs-core.sln                          # Solution file
-```
+```text
 
 #### Project Naming Conventions
 
 **Pattern**: `Idevs.<Layer>` or `Idevs.<Layer>.<Provider>`
 
 **Core Packages**:
+
 - ✅ `Idevs` - Core abstractions + domain (required by all)
 - ✅ `Idevs.Application` - CQRS handlers and application logic
 - ✅ `Idevs.Data` - Data access abstractions
 - ✅ `Idevs.Web` - ASP.NET Core integration
 
 **Provider/Implementation Packages**:
+
 - ✅ `Idevs.Data.PostgreSQL` - PostgreSQL-specific implementation
 - ✅ `Idevs.Caching.Redis` - Redis caching implementation
 - ✅ `Idevs.Web.GraphQL` - GraphQL extension
 
 **Anti-patterns** (avoid):
+
 - ❌ `Core.Domain` - Missing vendor prefix
 - ❌ `Idevs.Core.Infrastructure.Persistence` - Too verbose (39 chars!)
 - ❌ `Idevs.EntityFramework` - Technology-specific naming
@@ -109,7 +112,7 @@ idevs-core/
 
 **Principle**: Dependencies flow inward toward the domain
 
-```
+```text
 Presentation Layer (Web, GraphQL)
     ↓ depends on
 Application Layer (Handlers, Decorators)
@@ -117,9 +120,10 @@ Application Layer (Handlers, Decorators)
 Domain Layer (Entities, Interfaces)
     ↑ implements
 Infrastructure Layer (EF Core, Caching, etc.)
-```
+```text
 
 **Enforcement**:
+
 - Use `NetArchTest.Rules` to validate dependency rules
 - Domain layer has **zero** external dependencies (except primitives)
 - Infrastructure depends on domain abstractions, not concrete types
@@ -142,9 +146,10 @@ Infrastructure Layer (EF Core, Caching, etc.)
     "allowPrerelease": false
   }
 }
-```
+```text
 
 **Rationale**:
+
 - Pin to specific .NET 8 SDK to ensure reproducible builds
 - `rollForward: latestMinor` allows patch updates (8.0.1, 8.0.2, etc.)
 - Prevents "works on my machine" issues
@@ -163,9 +168,10 @@ Infrastructure Layer (EF Core, Caching, etc.)
 <PropertyGroup>
   <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
 </PropertyGroup>
-```
+```text
 
 **Decision Criteria for Multi-Targeting**:
+
 - Wait until .NET 10.0 reaches GA (stable release)
 - Only multi-target if specific .NET 10 features needed
 - Default: single target (`net8.0`) for simplicity
@@ -222,9 +228,10 @@ Infrastructure Layer (EF Core, Caching, etc.)
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
   </ItemGroup>
 </Project>
-```
+```text
 
 **Benefits**:
+
 - Single source of truth for package versions
 - Easier dependency upgrades (change version once)
 - Prevents version conflicts across projects
@@ -238,7 +245,7 @@ Infrastructure Layer (EF Core, Caching, etc.)
 
 <!-- After (CPM): -->
 <PackageReference Include="Serilog.AspNetCore" />
-```
+```text
 
 ---
 
@@ -300,9 +307,10 @@ Infrastructure Layer (EF Core, Caching, etc.)
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>
-```
+```text
 
 **Key Settings**:
+
 - **Nullable**: Required (enforce null safety)
 - **TreatWarningsAsErrors**: Enforce clean builds in CI
 - **Deterministic**: Reproducible builds (same input = same output)
@@ -446,9 +454,10 @@ dotnet_diagnostic.CA2007.severity = none
 
 # IDE0058: Expression value is never used
 dotnet_diagnostic.IDE0058.severity = none
-```
+```text
 
 **Custom Analyzers** (future consideration):
+
 - StyleCop.Analyzers (if stricter style enforcement needed)
 - Roslynator (additional refactorings and analyzers)
 - SonarAnalyzer.CSharp (security and code quality rules)
@@ -535,11 +544,12 @@ branches:
 ignore:
   sha: []
 merge-message-formats: {}
-```
+```text
 
 #### Versioning Examples
 
 **Scenario 1: Feature Development**
+
 ```bash
 # On develop branch
 git commit -m "feat: add tenant isolation middleware"
@@ -547,9 +557,10 @@ git commit -m "feat: add tenant isolation middleware"
 
 git commit -m "fix: resolve null reference in tenant context"
 # GitVersion: 1.2.0-alpha.2
-```
+```text
 
 **Scenario 2: Release**
+
 ```bash
 # Create release branch
 git checkout -b release/1.2.0
@@ -564,9 +575,10 @@ git checkout main
 git merge release/1.2.0
 git tag v1.2.0
 # GitVersion: 1.2.0
-```
+```text
 
 **Scenario 3: Hotfix**
+
 ```bash
 # Branch from develop (not main!)
 git checkout develop
@@ -585,13 +597,14 @@ git checkout main
 git merge release/1.2.1
 git tag v1.2.1
 # GitVersion: 1.2.1
-```
+```text
 
 #### Conventional Commits Integration
 
 **Format**: `<type>(<scope>): <subject>`
 
 **Types**:
+
 - `feat`: New feature (minor version bump)
 - `fix`: Bug fix (patch version bump)
 - `docs`: Documentation only (no version bump)
@@ -602,6 +615,7 @@ git tag v1.2.1
 - `BREAKING CHANGE`: Breaking API change (major version bump)
 
 **Examples**:
+
 ```bash
 feat: add soft delete support
 fix: resolve tenant filter bypass
@@ -614,7 +628,7 @@ feat!: change ICommandHandler signature
 feat: change ICommandHandler signature
 
 BREAKING CHANGE: ICommandHandler now requires CancellationToken
-```
+```text
 
 ---
 
@@ -894,7 +908,7 @@ jobs:
             --api-key ${{ secrets.NUGET_API_KEY }} \
             --source https://api.nuget.org/v3/index.json \
             --skip-duplicate
-```
+```text
 
 #### Quality Gates
 
@@ -915,7 +929,7 @@ jobs:
 
 #### Testing Pyramid
 
-```
+```text
            ┌───────────────┐
            │   E2E Tests   │  Small (PostgreSQL, slow, thorough)
            │  (PostgreSQL) │  Run on main/develop only
@@ -929,11 +943,12 @@ jobs:
         │    Unit Tests     │   Large (Mocked, very fast)
         │    (Mocked)       │   Run on every commit
         └───────────────────┘
-```
+```text
 
 #### Test Categories
 
 **1. Unit Tests** (Majority of tests)
+
 - **Purpose**: Test individual components in isolation
 - **Database**: None (mocked with NSubstitute)
 - **Speed**: Very fast (milliseconds)
@@ -959,14 +974,15 @@ public class CreateOrderHandlerTests
         await repository.Received(1).AddAsync(Arg.Any<Order>());
     }
 }
-```
+```text
 
 **2. Integration Tests** (InMemory)
+
 - **Purpose**: Test component interactions, EF Core queries, business workflows
 - **Database**: EF Core InMemory provider
 - **Speed**: Fast (seconds)
 - **When**: Every PR (not marked with `[Trait("Category", "RequiresPostgreSQL")]`)
-- **Limitations**: 
+- **Limitations**:
   - No database constraints
   - No stored procedures
   - No PostgreSQL-specific features
@@ -1002,9 +1018,10 @@ public class OrderRepositoryIntegrationTests : IDisposable
         result.Id.ShouldBe(order.Id);
     }
 }
-```
+```text
 
 **3. E2E Tests with PostgreSQL** (Selective)
+
 - **Purpose**: Validate PostgreSQL-specific features, constraints, complex queries
 - **Database**: Real PostgreSQL (GitHub Actions Service)
 - **Speed**: Slower (minutes)
@@ -1052,11 +1069,12 @@ public class PostgreSQLSpecificTests
         // This is critical for multi-tenant data isolation
     }
 }
-```
+```text
 
 #### Test Selection Strategy
 
 **Use InMemory when**:
+
 - ✅ Testing business logic
 - ✅ Testing LINQ queries
 - ✅ Testing EF Core change tracking
@@ -1064,6 +1082,7 @@ public class PostgreSQLSpecificTests
 - ✅ Fast feedback needed
 
 **Use PostgreSQL when**:
+
 - ✅ Testing unique constraints
 - ✅ Testing foreign key constraints
 - ✅ Testing PostgreSQL-specific functions (e.g., `ILIKE`, array operations)
@@ -1074,7 +1093,7 @@ public class PostgreSQLSpecificTests
 
 #### CI Pipeline Flow
 
-```
+```text
 Pull Request (Feature Branch)
 ├─ Unit Tests (always run) ✅
 ├─ Integration Tests - InMemory (always run) ✅
@@ -1087,9 +1106,10 @@ Main/Develop Branch
 ├─ E2E Tests - PostgreSQL ✅ (thorough validation)
 ├─ Architecture Tests ✅
 └─ Coverage Check ≥80% ✅
-```
+```text
 
 **Benefits**:
+
 - ⚡ Fast PR feedback (no PostgreSQL startup time)
 - 💰 Minimal CI minutes usage
 - 🎯 Thorough validation on important branches
@@ -1098,11 +1118,13 @@ Main/Develop Branch
 #### Local Development
 
 **Option A: InMemory Only (Recommended for most development)**
+
 ```bash
 dotnet test  # Runs unit + integration tests with InMemory
-```
+```text
 
 **Option B: With PostgreSQL (For E2E validation)**
+
 ```bash
 # Start PostgreSQL with Docker Compose
 docker-compose up -d postgres
@@ -1111,9 +1133,10 @@ docker-compose up -d postgres
 export USE_REAL_DATABASE=true
 export ConnectionStrings__DefaultConnection="Host=localhost;Database=idevs_core_dev;Username=postgres;Password=postgres"
 dotnet test
-```
+```text
 
 **Docker Compose** (for local PostgreSQL):
+
 ```yaml
 # docker-compose.yml
 version: '3.8'
@@ -1131,7 +1154,7 @@ services:
 
 volumes:
   postgres-data:
-```
+```text
 
 ---
 
@@ -1156,11 +1179,12 @@ Each project that ships as NuGet should have:
   <PackageReleaseNotes>See https://github.com/yourorg/idevs-core/releases</PackageReleaseNotes>
   <PackageProjectUrl>https://idevs.work</PackageProjectUrl>
 </PropertyGroup>
-```
+```text
 
 #### Package Dependencies
 
 **Best Practices**:
+
 - Minimize dependencies in `Idevs.Core.Abstractions` (contracts only)
 - Reference abstractions, not implementations
 - Use `PrivateAssets="All"` for build-time dependencies
@@ -1174,7 +1198,7 @@ Each project that ships as NuGet should have:
 
 <!-- ✅ Good: Build-time dependency -->
 <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
-```
+```text
 
 ---
 
@@ -1211,7 +1235,7 @@ public interface ICommandHandler<in TCommand, TResponse>
 {
     Task<Result<TResponse>> HandleAsync(TCommand command, CancellationToken cancellationToken = default);
 }
-```
+```text
 
 **Decorator Base Class**:
 
@@ -1231,7 +1255,7 @@ public abstract class CommandHandlerDecoratorBase<TCommand> : ICommandHandler<TC
         TCommand command, 
         CancellationToken cancellationToken = default);
 }
-```
+```text
 
 **Example Decorators**:
 
@@ -1319,7 +1343,7 @@ public class ValidationCommandHandler<TCommand> : CommandHandlerDecoratorBase<TC
         return await Inner.HandleAsync(command, cancellationToken);
     }
 }
-```
+```text
 
 #### Service Registration Helpers
 
@@ -1398,7 +1422,7 @@ public static class IServiceCollectionExtensions
         return services;
     }
 }
-```
+```text
 
 #### Consumer Usage
 
@@ -1423,7 +1447,7 @@ builder.Services.AddQueryHandler<GetOrder, Order, GetOrderHandler>();
 builder.Services.AddQueryHandler<ListOrders, PagedResult<Order>, ListOrdersHandler>();
 
 var app = builder.Build();
-```
+```text
 
 **Benefits of Explicit Registration**:
 
@@ -1469,7 +1493,7 @@ public static IServiceCollection AddCommandHandlerWithKey<TCommand, THandler>(
     
     return services;
 }
-```
+```text
 
 #### Optional: Autofac Adapter (Future)
 
@@ -1499,7 +1523,7 @@ public class IdevsAutofacModule : Module
             typeof(ICommandHandler<>));
     }
 }
-```
+```text
 
 **Usage in Consumer App**:
 
@@ -1510,7 +1534,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 {
     container.RegisterModule<IdevsAutofacModule>();
 });
-```
+```text
 
 #### Summary
 
@@ -1557,40 +1581,48 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 ## Risks & Mitigations
 
 ### Risk 1: Version Drift
+
 **Impact**: Medium  
 **Probability**: Medium  
 **Symptom**: Different versions on different branches  
 **Mitigation**:
+
 - Enforce GitVersion in CI (no manual version setting)
 - Validate version in PR checks
 - Document branching model clearly
 - Use branch protection rules
 
 ### Risk 2: Build Environment Differences
+
 **Impact**: High  
 **Probability**: Low  
 **Symptom**: "Works on my machine"  
 **Mitigation**:
+
 - Pin .NET SDK version in global.json
 - Use deterministic builds
 - Run CI on every PR
 - Document local setup requirements
 
 ### Risk 3: Excessive Build Time
+
 **Impact**: Medium  
 **Probability**: Medium  
 **Symptom**: Slow CI pipeline, developer frustration  
 **Mitigation**:
+
 - Cache NuGet packages in CI
 - Parallelize test execution
 - Run architecture tests separately
 - Optimize Testcontainer usage
 
 ### Risk 4: Dependency Vulnerabilities
+
 **Impact**: High  
 **Probability**: Medium  
 **Symptom**: Known CVEs in dependencies  
 **Mitigation**:
+
 - Enable Dependabot in GitHub
 - Run `dotnet list package --vulnerable` in CI
 - Subscribe to security advisories
@@ -1603,6 +1635,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 Phase 1 is **complete** when:
 
 ### Must Have (Blocking)
+
 - [ ] Solution structure defined and documented
 - [ ] global.json created with .NET 8 SDK pinned
 - [ ] Directory.Build.props configured
@@ -1614,12 +1647,14 @@ Phase 1 is **complete** when:
 - [ ] Conventional Commits guidelines documented
 
 ### Should Have (Non-Blocking)
+
 - [ ] Architecture tests project scaffolded
 - [ ] Code coverage tooling documented
 - [ ] NuGet package metadata templates
 - [ ] Local development setup guide
 
 ### Nice to Have (Future)
+
 - [ ] Docker Compose for local PostgreSQL development
 - [ ] Pre-commit hooks for code style
 - [ ] GitHub PR templates
@@ -1631,6 +1666,7 @@ Phase 1 is **complete** when:
 ## Tracking Checklist
 
 ### Build Configuration
+
 - [ ] global.json created
 - [ ] Directory.Build.props configured
 - [ ] Directory.Packages.props configured
@@ -1638,18 +1674,21 @@ Phase 1 is **complete** when:
 - [ ] Solution file structure defined
 
 ### Versioning
+
 - [ ] GitVersion.yml documented
 - [ ] Conventional Commits guide linked
 - [ ] Version bump rules documented
 - [ ] Hotfix protocol defined
 
 ### CI/CD
+
 - [ ] Workflow stages documented
 - [ ] Quality gates defined (≥80% coverage)
 - [ ] Test strategy documented
 - [ ] Package publishing strategy defined
 
 ### Tooling
+
 - [ ] xUnit + Shouldly + NSubstitute documented
 - [ ] Hybrid testing strategy documented (InMemory + PostgreSQL E2E)
 - [ ] NetArchTest for architecture validation
@@ -1660,9 +1699,11 @@ Phase 1 is **complete** when:
 ## Dependencies & Relationships
 
 ### Prerequisites
+
 - **Phase 0**: Design principles, ADR-0004 (Release Governance)
 
 ### Outputs to Other Phases
+
 - **Phase 2 (Domain)**: Solution structure, testing framework
 - **Phase 3 (Application)**: DI configuration, decorator registration patterns
 - **Phase 4 (Web)**: ASP.NET Core project setup, middleware configuration
@@ -1674,11 +1715,13 @@ Phase 1 is **complete** when:
 ## References
 
 ### Internal Documents
+
 - [Phase 0: Discovery](../phase-0-discovery/phase-0-discovery.md)
 - [ADR-0004: Release Governance](../adrs/ADR-0004-release-governance.md) (pending)
 - [CQRS Framework Plan](../cqrs-framework-plan.md)
 
 ### External References
+
 - [GitVersion Documentation](https://gitversion.net/docs/)
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Central Package Management](https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management)
@@ -1705,7 +1748,7 @@ dotnet tool install --global GitVersion.Tool
 
 # Install ReportGenerator (optional, for local coverage reports)
 dotnet tool install --global dotnet-reportgenerator-globaltool
-```
+```text
 
 ### First-Time Setup
 
@@ -1725,21 +1768,24 @@ dotnet test
 
 # Check code style
 dotnet format --verify-no-changes
-```
+```text
 
 ### Recommended IDE Setup
 
 **Visual Studio 2022 (v17.8+)**:
+
 - Install "ASP.NET and web development" workload
 - Install "EditorConfig Language Service" extension
 - Optional: Docker Desktop (for local PostgreSQL)
 
 **JetBrains Rider 2023.3+**:
+
 - Native EditorConfig support
 - Built-in GitVersion integration
 - Excellent code analysis
 
 **Visual Studio Code**:
+
 - Install C# Dev Kit extension
 - Install EditorConfig extension
 - Install GitLens extension

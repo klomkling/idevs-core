@@ -1,9 +1,10 @@
 # ADR-0004: Release Governance
 
-**Status**: Proposed  
+**Status**: Accepted  
 **Date**: 2025-10-04  
+**Decision Date**: 2025-10-05  
 **Deciders**: Architecture Team, Platform Lead, DevOps Team  
-**Related**: Phase 1 (Platform Scaffold), AGENTS.md Repository Guidelines
+**Related**: Phase 1 (Platform Scaffold), AGENTS.md Repository Guidelines, Phase 0 (Discovery)
 
 ---
 
@@ -38,11 +39,13 @@ The Idevs framework is a library published to NuGet.org and GitHub Packages with
 From [AGENTS.md](../../AGENTS.md):
 
 > **Branching Strategy**
+>
 > - Open every PR against `develop` and keep it releasable
 > - Merge `develop` into `main` only for reviewed production releases
 > - Forward-merge fixes from `develop` to preserve GitVersion history
 >
 > **Versioning & Release Flow**
+>
 > - Restore tools with `dotnet tool restore`, then preview versions via `dotnet tool run gitversion`
 > - Merges into `develop` publish patch packages to GitHub Packages
 > - Promoting `develop` → `main` publishes to NuGet.org and tags the release
@@ -64,7 +67,7 @@ From [AGENTS.md](../../AGENTS.md):
 
 ### Branch Strategy: Git Flow
 
-```
+```text
 main (production releases only)
   ↑
   merge for release
@@ -74,7 +77,7 @@ develop (integration branch)
   merge PRs
   ↑
 feature/*, hotfix/*, release/*
-```
+```text
 
 #### Branch Descriptions
 
@@ -91,6 +94,7 @@ feature/*, hotfix/*, release/*
 **Note**: As a solo developer initially, approval requirements are optional. Focus on automated quality gates.
 
 **`main` branch**:
+
 - ✅ Require pull requests (even from solo developer - forces process discipline)
 - ✅ Require status checks to pass (CI build, tests, coverage)
 - ✅ Require linear history (squash or rebase)
@@ -98,12 +102,14 @@ feature/*, hotfix/*, release/*
 - 💡 **Future**: When team grows, require 1-2 approvals
 
 **`develop` branch**:
+
 - ✅ Require pull requests for all changes
 - ✅ Require status checks to pass (CI build, tests, coverage)
 - ✅ Allow squash and rebase merges
 - ⚠️ Require approvals: **0 required** (solo developer)
 
 **All branches (feature/*, hotfix/*, release/*)**:
+
 - ✅ All pull requests trigger CI build, tests, and coverage checks
 - ✅ CI must pass before merge (even for solo developer)
 - ✅ Coverage threshold: ≥80% enforced
@@ -191,7 +197,7 @@ merge-message-formats:
   PullRequest: 'Merge pull request #{PullRequestNumber} from {SourceBranch}'
 
 workflow: GitFlow/v1
-```
+```text
 
 **Version Examples** (workflow-based):
 
@@ -212,7 +218,7 @@ workflow: GitFlow/v1
 
 **Format**: `<type>(<scope>): <description>`
 
-```
+```text
 feat(auth): add JWT token refresh
 fix(orders): prevent duplicate order creation
 docs(readme): update installation instructions
@@ -221,7 +227,7 @@ test(users): add user creation tests
 refactor(validation): extract validation logic
 perf(queries): optimize customer lookup query
 ci(build): add coverage reporting
-```
+```text
 
 #### Commit Types
 
@@ -240,12 +246,12 @@ ci(build): add coverage reporting
 
 #### Breaking Changes
 
-```
+```text
 feat(api)!: remove deprecated endpoints
 
 BREAKING CHANGE: The `/api/v1/users/legacy` endpoint has been removed.
 Migrate to `/api/v2/users` instead.
-```
+```text
 
 - Breaking changes **must** include `!` after type/scope
 - Breaking changes **must** include `BREAKING CHANGE:` footer
@@ -271,7 +277,7 @@ jobs:
           fetch-depth: 0
       
       - uses: wagoid/commitlint-github-action@v5
-```
+```text
 
 ### CI/CD Pipeline
 
@@ -354,7 +360,7 @@ jobs:
         with:
           header: coverage
           path: coverage/Summary.md
-```
+```text
 
 #### Stage 2: Package (develop branch)
 
@@ -418,7 +424,7 @@ jobs:
           body_path: release-notes.md
           prerelease: true
           files: ./artifacts/*.nupkg
-```
+```text
 
 #### Stage 3: Release (main branch)
 
@@ -523,7 +529,7 @@ jobs:
           files: ./artifacts/*.nupkg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
+```text
 
 ### Hotfix Workflow
 
@@ -572,15 +578,17 @@ git branch -d hotfix/security-cve-2024-001
 git branch -d release/1.1.1
 git push origin --delete hotfix/security-cve-2024-001
 git push origin --delete release/1.1.1
-```
+```text
 
 **GitVersion Behavior**:
+
 - Hotfix branch: `1.1.1-beta.1`
 - Release branch from hotfix: `1.1.1-rc.1` (ready for testing)
 - After merge to `main`: `1.1.1` (production)
 - After back-merge to `develop`: `1.2.0-alpha.1` (continues development)
 
 **Why not merge hotfix directly to main?**
+
 - ✅ Maintains consistent release process (all releases via `release/*` branches)
 - ✅ Allows testing and validation with rc version
 - ✅ Triggers same CI/CD quality gates
@@ -650,7 +658,7 @@ updates:
     commit-message:
       prefix: "ci"
       include: "scope"
-```
+```text
 
 **Dependabot PR Workflow**:
 
@@ -661,6 +669,7 @@ updates:
 5. **New alpha version** → Published to GitHub Packages
 
 **Security Patches** (urgent):
+
 - Dependabot creates PR with `security` label
 - CI runs automatically
 - Merge immediately if tests pass
@@ -697,7 +706,7 @@ jobs:
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
+```text
 
 ---
 
@@ -729,7 +738,7 @@ git push origin develop
 # 6. Delete release branch
 git branch -d release/1.2.0
 git push origin --delete release/1.2.0
-```
+```text
 
 ---
 
@@ -810,20 +819,22 @@ git push origin --delete release/1.2.0
 
 **Approach**: Single `main` branch with feature branches
 
-```
+```text
 main (production)
   ↑
   merge PRs directly
   ↑
 feature/*, hotfix/*
-```
+```text
 
 **Pros**:
+
 - Simpler than Git Flow
 - Fewer branches to manage
 - Continuous deployment friendly
 
 **Cons**:
+
 - ❌ No staging environment (develop)
 - ❌ Difficult to prepare releases
 - ❌ Hotfixes disrupt feature development
@@ -838,11 +849,13 @@ feature/*, hotfix/*
 **Approach**: All commits to `main`, feature flags for incomplete features
 
 **Pros**:
+
 - Simplest branching model
 - Continuous integration
 - No long-lived branches
 
 **Cons**:
+
 - ❌ Requires mature feature flag infrastructure
 - ❌ High discipline required (no broken commits)
 - ❌ Difficult for library releases (vs SaaS apps)
@@ -857,10 +870,12 @@ feature/*, hotfix/*
 **Approach**: Developers manually update version in `.csproj`
 
 **Pros**:
+
 - Simple (no tools needed)
 - Full control over versions
 
 **Cons**:
+
 - ❌ Error-prone (forget to bump version)
 - ❌ Version conflicts in PRs
 - ❌ No automation
@@ -877,10 +892,12 @@ feature/*, hotfix/*
 **Example**: `2025.01.0`, `2025.01.1`, `2025.02.0`
 
 **Pros**:
+
 - Predictable release schedule
 - Easy to see age of release
 
 **Cons**:
+
 - ❌ No semantic meaning (breaking vs minor)
 - ❌ Consumers can't determine compatibility
 - ❌ Not standard for libraries
@@ -908,7 +925,7 @@ git commit -m "chore: initial commit"
 # Push both branches
 git push -u origin main
 git push -u origin develop
-```
+```text
 
 ### 2. Install GitVersion
 
@@ -916,7 +933,7 @@ git push -u origin develop
 # .config/dotnet-tools.json
 dotnet new tool-manifest
 dotnet tool install GitVersion.Tool
-```
+```text
 
 **`.config/dotnet-tools.json`**:
 
@@ -931,7 +948,7 @@ dotnet tool install GitVersion.Tool
     }
   }
 }
-```
+```text
 
 ### 3. Add GitVersion Configuration
 
@@ -942,18 +959,21 @@ Copy the `GitVersion.yml` from the Decision section above to repository root.
 **GitHub Settings → Branches → Branch protection rules**:
 
 For `main`:
+
 - Require pull request reviews (2 approvers)
 - Require status checks: `build`, `test`, `coverage`
 - Require conversation resolution
 - Require linear history
 
 For `develop`:
+
 - Require pull request reviews (1 approver)
 - Require status checks: `build`, `test`
 
 ### 5. Create GitHub Actions Workflows
 
 Create the three workflow files from the Decision section:
+
 - `.github/workflows/build.yml`
 - `.github/workflows/package-prerelease.yml`
 - `.github/workflows/release.yml`
@@ -979,7 +999,7 @@ git checkout main
 git merge develop
 git push origin main
 # → Creates v1.0.0 production release
-```
+```text
 
 ### 8. Developer Workflow
 
@@ -994,7 +1014,7 @@ git add .
 git commit -m "feat(auth): add JWT authentication"
 git push origin feature/add-user-authentication
 # Create PR: feature/add-user-authentication → develop
-```
+```text
 
 **Creating a Hotfix**:
 
@@ -1010,7 +1030,7 @@ Fixes #123"
 git push origin hotfix/fix-validation-bug
 # Create PR: hotfix/fix-validation-bug → main
 # After merge, back-merge to develop
-```
+```text
 
 ---
 

@@ -79,24 +79,28 @@ Phase 4 established the **Web Adapter Layer** for the Idevs framework by impleme
 ## 🎯 Key Achievements
 
 ### 1. **Controller Patterns Established**
+
 - Base API controller with executor injection
 - Consistent Result-to-HTTP mapping
 - RFC 7807 Problem Details for all errors
 - Created/OK/NoContent status code conventions
 
 ### 2. **Middleware Pipeline Implemented**
+
 - **Exception Handling**: Global exception handler with environment-aware responses
 - **Correlation ID**: Request/response tracking with automatic generation
 - **Tenant Resolution**: Multi-strategy tenant identification (JWT + header)
 - **Rate Limiting**: Per-user and per-IP rate limits with customizable policies
 
 ### 3. **API Infrastructure Complete**
+
 - **Versioning**: URL-based versioning with sunset strategy
 - **Documentation**: Swagger/OpenAPI with security schemes and examples
 - **Health Checks**: Liveness/readiness probes with database and memory checks
 - **CORS**: Configurable cross-origin policies with exposed headers
 
 ### 4. **Comprehensive Testing**
+
 - Integration tests using WebApplicationFactory
 - Middleware unit tests with mock dependencies
 - Controller action tests with fake executors
@@ -152,34 +156,41 @@ Phase 4 established the **Web Adapter Layer** for the Idevs framework by impleme
 ## 🔑 Key Technical Decisions
 
 ### 1. **Result-to-HTTP Mapping**
+
 **Decision**: Centralize all Result-to-HTTP mapping in base controller  
 **Rationale**: Ensures consistent status codes and error responses across all endpoints  
-**Pattern**: 
+**Pattern**:
+
 ```csharp
 protected IActionResult ToActionResult<T>(Result<T> result)
 ```
 
 ### 2. **Middleware Ordering**
+
 **Decision**: Establish canonical middleware order  
 **Order**: Exception → Correlation → HTTPS → CORS → Auth → Tenant → Rate Limiting  
 **Rationale**: Ensures proper context propagation and security enforcement
 
 ### 3. **Problem Details Standard**
+
 **Decision**: Use RFC 7807 for all error responses  
 **Rationale**: Industry standard, client-friendly, includes trace ID and error codes  
 **Benefit**: Consistent error format across all endpoints
 
 ### 4. **Tenant Resolution Strategy**
+
 **Decision**: Multi-strategy resolution (JWT claim → X-Tenant-Id header)  
 **Rationale**: Flexible tenant identification supporting multiple authentication patterns  
 **Fallback**: Clear logging when tenant cannot be resolved
 
 ### 5. **API Versioning Approach**
+
 **Decision**: URL-based versioning (`/api/v1/`, `/api/v2/`)  
 **Rationale**: Explicit, discoverable, supports multiple versions simultaneously  
 **Strategy**: Deprecation warnings with sunset headers
 
 ### 6. **Rate Limiting Policies**
+
 **Decision**: Global limits + per-endpoint policies  
 **Global**: 100 requests/minute per user  
 **Sensitive**: 20 requests/minute for create/update/delete  
@@ -192,22 +203,26 @@ protected IActionResult ToActionResult<T>(Result<T> result)
 ### Dependencies on Previous Phases
 
 ✅ **Phase 3: Application Layer**
+
 - ICommandExecutor and IQueryExecutor interfaces
 - Command/Query handler patterns
 - Result<T> and Result types
 - Error code enumeration
 
 ✅ **Phase 2: Domain & Contracts**
+
 - Result pattern for return values
 - ErrorCode enum for error categorization
 - Domain exception hierarchy
 
 ✅ **Phase 1: Platform Scaffold**
+
 - Build infrastructure for code generation
 - Testing framework (xUnit, Shouldly, NSubstitute)
 - CI/CD pipelines for validation
 
 ✅ **Phase 0: Discovery & Guardrails**
+
 - Multi-tenancy requirements (ADR-0001)
 - Audit logging requirements (ADR-0002)
 - Security and observability standards
@@ -215,6 +230,7 @@ protected IActionResult ToActionResult<T>(Result<T> result)
 ### Outputs to Next Phase
 
 **Phase 5: Infrastructure Extensibility & Persistence**
+
 - Health check interfaces for database connectivity
 - Configuration patterns for connection strings
 - Tenant context for row-level security
@@ -225,6 +241,7 @@ protected IActionResult ToActionResult<T>(Result<T> result)
 ## 🧪 Testing Coverage
 
 ### Integration Tests
+
 - ✅ Controller action tests with fake executors
 - ✅ Middleware pipeline tests
 - ✅ Health check endpoint tests
@@ -232,12 +249,14 @@ protected IActionResult ToActionResult<T>(Result<T> result)
 - ✅ Authentication and authorization tests
 
 ### Unit Tests
+
 - ✅ Result-to-HTTP mapping tests
 - ✅ CorrelationMiddleware tests
 - ✅ TenantResolutionMiddleware tests
 - ✅ Problem Details factory tests
 
 ### Test Frameworks Used
+
 - **xUnit**: Test runner
 - **Shouldly**: Fluent assertions
 - **NSubstitute**: Mocking
@@ -318,6 +337,7 @@ protected IActionResult ToActionResult<T>(Result<T> result)
 ### Prerequisites Complete
 
 ✅ Phase 4 has established:
+
 - HTTP endpoints exposing application layer
 - Middleware pipeline with cross-cutting concerns
 - Health check infrastructure for database connectivity
@@ -378,6 +398,7 @@ protected IActionResult ToActionResult<T>(Result<T> result)
 **Phase 4: Web Adapters & Sync Endpoints is officially complete!**
 
 The web adapter layer is now fully documented, with production-ready patterns for:
+
 - ASP.NET Core controllers and middleware
 - Result-to-HTTP mapping
 - Multi-tenant and correlation context

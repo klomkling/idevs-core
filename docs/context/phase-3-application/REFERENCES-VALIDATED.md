@@ -36,47 +36,47 @@
 
 | Reference | Status | URL |
 |-----------|--------|-----|
-| FluentValidation Documentation | ✅ Valid | https://docs.fluentvalidation.net/ |
-| ASP.NET Core Integration | ✅ Valid | https://docs.fluentvalidation.net/en/latest/aspnet.html |
+| FluentValidation Documentation | ✅ Valid | <https://docs.fluentvalidation.net/> |
+| ASP.NET Core Integration | ✅ Valid | <https://docs.fluentvalidation.net/en/latest/aspnet.html> |
 
 ### Design Patterns
 
 | Reference | Status | URL |
 |-----------|--------|-----|
-| Decorator Pattern | ✅ Valid | https://refactoring.guru/design-patterns/decorator |
-| Pipeline Pattern | ✅ Valid | https://www.dofactory.com/net/pipeline-design-pattern |
+| Decorator Pattern | ✅ Valid | <https://refactoring.guru/design-patterns/decorator> |
+| Pipeline Pattern | ✅ Valid | <https://www.dofactory.com/net/pipeline-design-pattern> |
 
 ### Authorization
 
 | Reference | Status | URL |
 |-----------|--------|-----|
-| ASP.NET Core Authorization | ✅ Valid | https://learn.microsoft.com/en-us/aspnet/core/security/authorization/ |
-| Policy-Based Authorization | ✅ Valid | https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies |
-| Resource-Based Authorization | ✅ Valid | https://learn.microsoft.com/en-us/aspnet/core/security/authorization/resourcebased |
+| ASP.NET Core Authorization | ✅ Valid | <https://learn.microsoft.com/en-us/aspnet/core/security/authorization/> |
+| Policy-Based Authorization | ✅ Valid | <https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies> |
+| Resource-Based Authorization | ✅ Valid | <https://learn.microsoft.com/en-us/aspnet/core/security/authorization/resourcebased> |
 
 ### Observability
 
 | Reference | Status | URL |
 |-----------|--------|-----|
-| Serilog | ✅ Valid | https://serilog.net/ |
-| OpenTelemetry .NET | ✅ Valid | https://opentelemetry.io/docs/instrumentation/net/ |
-| RED Metrics | ✅ Valid | https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/ |
+| Serilog | ✅ Valid | <https://serilog.net/> |
+| OpenTelemetry .NET | ✅ Valid | <https://opentelemetry.io/docs/instrumentation/net/> |
+| RED Metrics | ✅ Valid | <https://www.weave.works/blog/the-red-method-key-metrics-for-microservices-architecture/> |
 
 ### .NET 8
 
 | Reference | Status | URL |
 |-----------|--------|-----|
-| .NET 8 Documentation | ✅ Valid | https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-8 |
-| Dependency Injection | ✅ Valid | https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection |
-| Open Generic Registration | ✅ Valid | https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection#register-groups-of-services-with-extension-methods |
+| .NET 8 Documentation | ✅ Valid | <https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-8> |
+| Dependency Injection | ✅ Valid | <https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection> |
+| Open Generic Registration | ✅ Valid | <https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection#register-groups-of-services-with-extension-methods> |
 
 ### Testing
 
 | Reference | Status | URL |
 |-----------|--------|-----|
-| xUnit Documentation | ✅ Valid | https://xunit.net/ |
-| Shouldly Documentation | ✅ Valid | https://docs.shouldly.org/ |
-| NSubstitute Documentation | ✅ Valid | https://nsubstitute.github.io/ |
+| xUnit Documentation | ✅ Valid | <https://xunit.net/> |
+| Shouldly Documentation | ✅ Valid | <https://docs.shouldly.org/> |
+| NSubstitute Documentation | ✅ Valid | <https://nsubstitute.github.io/> |
 
 ---
 

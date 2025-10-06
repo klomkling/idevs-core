@@ -50,11 +50,12 @@
   - [ ] No MediatR or reflection-based dispatching
 
 **Sign-Off**:
-```
+
+```text
 Name: _______________________
 Date: _______________________
 Comments:
-```
+```text
 
 ---
 
@@ -96,11 +97,12 @@ Comments:
   - [ ] Domain event dispatch is deferred appropriately
 
 **Sign-Off**:
-```
+
+```text
 Name: _______________________
 Date: _______________________
 Comments:
-```
+```text
 
 ---
 
@@ -146,11 +148,12 @@ Comments:
   - [ ] Examples are appropriately sized
 
 **Sign-Off**:
-```
+
+```text
 Name: _______________________
 Date: _______________________
 Comments:
-```
+```text
 
 ---
 
@@ -178,35 +181,40 @@ Comments:
   - [ ] Result patterns don't leak sensitive info
 
 **Sign-Off**:
-```
+
+```text
 Name: _______________________
 Date: _______________________
 Comments:
-```
+```text
 
 ---
 
 ## 📝 Feedback Summary
 
 ### Architecture Feedback
-```
+
+```text
 [To be filled during review]
-```
+```text
 
 ### Engineering Feedback
-```
+
+```text
 [To be filled during review]
-```
+```text
 
 ### Documentation Feedback
-```
+
+```text
 [To be filled during review]
-```
+```text
 
 ### Security Feedback
-```
+
+```text
 [To be filled during review]
-```
+```text
 
 ---
 
@@ -235,14 +243,14 @@ Comments:
 
 **Phase Owner**: Domain Architecture Team
 
-```
+```text
 I hereby approve Phase 2: Domain & Contracts as complete and ready for implementation.
 
 Signature: _______________________
 Name:      _______________________
 Title:     _______________________
 Date:      _______________________
-```
+```text
 
 ---
 

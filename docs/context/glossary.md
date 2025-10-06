@@ -153,6 +153,7 @@ This glossary standardizes terminology used throughout the **Idevs** framework (
 | **Persistence** | EF Core Interceptors | Audit logging, tenant filtering, soft-delete, change tracking | `SaveChangesInterceptor`, `DbCommandInterceptor` |
 
 **Benefits of this approach:**
+
 - ✅ Standard .NET patterns (no custom abstractions)
 - ✅ Layer-appropriate (concerns at the right level)
 - ✅ Explicit and debuggable (no "magic" routing)

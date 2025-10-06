@@ -1,0 +1,54 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 9e5006f..349f3b6 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -13,8 +13,12 @@ env:
+ 
+ jobs:
+   build-and-test:
+-    name: Build and Test
+-    runs-on: ubuntu-latest
++    name: Build and Test (${{ matrix.os }})
++    runs-on: ${{ matrix.os }}
++    strategy:
++      fail-fast: false
++      matrix:
++        os: [ubuntu-latest, windows-latest, macos-latest]
+     
+     steps:
+       - name: Checkout code
+@@ -31,7 +35,7 @@ jobs:
+         uses: actions/cache@v4
+         with:
+           path: ~/.nuget/packages
+-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
++          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.sln', '**/*.csproj', '**/*.props', '**/*.targets', 'global.json', 'NuGet.config') }}
+           restore-keys: |
+             ${{ runner.os }}-nuget-
+       
+@@ -84,7 +88,7 @@ jobs:
+         uses: actions/upload-artifact@v4
+         if: always()
+         with:
+-          name: coverage-report
++          name: coverage-report-${{ matrix.os }}
+           path: coverage/
+           retention-days: 30
+       
+@@ -92,7 +96,7 @@ jobs:
+         uses: actions/upload-artifact@v4
+         if: always()
+         with:
+-          name: test-results
++          name: test-results-${{ matrix.os }}
+           path: |
+             **/TestResults/*.trx
+             **/TestResults/*.xml
+@@ -103,6 +107,7 @@ jobs:
+         run: |
+           echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+           echo "" >> $GITHUB_STEP_SUMMARY
++          echo "- **OS**: ${{ matrix.os }}" >> $GITHUB_STEP_SUMMARY
+           echo "- **Version**: ${{ steps.gitversion.outputs.fullSemVer }}" >> $GITHUB_STEP_SUMMARY
+           echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+           echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY

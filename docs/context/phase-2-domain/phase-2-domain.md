@@ -62,7 +62,7 @@ public interface IEntity<TKey> where TKey : notnull
 {
     TKey Id { get; }
 }
-```
+```text
 
 **IAuditableEntity<TUserKey>** - Entity with audit trail (per ADR-0002)
 
@@ -79,7 +79,7 @@ public interface IAuditableEntity<TUserKey> where TUserKey : IEquatable<TUserKey
 
 // Convenience interface for Guid-based user IDs (most common)
 public interface IAuditableEntity : IAuditableEntity<Guid> { }
-```
+```text
 
 **ISoftDeletableEntity<TUserKey>** - Entity with soft-delete support (per ADR-0003)
 
@@ -95,7 +95,7 @@ public interface ISoftDeletableEntity<TUserKey> where TUserKey : IEquatable<TUse
 
 // Convenience interface for Guid-based user IDs (most common)
 public interface ISoftDeletableEntity : ISoftDeletableEntity<Guid> { }
-```
+```text
 
 **ITenantEntity<TTenantKey>** - Entity belonging to a tenant (per ADR-0001)
 
@@ -109,9 +109,10 @@ public interface ITenantEntity<TTenantKey> where TTenantKey : IEquatable<TTenant
 
 // Convenience interface for Guid-based tenancy (most common)
 public interface ITenantEntity : ITenantEntity<Guid> { }
-```
+```text
 
 **Design Decisions**:
+
 - ✅ **Generic User Keys**: `TUserKey` supports Guid, int, string, etc. per ADR-0003
 - ✅ **Generic Tenant Keys**: `TTenantKey` supports Guid (most common) or other types
 - ✅ **Convenience Interfaces**: Non-generic versions default to `Guid` for simplicity
@@ -165,7 +166,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
 
     public static bool operator !=(ValueObject? left, ValueObject? right) => !(left == right);
 }
-```
+```text
 
 #### Example Value Objects
 
@@ -204,7 +205,7 @@ public sealed class Money : ValueObject
 
     public override string ToString() => $"{Amount:N2} {Currency}";
 }
-```
+```text
 
 **Email** - Validated email address
 
@@ -241,9 +242,10 @@ public sealed class Email : ValueObject
 
     public static implicit operator string(Email email) => email.Value;
 }
-```
+```text
 
 **Design Principles**:
+
 - ✅ **Immutability**: All properties are `init` or have private setters
 - ✅ **Factory Methods**: Use static `Create()` returning `Result<T>` (no exceptions)
 - ✅ **Validation**: Guard clauses in factory method
@@ -279,7 +281,7 @@ public class Result
     
     public static Result Failure(IEnumerable<string> errors) => new(false, errors.ToArray());
 }
-```
+```text
 
 #### Result<T> (Generic)
 
@@ -304,7 +306,7 @@ public class Result<T> : Result
     // Implicit conversion from T to Result<T>
     public static implicit operator Result<T>(T value) => Success(value);
 }
-```
+```text
 
 #### PagedResult<T>
 
@@ -332,7 +334,7 @@ public sealed class PagedResult<T>
     public static PagedResult<T> Empty(int pageNumber, int pageSize) 
         => new([], 0, pageNumber, pageSize);
 }
-```
+```text
 
 **Usage Pattern**:
 
@@ -353,7 +355,7 @@ public async Task<Result<Order>> HandleAsync(CreateOrderCommand command)
     
     return Result<Order>.Success(order);
 }
-```
+```text
 
 ---
 
@@ -383,7 +385,7 @@ public interface ICommandHandler<in TCommand, TResponse> where TCommand : IComma
 {
     Task<Result<TResponse>> HandleAsync(TCommand command, CancellationToken cancellationToken = default);
 }
-```
+```text
 
 #### Query Contracts
 
@@ -398,7 +400,7 @@ public interface IQueryHandler<in TQuery, TResponse> where TQuery : IQuery<TResp
 {
     Task<Result<TResponse>> HandleAsync(TQuery query, CancellationToken cancellationToken = default);
 }
-```
+```text
 
 #### Example Command & Handler
 
@@ -443,7 +445,7 @@ public sealed class CreateOrderHandler : ICommandHandler<CreateOrderCommand, Gui
         return Result<Guid>.Success(order.Id);
     }
 }
-```
+```text
 
 **Registration Pattern** (per ADR-0005 - no reflection):
 
@@ -453,7 +455,7 @@ services.AddScoped<ICommandHandler<CreateOrderCommand, Guid>, CreateOrderHandler
 
 // Or using extension method
 services.AddCommandHandler<CreateOrderCommand, Guid, CreateOrderHandler>();
-```
+```text
 
 ---
 
@@ -499,7 +501,7 @@ public abstract class Entity<TKey> : IEntity<TKey>, IEquatable<Entity<TKey>>
 
     public static bool operator !=(Entity<TKey>? left, Entity<TKey>? right) => !(left == right);
 }
-```
+```text
 
 #### Aggregate Root Base Class
 
@@ -526,7 +528,7 @@ public abstract class AggregateRoot<TKey> : Entity<TKey> where TKey : notnull
         _domainEvents.Clear();
     }
 }
-```
+```text
 
 #### Example: Order Aggregate Root
 
@@ -612,9 +614,10 @@ public enum OrderStatus
     Delivered = 3,
     Cancelled = 4
 }
-```
+```text
 
 **Design Principles**:
+
 - ✅ **Invariant Protection**: All state changes through public methods
 - ✅ **Tenant Isolation**: `TenantId` set at creation, immutable
 - ✅ **Domain Events**: Raised for significant state changes
@@ -639,7 +642,7 @@ public interface ITenantContext
     Guid UserId { get; }        // Current user ID for audit
     string UserName { get; }    // Current username for display
 }
-```
+```text
 
 #### ICurrentUser Interface (Alternative)
 
@@ -653,9 +656,10 @@ public interface ICurrentUser
     string? Email { get; }
     IReadOnlyList<string> Roles { get; }
 }
-```
+```text
 
 **Design Note**:
+
 - `ITenantContext` is **request-scoped** and provides both tenant and user information
 - Implemented in infrastructure layer (Phase 5) from HTTP context, JWT claims, or session
 - Used by handlers and aggregates for audit trail population
@@ -681,7 +685,7 @@ public sealed class CreateOrderHandler : ICommandHandler<CreateOrderCommand, Gui
         return Result<Guid>.Success(order.Id);
     }
 }
-```
+```text
 
 ---
 
@@ -713,7 +717,7 @@ public interface IRepository<TEntity, TKey>
     Task<IReadOnlyList<TEntity>> FindAllAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default);
     Task<PagedResult<TEntity>> FindPagedAsync(ISpecification<TEntity> specification, int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 }
-```
+```text
 
 **Note**: Repositories are **scoped to tenant** - all queries automatically filter by `TenantId`.
 
@@ -728,7 +732,7 @@ public interface IUnitOfWork : IDisposable
     Task<Result> CommitAsync(CancellationToken cancellationToken = default);
     Task RollbackAsync(CancellationToken cancellationToken = default);
 }
-```
+```text
 
 **Usage Pattern**:
 
@@ -767,7 +771,7 @@ public sealed class CreateOrderHandler : ICommandHandler<CreateOrderCommand, Gui
             : Result<Guid>.Failure(result.Errors);
     }
 }
-```
+```text
 
 ---
 
@@ -786,7 +790,7 @@ public interface IDomainEvent
     DateTime OccurredAt { get; }
     Guid TenantId { get; }
 }
-```
+```text
 
 #### Base Domain Event
 
@@ -799,7 +803,7 @@ public abstract record DomainEvent : IDomainEvent
     public DateTime OccurredAt { get; } = DateTime.UtcNow;
     public required Guid TenantId { get; init; }
 }
-```
+```text
 
 #### Example Domain Events
 
@@ -828,7 +832,7 @@ public sealed record OrderDeletedEvent(
 {
     public Guid OrderId { get; } = OrderId;
 }
-```
+```text
 
 #### Domain Event Publisher (Interface)
 
@@ -840,7 +844,7 @@ public interface IDomainEventPublisher
     Task PublishAsync(IDomainEvent domainEvent, CancellationToken cancellationToken = default);
     Task PublishAsync(IEnumerable<IDomainEvent> domainEvents, CancellationToken cancellationToken = default);
 }
-```
+```text
 
 **Event Publishing Strategy**:
 
@@ -851,7 +855,7 @@ public interface IDomainEventPublisher
 
 **Event Flow**:
 
-```
+```text
 1. Command → Handler creates/modifies Aggregate
 2. Aggregate raises domain events (stored in memory)
 3. Repository saves aggregate
@@ -860,7 +864,7 @@ public interface IDomainEventPublisher
    ├─ If successful, publish domain events
    └─ Clear events from aggregate
 5. Event handlers react asynchronously
-```
+```text
 
 ---
 
@@ -891,7 +895,7 @@ public interface ISpecification<T>
     int Skip { get; }
     bool IsPagingEnabled { get; }
 }
-```
+```text
 
 #### Base Specification Class
 
@@ -941,7 +945,7 @@ public abstract class Specification<T> : ISpecification<T>
         IsPagingEnabled = true;
     }
 }
-```
+```text
 
 #### Example Specifications
 
@@ -974,7 +978,7 @@ public sealed class OrdersPagedSpec : Specification<Order>
         ApplyOrderByDescending(o => o.CreatedAt);
     }
 }
-```
+```text
 
 #### Specification Combinators
 
@@ -1020,7 +1024,7 @@ internal class ReplaceParameterVisitor : ExpressionVisitor
         return node == _oldParameter ? _newParameter : base.VisitParameter(node);
     }
 }
-```
+```text
 
 **Usage Pattern**:
 
@@ -1038,7 +1042,7 @@ var filteredOrders = await _orderRepository.FindAllAsync(combined);
 // Paged specification
 var pagedSpec = new OrdersPagedSpec(pageNumber: 1, pageSize: 20);
 var paged = await _orderRepository.FindPagedAsync(pagedSpec, 1, 20);
-```
+```text
 
 ---
 
@@ -1089,60 +1093,72 @@ var paged = await _orderRepository.FindPagedAsync(pagedSpec, 1, 20);
 ## Risks & Mitigations
 
 ### Risk 1: Reflection Leakage
+
 **Impact**: High  
 **Probability**: Medium  
 **Symptom**: Performance degradation, startup time issues  
 **Mitigation**:
+
 - Enforce "no reflection" rule via custom Roslyn analyzer
 - Code review checklist includes reflection check
 - Use explicit handler registration pattern per ADR-0005
 - Document source generator approach for future optimizations
 
 ### Risk 2: Cross-Tenant Data Leakage
+
 **Impact**: Critical  
 **Probability**: Low  
 **Symptom**: Users see other tenants' data  
 **Mitigation**:
+
 - `TenantId` required on all aggregates via `ITenantEntity`
 - Repository queries auto-filter by tenant (enforced in infrastructure)
 - Canary tests in CI to detect tenant filter bypass
 - Architecture tests validate all aggregates implement `ITenantEntity`
 
 ### Risk 3: Over-Coupling to PostgreSQL
+
 **Impact**: Medium  
 **Probability**: Low  
 **Symptom**: Cannot switch database providers  
 **Mitigation**:
+
 - Domain layer is persistence-agnostic (only interfaces)
 - PostgreSQL-specific guidance in comments, not contracts
 - EF Core mapping done in infrastructure layer (Phase 5)
 - Value objects and entities use standard .NET types
 
 ### Risk 4: Exception-Based Control Flow
+
 **Impact**: Medium  
 **Probability**: Medium  
 **Symptom**: Performance issues, unclear error handling  
 **Mitigation**:
+
 - Enforce `Result<T>` pattern for all operations
 - Factory methods return `Result<T>`, never throw
 - Architecture tests validate no exceptions in domain logic
 - Code review guideline: "No throw in domain layer"
 
 ### Risk 5: Specification-to-EF Translation Mismatch
+
 **Impact**: Medium  
 **Probability**: Medium  
 **Symptom**: Specifications work in memory but fail with real database  
 **Mitigation**:
+
 - Expression tree validation tests
 - Integration tests with EF Core InMemory provider
 - E2E tests with PostgreSQL in Phase 5
 - Document limitations of Expression<Func<T, bool>>
 
 ### Risk 6: Inconsistent Domain Patterns
+
 **Impact**: Low  
 **Probability**: Medium  
 **Symptom**: Confusion, refactoring needed  
 **Mitigation**:
+
 - Comprehensive examples in this document
 - Coding standards enforced via EditorConfig
 - Architecture review for each aggregate
@@ -1155,6 +1171,7 @@ var paged = await _orderRepository.FindPagedAsync(pagedSpec, 1, 20);
 Phase 2 is **complete** when:
 
 ### Must Have (Blocking)
+
 - [ ] **Entity Interfaces**: IEntity, IAuditableEntity, ISoftDeletableEntity, ITenantEntity defined
 - [ ] **Value Object Base**: Immutable base class with structural equality
 - [ ] **Result Pattern**: Result, Result<T>, PagedResult<T> implemented
@@ -1170,6 +1187,7 @@ Phase 2 is **complete** when:
 - [ ] **Multi-Tenant Enforcement**: ITenantEntity on all examples
 
 ### Should Have (Non-Blocking)
+
 - [ ] Specification combinators (And, Or, Not)
 - [ ] Additional value object examples (Address, DateRange, PhoneNumber)
 - [ ] Error catalog pattern for common validation errors
@@ -1177,6 +1195,7 @@ Phase 2 is **complete** when:
 - [ ] Performance benchmarks for Result vs exceptions
 
 ### Nice to Have (Future)
+
 - [ ] Source generator design notes for handler registration
 - [ ] Advanced specification features (dynamic queries)
 - [ ] Domain-driven error codes with localization support
@@ -1189,6 +1208,7 @@ Phase 2 is **complete** when:
 Use this checklist to track progress within Phase 2:
 
 ### Core Interfaces
+
 - [ ] Define IEntity<TKey>
 - [ ] Define IAuditableEntity
 - [ ] Define ISoftDeletableEntity
@@ -1196,6 +1216,7 @@ Use this checklist to track progress within Phase 2:
 - [ ] Write unit tests for interface compositions
 
 ### Value Objects
+
 - [ ] Implement ValueObject base class
 - [ ] Create Money value object with tests
 - [ ] Create Email value object with tests
@@ -1203,6 +1224,7 @@ Use this checklist to track progress within Phase 2:
 - [ ] Validate Result<T> usage in factory methods
 
 ### Aggregates & Entities
+
 - [ ] Implement Entity<TKey> base class
 - [ ] Implement AggregateRoot<TKey> with domain events
 - [ ] Create Order aggregate example
@@ -1210,6 +1232,7 @@ Use this checklist to track progress within Phase 2:
 - [ ] Validate tenant isolation on aggregates
 
 ### Result Pattern
+
 - [ ] Implement Result (non-generic)
 - [ ] Implement Result<T>
 - [ ] Implement PagedResult<T>
@@ -1217,6 +1240,7 @@ Use this checklist to track progress within Phase 2:
 - [ ] Document usage patterns
 
 ### CQRS Contracts
+
 - [ ] Define ICommand and ICommand<TResponse>
 - [ ] Define IQuery<TResponse>
 - [ ] Define ICommandHandler<TCommand>
@@ -1225,12 +1249,14 @@ Use this checklist to track progress within Phase 2:
 - [ ] Document explicit registration pattern
 
 ### Repositories
+
 - [ ] Define IRepository<TEntity, TKey>
 - [ ] Define IUnitOfWork
 - [ ] Document tenant-scoped repository behavior
 - [ ] Create usage examples
 
 ### Specifications
+
 - [ ] Define ISpecification<T>
 - [ ] Implement Specification<T> base class
 - [ ] Create OrdersByStatusSpec example
@@ -1238,6 +1264,7 @@ Use this checklist to track progress within Phase 2:
 - [ ] Write tests for specification composition
 
 ### Domain Events
+
 - [ ] Define IDomainEvent interface
 - [ ] Create DomainEvent base class
 - [ ] Define IDomainEventPublisher
@@ -1245,6 +1272,7 @@ Use this checklist to track progress within Phase 2:
 - [ ] Document deferred dispatch pattern
 
 ### Testing & Quality
+
 - [ ] Achieve ≥80% test coverage
 - [ ] Run mutation tests on value objects
 - [ ] Verify zero reflection usage
@@ -1252,6 +1280,7 @@ Use this checklist to track progress within Phase 2:
 - [ ] Validate markdown lint passes
 
 ### Documentation
+
 - [ ] Complete Key Activities section
 - [ ] Complete Deliverables table
 - [ ] Complete all code examples
@@ -1263,17 +1292,20 @@ Use this checklist to track progress within Phase 2:
 ## Dependencies & Relationships
 
 ### Prerequisites
+
 - **Phase 0**: Design principles, ADR-0001 (Tenancy), ADR-0002 (Audit), ADR-0003 (Soft Delete)
 - **Phase 1**: Solution structure, build configuration, testing framework setup
 - **ADR-0005**: DI Container Strategy (explicit registration, no reflection)
 
 ### Outputs to Other Phases
+
 - **Phase 3 (Application)**: Handler decorators will consume CQRS contracts
 - **Phase 4 (Web)**: Controllers will use commands/queries and Result<T>
 - **Phase 5 (Infrastructure)**: EF Core will implement repository interfaces and specifications
 - **Phase 6 (Release)**: Sample applications will demonstrate domain patterns
 
 ### External Dependencies
+
 - .NET 8.0 SDK (for modern C# features)
 - xUnit (testing framework)
 - Shouldly (assertions)
@@ -1296,6 +1328,7 @@ Use this checklist to track progress within Phase 2:
 ## References
 
 ### Internal Documents
+
 - [Phase 0: Discovery & Guardrails](../phase-0-discovery/phase-0-discovery.md)
 - [Phase 1: Platform Scaffolding](../phase-1-platform/phase-1-platform.md)
 - [ADR-0001: Tenancy Strategy](../adrs/ADR-0001-Tenancy-Strategy.md)
@@ -1307,6 +1340,7 @@ Use this checklist to track progress within Phase 2:
 - [CQRS Framework Plan](../cqrs-framework-plan.md)
 
 ### External References
+
 - [Domain-Driven Design by Eric Evans](https://www.domainlanguage.com/ddd/)
 - [Implementing Domain-Driven Design by Vaughn Vernon](https://vaughnvernon.com/)
 - [C# 12 Features](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-12)

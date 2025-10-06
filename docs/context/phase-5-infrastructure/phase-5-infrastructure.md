@@ -220,6 +220,7 @@ public abstract class BaseDbContext : DbContext
 ```
 
 **Design Decisions**:
+
 - ✅ Shadow properties for soft delete and tenant isolation
 - ✅ Automatic audit metadata population
 - ✅ Global query filters for multi-tenancy
@@ -1302,6 +1303,7 @@ public static class RepositoryExtensions
 ## Tracking Checklist
 
 ### DbContext Configuration
+
 - [ ] Define BaseDbContext abstract class
 - [ ] Implement tenant query filter
 - [ ] Implement soft delete query filter
@@ -1310,6 +1312,7 @@ public static class RepositoryExtensions
 - [ ] Add design-time factory
 
 ### Entity Configuration
+
 - [ ] Create IEntityTypeConfiguration implementations
 - [ ] Configure primary keys and value objects
 - [ ] Configure owned entities
@@ -1318,6 +1321,7 @@ public static class RepositoryExtensions
 - [ ] Configure JSON columns
 
 ### Repository Pattern
+
 - [ ] Define IRepository<T> interface
 - [ ] Implement Repository<T> class
 - [ ] Support specification pattern
@@ -1326,6 +1330,7 @@ public static class RepositoryExtensions
 - [ ] Add repository tests
 
 ### Specification Pattern
+
 - [ ] Define ISpecification<T> interface
 - [ ] Implement Specification<T> base class
 - [ ] Create SpecificationEvaluator
@@ -1334,6 +1339,7 @@ public static class RepositoryExtensions
 - [ ] Support ordering
 
 ### Unit of Work
+
 - [ ] Define IUnitOfWork interface
 - [ ] Implement UnitOfWork class
 - [ ] Support transactions
@@ -1342,6 +1348,7 @@ public static class RepositoryExtensions
 - [ ] Add UoW tests
 
 ### PostgreSQL Integration
+
 - [ ] Configure Npgsql provider
 - [ ] Create RLS policies
 - [ ] Implement tenant connection interceptor
@@ -1350,6 +1357,7 @@ public static class RepositoryExtensions
 - [ ] Test RLS isolation
 
 ### Caching
+
 - [ ] Define ICacheService interface
 - [ ] Implement CacheService with IDistributedCache
 - [ ] Support tenant-aware keys
@@ -1358,6 +1366,7 @@ public static class RepositoryExtensions
 - [ ] Add caching tests
 
 ### Migration Strategy
+
 - [ ] Configure code-first migrations
 - [ ] Create initial migration
 - [ ] Implement data seeding
@@ -1366,6 +1375,7 @@ public static class RepositoryExtensions
 - [ ] Test migration rollback
 
 ### Connection Resiliency
+
 - [ ] Configure retry policies
 - [ ] Set command timeouts
 - [ ] Configure connection pooling
@@ -1374,6 +1384,7 @@ public static class RepositoryExtensions
 - [ ] Test failover scenarios
 
 ### Service Registration
+
 - [ ] Register DbContext
 - [ ] Register Unit of Work
 - [ ] Register repositories explicitly
@@ -1382,6 +1393,7 @@ public static class RepositoryExtensions
 - [ ] Validate DI registrations
 
 ### Testing
+
 - [ ] Create in-memory test DbContext
 - [ ] Test repository CRUD operations
 - [ ] Test specifications
@@ -1396,16 +1408,19 @@ public static class RepositoryExtensions
 ### Prerequisites
 
 #### Phase 0: Discovery & Guardrails
+
 - Multi-tenancy strategy (ADR-0001)
 - Audit logging requirements (ADR-0002)
 - Soft delete strategy (ADR-0003)
 
 #### Phase 1: Platform Scaffolding
+
 - Build infrastructure
 - Testing framework
 - CI/CD pipelines
 
 #### Phase 2: Domain & Contracts
+
 - IAggregateRoot interface
 - ITenantEntity interface
 - IAuditable interface
@@ -1413,15 +1428,18 @@ public static class RepositoryExtensions
 - Value objects and entity IDs
 
 #### Phase 3: Application Layer
+
 - ICorrelationContext
 - ICurrentUser
 - IDateTimeProvider
 
 #### Phase 4: Web Adapters
+
 - ITenantContext from middleware
 - Health check infrastructure
 
 #### ADR Dependencies
+
 - **ADR-0001**: Row-level security implementation
 - **ADR-0002**: Audit interceptor design
 - **ADR-0003**: Soft delete query filters
@@ -1430,6 +1448,7 @@ public static class RepositoryExtensions
 ### Outputs to Other Phases
 
 #### Phase 6: Release
+
 - Migration scripts
 - Database deployment guide
 - Performance tuning recommendations
@@ -1478,6 +1497,7 @@ public static class RepositoryExtensions
 ### External References
 
 #### Entity Framework Core
+
 - [EF Core 8 Documentation](https://learn.microsoft.com/en-us/ef/core/)
 - [DbContext Configuration](https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/)
 - [Query Filters](https://learn.microsoft.com/en-us/ef/core/querying/filters)
@@ -1485,17 +1505,20 @@ public static class RepositoryExtensions
 - [Interceptors](https://learn.microsoft.com/en-us/ef/core/logging-events-diagnostics/interceptors)
 
 #### PostgreSQL
+
 - [Npgsql Documentation](https://www.npgsql.org/doc/)
 - [Row-Level Security](https://www.postgresql.org/docs/current/ddl-rowsecurity.html)
 - [JSONB Type](https://www.postgresql.org/docs/current/datatype-json.html)
 - [Connection Pooling](https://www.npgsql.org/doc/connection-string-parameters.html#pooling)
 
 #### Patterns
+
 - [Repository Pattern](https://martinfowler.com/eaaCatalog/repository.html)
 - [Specification Pattern](https://en.wikipedia.org/wiki/Specification_pattern)
 - [Unit of Work Pattern](https://martinfowler.com/eaaCatalog/unitOfWork.html)
 
 #### Caching
+
 - [Distributed Caching](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/distributed)
 - [Redis Cache](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/)
 

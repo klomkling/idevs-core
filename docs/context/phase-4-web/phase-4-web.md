@@ -203,6 +203,7 @@ public abstract class ApiControllerBase : ControllerBase
 ```
 
 **Design Decisions**:
+
 - ✅ Base controller injects executors (not handlers directly)
 - ✅ Result mapping centralizes HTTP status code logic
 - ✅ RFC 7807 Problem Details for all errors
@@ -1180,6 +1181,7 @@ app.Run();
 ## Tracking Checklist
 
 ### Base Controllers
+
 - [ ] Define `ApiControllerBase` with executors
 - [ ] Implement `ToActionResult` for Result
 - [ ] Implement `ToActionResult<T>` for Result<T>
@@ -1188,6 +1190,7 @@ app.Run();
 - [ ] Add unit tests for base controller
 
 ### Result Mapping
+
 - [ ] Map Success → 200/201/204
 - [ ] Map NotFound → 404 with Problem Details
 - [ ] Map Validation → 400 with Problem Details
@@ -1196,6 +1199,7 @@ app.Run();
 - [ ] Map ServerError → 500 with Problem Details
 
 ### Middleware Components
+
 - [ ] Implement `CorrelationMiddleware`
 - [ ] Implement `TenantResolutionMiddleware`
 - [ ] Implement `ExceptionHandlingMiddleware`
@@ -1203,6 +1207,7 @@ app.Run();
 - [ ] Document middleware pipeline
 
 ### Tenant Resolution
+
 - [ ] Extract tenant from JWT claims
 - [ ] Extract tenant from X-Tenant-Id header
 - [ ] Validate tenant exists
@@ -1211,6 +1216,7 @@ app.Run();
 - [ ] Add tenant resolution tests
 
 ### Correlation ID
+
 - [ ] Extract or generate correlation ID
 - [ ] Add to response headers
 - [ ] Add to logging scope
@@ -1218,6 +1224,7 @@ app.Run();
 - [ ] Add correlation tests
 
 ### Error Handling
+
 - [ ] Global exception handler
 - [ ] Development vs production responses
 - [ ] Trace ID in all errors
@@ -1226,6 +1233,7 @@ app.Run();
 - [ ] Error handling tests
 
 ### API Versioning
+
 - [ ] Configure URL versioning
 - [ ] Setup versioned API explorer
 - [ ] Define version deprecation strategy
@@ -1234,6 +1242,7 @@ app.Run();
 - [ ] Version compatibility tests
 
 ### Swagger Configuration
+
 - [ ] Configure Swashbuckle
 - [ ] Add XML comments
 - [ ] Define security schemes
@@ -1242,6 +1251,7 @@ app.Run();
 - [ ] Generate example requests/responses
 
 ### Health Checks
+
 - [ ] Implement liveness probe (/health/live)
 - [ ] Implement readiness probe (/health/ready)
 - [ ] Add database health check
@@ -1250,6 +1260,7 @@ app.Run();
 - [ ] Setup health check UI
 
 ### Rate Limiting
+
 - [ ] Configure .NET 8 rate limiter
 - [ ] Define global rate limits
 - [ ] Define per-policy rate limits
@@ -1258,6 +1269,7 @@ app.Run();
 - [ ] Test rate limiting
 
 ### CORS Configuration
+
 - [ ] Define CORS policies
 - [ ] Configure allowed origins
 - [ ] Configure allowed methods/headers
@@ -1265,6 +1277,7 @@ app.Run();
 - [ ] Test CORS preflight
 
 ### Authentication Integration
+
 - [ ] Configure JWT bearer auth
 - [ ] Define token validation parameters
 - [ ] Setup authorization policies
@@ -1272,6 +1285,7 @@ app.Run();
 - [ ] Document auth flow
 
 ### Logging
+
 - [ ] Request/response logging
 - [ ] Correlation ID in logs
 - [ ] Tenant ID in logs
@@ -1279,6 +1293,7 @@ app.Run();
 - [ ] Performance metrics logging
 
 ### Testing
+
 - [ ] Create WebApplicationFactory tests
 - [ ] Test controller actions
 - [ ] Test middleware components
@@ -1294,38 +1309,45 @@ app.Run();
 ### Prerequisites
 
 #### Phase 0: Discovery & Guardrails
+
 - Multi-tenancy requirements
 - Security requirements
 - API design guidelines
 
 #### Phase 1: Platform Scaffolding
+
 - Build infrastructure
 - Testing framework
 - CI/CD pipelines
 
 #### Phase 2: Domain & Contracts
+
 - Result patterns
 - Error codes
 - Domain exceptions
 
 #### Phase 3: Application Layer
+
 - `ICommandExecutor` interface
 - `IQueryExecutor` interface
 - Command/Query handlers
 - Result-based error handling
 
 #### ADR Dependencies
+
 - **ADR-0001**: Tenant context from middleware
 - **ADR-0002**: Correlation ID for audit logging
 
 ### Outputs to Other Phases
 
 #### Phase 5: Infrastructure
+
 - Connection strings from configuration
 - Database health checks
 - Repository implementations
 
 #### Phase 6: Release
+
 - API documentation
 - Deployment configurations
 - Monitoring and observability
@@ -1372,27 +1394,33 @@ app.Run();
 ### External References
 
 #### ASP.NET Core
+
 - [ASP.NET Core 8 Documentation](https://learn.microsoft.com/en-us/aspnet/core/)
 - [Middleware in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/)
 - [Web API Controllers](https://learn.microsoft.com/en-us/aspnet/core/web-api/)
 
 #### Error Handling
+
 - [RFC 7807: Problem Details](https://datatracker.ietf.org/doc/html/rfc7807)
 - [Problem Details for HTTP APIs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.problemdetails)
 
 #### API Documentation
+
 - [Swagger/OpenAPI Specification](https://swagger.io/specification/)
 - [Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
 
 #### API Versioning
+
 - [API Versioning in ASP.NET Core](https://github.com/dotnet/aspnet-api-versioning)
 - [REST API Versioning Strategies](https://restfulapi.net/versioning/)
 
 #### Health Checks
+
 - [Health Checks in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks)
 - [AspNetCore.Diagnostics.HealthChecks](https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks)
 
 #### Rate Limiting
+
 - [Rate Limiting in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit)
 - [System.Threading.RateLimiting](https://learn.microsoft.com/en-us/dotnet/api/system.threading.ratelimiting)
 

@@ -40,6 +40,7 @@
 From Phase 0 Design Principles:
 
 > **"Explicit Over Magic"**
+>
 > - ✅ Explicit service registration
 > - ✅ Source generators acceptable
 > - ❌ Assembly scanning
@@ -56,7 +57,7 @@ From Phase 0 Design Principles:
 services.AddCommandHandler<CreateOrder, CreateOrderHandler>();
 services.AddCommandHandler<UpdateOrder, UpdateOrderHandler>();
 services.AddCommandHandler<DeleteOrder, DeleteOrderHandler>();
-```
+```text
 
 ### ❌ Incorrect: Assembly Scanning
 
@@ -66,7 +67,7 @@ services.Scan(scan => scan
     .FromAssemblyOf<ICommandHandler>()
     .AddClasses(classes => classes.AssignableTo(typeof(ICommandHandler<>)))
     .AsImplementedInterfaces());
-```
+```text
 
 ---
 
@@ -95,7 +96,7 @@ services.AddScoped<ICommandHandler<CreateOrder>>(sp =>
     
     return handler;
 });
-```
+```text
 
 ### Helper Extension Method
 
@@ -103,7 +104,7 @@ services.AddScoped<ICommandHandler<CreateOrder>>(sp =>
 // Cleaner usage
 services.AddCommandHandler<CreateOrder, CreateOrderHandler>();
 services.AddCommandHandler<UpdateOrder, UpdateOrderHandler>();
-```
+```text
 
 ---
 
@@ -123,7 +124,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 {
     container.RegisterModule<IdevsAutofacModule>(); // Pre-configured
 });
-```
+```text
 
 ### Option 2: Keep Using Explicit Registration
 
@@ -132,7 +133,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 builder.Services.AddIdevs();
 builder.Services.AddCommandHandler<CreateOrder, CreateOrderHandler>();
 // ... more handlers
-```
+```text
 
 ---
 
@@ -160,20 +161,20 @@ builder.Services.AddCommandHandler<CreateOrder, CreateOrderHandler>();
 
 ### Core Framework (Required)
 
-```
+```text
 Idevs                     → Uses MEDI, manual registration
 Idevs.Application         → Uses MEDI, manual registration
 Idevs.Data                → Uses MEDI, manual registration
 Idevs.Web                 → Uses MEDI, manual registration
-```
+```text
 
 **Dependencies**: Zero external DI packages
 
 ### Optional Adapters (Future)
 
-```
+```text
 Idevs.DependencyInjection.Autofac  → Optional Autofac support
-```
+```text
 
 **Use Case**: For consumers who must use Autofac
 
@@ -189,7 +190,7 @@ Your personal apps likely use Autofac today:
 builder.RegisterAssemblyTypes(assembly)
     .Where(t => t.Name.EndsWith("Handler"))
     .AsImplementedInterfaces();
-```
+```text
 
 ### Future State (Two Options)
 
@@ -199,7 +200,7 @@ builder.RegisterAssemblyTypes(assembly)
 builder.Services.AddCommandHandler<CreateOrder, CreateOrderHandler>();
 builder.Services.AddCommandHandler<UpdateOrder, UpdateOrderHandler>();
 // ... more handlers
-```
+```text
 
 **Benefits**: Learn the pattern, better debugging, clearer code
 
@@ -211,7 +212,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
     container.RegisterModule<IdevsAutofacModule>(); // Handles Idevs types
     container.RegisterModule<YourAppModule>();       // Your app's types
 });
-```
+```text
 
 **Benefits**: Minimal changes to existing apps
 
@@ -219,13 +220,14 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 
 ## Frequently Asked Questions
 
-### Q: Why not use Scrutor? It's MIT licensed.
+### Q: Why not use Scrutor? It's MIT licensed
 
 **A**: Scrutor includes assembly scanning functionality, which conflicts with our "Explicit Over Magic" principle. While you don't have to use the scanning features, having them available goes against our design philosophy.
 
 ### Q: Isn't manual registration tedious?
 
 **A**: We provide helper methods (`AddCommandHandler`, `AddQueryHandler`) that reduce boilerplate. The explicitness is intentional and beneficial for:
+
 - IDE navigation (F12 works)
 - Compile-time safety
 - Clear dependency graph
@@ -234,6 +236,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 ### Q: Can I still use Autofac in my apps?
 
 **A**: Yes! Two ways:
+
 1. Use the optional `Idevs.DependencyInjection.Autofac` adapter package
 2. Register Idevs handlers manually in your Autofac modules
 

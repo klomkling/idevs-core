@@ -35,7 +35,7 @@ This document identifies security threats, assets, trust boundaries, and mitigat
 
 ### Trust Boundaries
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │ External (Untrusted)                                        │
 │  - HTTP/HTTPS Requests                                      │
@@ -63,7 +63,7 @@ This document identifies security threats, assets, trust boundaries, and mitigat
 │  - PostgreSQL Database                                      │
 │  - Cache (Redis/Memory)                                     │
 └─────────────────────────────────────────────────────────────┘
-```
+```text
 
 ### Attack Surface
 
@@ -159,7 +159,7 @@ public async Task<Order> GetByIdAsync(int id)
 // Layer 4: PostgreSQL RLS (Optional)
 CREATE POLICY tenant_isolation ON orders
     USING (tenant_id = current_setting('app.current_tenant')::uuid);
-```
+```text
 
 **Validation**: Integration tests attempting cross-tenant access must fail.
 
@@ -186,7 +186,7 @@ services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", policy => 
         policy.RequireRole("admin"));
 });
-```
+```text
 
 **Token Refresh**: Short-lived access tokens (15 min) + long-lived refresh tokens (7 days) with rotation.
 
@@ -220,7 +220,7 @@ modelBuilder.Entity<Order>()
     .Property(o => o.Amount)
     .HasPrecision(18, 2)
     .IsRequired();
-```
+```text
 
 ### Secrets Management
 
@@ -241,7 +241,7 @@ builder.Configuration.AddAzureKeyVault(
     new Uri(keyVaultUrl),
     new DefaultAzureCredential()
 );
-```
+```text
 
 ### Audit Logging
 
@@ -272,7 +272,7 @@ public class AuditInterceptor : SaveChangesInterceptor
         return base.SavedChanges(eventData, result);
     }
 }
-```
+```text
 
 ### Logging Privacy (PII Redaction)
 
@@ -298,7 +298,7 @@ public class PiiRedactionEnricher : ILogEventEnricher
         }
     }
 }
-```
+```text
 
 ### Supply Chain Security
 
@@ -313,9 +313,10 @@ dotnet-outdated
 
 # Policy: Only MIT/BSD/Apache licenses
 # Reject packages with unclear licensing
-```
+```text
 
 **Process**:
+
 1. Vet all new dependencies before adding to `Directory.Packages.props`
 2. Automated vulnerability scanning in CI
 3. Monthly dependency update review
@@ -419,7 +420,7 @@ app.Use(async (context, next) =>
     
     await next();
 });
-```
+```text
 
 ### CSRF Protection
 
@@ -461,7 +462,7 @@ public async Task GetOrder_WithDifferentTenantId_ReturnsNotFound()
     result.IsFailure.ShouldBeTrue();
     result.Error.ShouldBe("Order not found");
 }
-```
+```text
 
 ### Manual Security Testing
 
