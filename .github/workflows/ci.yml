@@ -53,18 +53,18 @@ jobs:
       
       - name: Display GitVersion outputs
         run: |
-          echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
-          echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
-          echo "NuGetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}"
-          echo "AssemblySemVer: ${{ steps.gitversion.outputs.assemblySemVer }}"
-          echo "AssemblySemFileVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}"
-          echo "InformationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}"
+          echo "SemVer: ${{ env.GitVersion_SemVer }}"
+          echo "FullSemVer: ${{ env.GitVersion_FullSemVer }}"
+          echo "MajorMinorPatch: ${{ env.GitVersion_MajorMinorPatch }}"
+          echo "AssemblySemVer: ${{ env.GitVersion_AssemblySemVer }}"
+          echo "AssemblySemFileVer: ${{ env.GitVersion_AssemblySemFileVer }}"
+          echo "InformationalVersion: ${{ env.GitVersion_InformationalVersion }}"
       
       - name: Restore dependencies
         run: dotnet restore
       
       - name: Build
-        run: dotnet build --configuration Release --no-restore -p:Version=${{ steps.gitversion.outputs.semVer }} -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }} -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }} -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }} -p:ContinuousIntegrationBuild=true
+        run: dotnet build --configuration Release --no-restore -p:Version=${{ env.GitVersion_SemVer }} -p:AssemblyVersion=${{ env.GitVersion_AssemblySemVer }} -p:FileVersion=${{ env.GitVersion_AssemblySemFileVer }} -p:InformationalVersion=${{ env.GitVersion_InformationalVersion }} -p:ContinuousIntegrationBuild=true
       
       - name: Test with Coverage
         run: dotnet test --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Threshold=80 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.ThresholdType=branch -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.ThresholdStat=total
@@ -93,7 +93,7 @@ jobs:
           echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **OS**: ${{ matrix.os }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Version**: ${{ steps.gitversion.outputs.fullSemVer }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ env.GitVersion_FullSemVer }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Configuration**: Release" >> $GITHUB_STEP_SUMMARY
