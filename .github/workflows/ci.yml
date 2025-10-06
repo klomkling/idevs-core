@@ -56,6 +56,9 @@ jobs:
           echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
           echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
           echo "NuGetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}"
+          echo "AssemblySemVer: ${{ steps.gitversion.outputs.assemblySemVer }}"
+          echo "AssemblySemFileVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}"
+          echo "InformationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}"
       
       - name: Restore dependencies
         run: dotnet restore
@@ -65,7 +68,7 @@ jobs:
           dotnet build \
             --configuration Release \
             --no-restore \
-            -p:Version=${{ steps.gitversion.outputs.nuGetVersion }} \
+            -p:Version=${{ steps.gitversion.outputs.semVer }} \
             -p:AssemblyVersion=${{ steps.gitversion.outputs.assemblySemVer }} \
             -p:FileVersion=${{ steps.gitversion.outputs.assemblySemFileVer }} \
             -p:InformationalVersion=${{ steps.gitversion.outputs.informationalVersion }} \
