@@ -17,39 +17,51 @@ dotnet add package Idevs
 
 ## What's Included
 
-### Core Utilities
-
-- **Guard** - Input validation helpers
-
-  ```csharp
-  public void ProcessOrder(Order order)
-  {
-      Guard.NotNull(order, nameof(order));
-      Guard.NotNullOrWhiteSpace(order.CustomerEmail, nameof(order.CustomerEmail));
-      
-      // Process order...
-  }
-  ```
-
 ### Marker Interfaces
 
 - **IIdevsMarker** - Assembly marker interface for package identification
 
-## Usage Example
+## Input Validation
+
+For input validation and guard clauses, we recommend using built-in .NET methods or established libraries:
+
+### Built-in .NET Validation
 
 ```csharp
-using Idevs;
+public class OrderService
+{
+    public void CreateOrder(string customerEmail, decimal amount)
+    {
+        // Use built-in .NET guard methods
+        ArgumentNullException.ThrowIfNull(customerEmail);
+        ArgumentException.ThrowIfNullOrWhiteSpace(customerEmail);
+        
+        if (amount <= 0)
+            throw new ArgumentException("Amount must be positive", nameof(amount));
+            
+        // Create order logic...
+    }
+}
+```
+
+### Recommended: Ardalis.GuardClauses
+
+For more comprehensive validation, consider using [Ardalis.GuardClauses](https://github.com/ardalis/GuardClauses):
+
+```bash
+dotnet add package Ardalis.GuardClauses
+```
+
+```csharp
+using Ardalis.GuardClauses;
 
 public class OrderService
 {
     public void CreateOrder(string customerEmail, decimal amount)
     {
-        // Validate inputs
-        Guard.NotNullOrWhiteSpace(customerEmail, nameof(customerEmail));
+        Guard.Against.NullOrWhiteSpace(customerEmail);
+        Guard.Against.NegativeOrZero(amount);
         
-        if (amount <= 0)
-            throw new ArgumentException("Amount must be positive", nameof(amount));
-            
         // Create order logic...
     }
 }
