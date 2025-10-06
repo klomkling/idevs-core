@@ -39,11 +39,13 @@ The Idevs framework is a library published to NuGet.org and GitHub Packages with
 From [AGENTS.md](../../AGENTS.md):
 
 > **Branching Strategy**
+>
 > - Open every PR against `develop` and keep it releasable
 > - Merge `develop` into `main` only for reviewed production releases
 > - Forward-merge fixes from `develop` to preserve GitVersion history
 >
 > **Versioning & Release Flow**
+>
 > - Restore tools with `dotnet tool restore`, then preview versions via `dotnet tool run gitversion`
 > - Merges into `develop` publish patch packages to GitHub Packages
 > - Promoting `develop` → `main` publishes to NuGet.org and tags the release
@@ -92,6 +94,7 @@ feature/*, hotfix/*, release/*
 **Note**: As a solo developer initially, approval requirements are optional. Focus on automated quality gates.
 
 **`main` branch**:
+
 - ✅ Require pull requests (even from solo developer - forces process discipline)
 - ✅ Require status checks to pass (CI build, tests, coverage)
 - ✅ Require linear history (squash or rebase)
@@ -99,12 +102,14 @@ feature/*, hotfix/*, release/*
 - 💡 **Future**: When team grows, require 1-2 approvals
 
 **`develop` branch**:
+
 - ✅ Require pull requests for all changes
 - ✅ Require status checks to pass (CI build, tests, coverage)
 - ✅ Allow squash and rebase merges
 - ⚠️ Require approvals: **0 required** (solo developer)
 
 **All branches (feature/*, hotfix/*, release/*)**:
+
 - ✅ All pull requests trigger CI build, tests, and coverage checks
 - ✅ CI must pass before merge (even for solo developer)
 - ✅ Coverage threshold: ≥80% enforced
@@ -576,12 +581,14 @@ git push origin --delete release/1.1.1
 ```
 
 **GitVersion Behavior**:
+
 - Hotfix branch: `1.1.1-beta.1`
 - Release branch from hotfix: `1.1.1-rc.1` (ready for testing)
 - After merge to `main`: `1.1.1` (production)
 - After back-merge to `develop`: `1.2.0-alpha.1` (continues development)
 
 **Why not merge hotfix directly to main?**
+
 - ✅ Maintains consistent release process (all releases via `release/*` branches)
 - ✅ Allows testing and validation with rc version
 - ✅ Triggers same CI/CD quality gates
@@ -662,6 +669,7 @@ updates:
 5. **New alpha version** → Published to GitHub Packages
 
 **Security Patches** (urgent):
+
 - Dependabot creates PR with `security` label
 - CI runs automatically
 - Merge immediately if tests pass
@@ -820,11 +828,13 @@ feature/*, hotfix/*
 ```
 
 **Pros**:
+
 - Simpler than Git Flow
 - Fewer branches to manage
 - Continuous deployment friendly
 
 **Cons**:
+
 - ❌ No staging environment (develop)
 - ❌ Difficult to prepare releases
 - ❌ Hotfixes disrupt feature development
@@ -839,11 +849,13 @@ feature/*, hotfix/*
 **Approach**: All commits to `main`, feature flags for incomplete features
 
 **Pros**:
+
 - Simplest branching model
 - Continuous integration
 - No long-lived branches
 
 **Cons**:
+
 - ❌ Requires mature feature flag infrastructure
 - ❌ High discipline required (no broken commits)
 - ❌ Difficult for library releases (vs SaaS apps)
@@ -858,10 +870,12 @@ feature/*, hotfix/*
 **Approach**: Developers manually update version in `.csproj`
 
 **Pros**:
+
 - Simple (no tools needed)
 - Full control over versions
 
 **Cons**:
+
 - ❌ Error-prone (forget to bump version)
 - ❌ Version conflicts in PRs
 - ❌ No automation
@@ -878,10 +892,12 @@ feature/*, hotfix/*
 **Example**: `2025.01.0`, `2025.01.1`, `2025.02.0`
 
 **Pros**:
+
 - Predictable release schedule
 - Easy to see age of release
 
 **Cons**:
+
 - ❌ No semantic meaning (breaking vs minor)
 - ❌ Consumers can't determine compatibility
 - ❌ Not standard for libraries
@@ -943,18 +959,21 @@ Copy the `GitVersion.yml` from the Decision section above to repository root.
 **GitHub Settings → Branches → Branch protection rules**:
 
 For `main`:
+
 - Require pull request reviews (2 approvers)
 - Require status checks: `build`, `test`, `coverage`
 - Require conversation resolution
 - Require linear history
 
 For `develop`:
+
 - Require pull request reviews (1 approver)
 - Require status checks: `build`, `test`
 
 ### 5. Create GitHub Actions Workflows
 
 Create the three workflow files from the Decision section:
+
 - `.github/workflows/build.yml`
 - `.github/workflows/package-prerelease.yml`
 - `.github/workflows/release.yml`

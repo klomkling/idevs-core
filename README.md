@@ -117,6 +117,7 @@ Each implementation phase has detailed documentation:
 | Phase 6 | ⏳ Planned | - | Release Readiness |
 
 **Phase 0 Deliverables** (Complete):
+
 - ✅ 5 foundational ADRs accepted
 - ✅ Solution structure with `src/Idevs` and `tests/Idevs.Tests`
 - ✅ Build system: Directory.Build.props, Directory.Packages.props
@@ -127,6 +128,7 @@ Each implementation phase has detailed documentation:
 - ✅ Development guidelines: CONTRIBUTING.md
 
 **Current Implementation Status**:
+
 - **Build System**: ✅ Operational
 - **Test Coverage**: ✅ 100% (baseline)
 - **CI/CD**: ✅ Configured

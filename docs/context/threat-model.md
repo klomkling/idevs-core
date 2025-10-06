@@ -316,6 +316,7 @@ dotnet-outdated
 ```
 
 **Process**:
+
 1. Vet all new dependencies before adding to `Directory.Packages.props`
 2. Automated vulnerability scanning in CI
 3. Monthly dependency update review

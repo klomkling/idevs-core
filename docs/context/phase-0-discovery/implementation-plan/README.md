@@ -18,12 +18,14 @@ Complete Phase 0 (Discovery and Guardrails) by finalizing all documentation, est
 This implementation plan covers three major steps:
 
 ### Step 1: Review and Finalize Phase 0 Checklist
+
 - Review and accept all ADRs (0001-0005)
 - Update Phase 0 discovery documentation
 - Validate cross-references and glossary consistency
 - Create CONTRIBUTING.md
 
 ### Step 2: Execute Phase 0 Implementation
+
 - Initialize .NET solution and project structure
 - Set up shared build configuration (Directory.Build.props, Directory.Packages.props, .editorconfig)
 - Configure GitVersion for automated semantic versioning
@@ -33,6 +35,7 @@ This implementation plan covers three major steps:
 - Verify build system locally
 
 ### Step 3: Update Documentation & Finalize
+
 - Mark Phase 0 as Complete in all documentation
 - Update master roadmap and context documentation
 - Update root README with current status

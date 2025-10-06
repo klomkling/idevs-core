@@ -50,6 +50,7 @@
   - [ ] No MediatR or reflection-based dispatching
 
 **Sign-Off**:
+
 ```
 Name: _______________________
 Date: _______________________
@@ -96,6 +97,7 @@ Comments:
   - [ ] Domain event dispatch is deferred appropriately
 
 **Sign-Off**:
+
 ```
 Name: _______________________
 Date: _______________________
@@ -146,6 +148,7 @@ Comments:
   - [ ] Examples are appropriately sized
 
 **Sign-Off**:
+
 ```
 Name: _______________________
 Date: _______________________
@@ -178,6 +181,7 @@ Comments:
   - [ ] Result patterns don't leak sensitive info
 
 **Sign-Off**:
+
 ```
 Name: _______________________
 Date: _______________________
@@ -189,21 +193,25 @@ Comments:
 ## 📝 Feedback Summary
 
 ### Architecture Feedback
+
 ```
 [To be filled during review]
 ```
 
 ### Engineering Feedback
+
 ```
 [To be filled during review]
 ```
 
 ### Documentation Feedback
+
 ```
 [To be filled during review]
 ```
 
 ### Security Feedback
+
 ```
 [To be filled during review]
 ```

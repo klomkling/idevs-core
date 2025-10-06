@@ -21,6 +21,7 @@ The Idevs framework is a **library/building-block framework** intended for reuse
 From `phase-0-discovery.md`:
 
 > **E. Explicit Over Magic**
+>
 > - Principle: Prefer explicit code over convention-based discovery
 > - Rationale: Avoids System.Reflection, improves startup performance, better debugging
 > - Examples:
@@ -32,6 +33,7 @@ From `phase-0-discovery.md`:
 ### The Question
 
 The maintainer typically uses **Autofac** for advanced IoC features like:
+
 - Assembly scanning
 - Decorator registration
 - Named/keyed services
@@ -47,6 +49,7 @@ The maintainer typically uses **Autofac** for advanced IoC features like:
 **Use Microsoft.Extensions.DependencyInjection (MEDI) as the primary DI container, with NO required dependency on Autofac.**
 
 The framework will:
+
 1. ✅ Provide extension methods for `IServiceCollection` (standard .NET)
 2. ✅ Support explicit service registration
 3. ✅ Optionally provide an `Idevs.DependencyInjection.Autofac` package for those who want Autofac features
@@ -74,6 +77,7 @@ The framework will:
 ### 2. **Design Principle Alignment: "Explicit Over Magic"**
 
 Your framework explicitly states:
+
 - ❌ **Avoid**: Assembly scanning, attribute-based registration
 - ✅ **Prefer**: Explicit registration
 
@@ -187,12 +191,14 @@ collection.Scan(scan => scan
 ```
 
 While you can use Scrutor *only* for decorators, the package:
+
 1. **Advertises assembly scanning as a primary feature**
 2. **Includes the scanning API in the dependency tree**
 3. **Conflicts with our "Explicit Over Magic" principle**
 
 From our Phase 0 principles:
 > **E. Explicit Over Magic**
+>
 > - ❌ Assembly scanning for handlers
 
 Having a package with assembly scanning capabilities goes against this principle, even if we don't use that feature.
@@ -286,6 +292,7 @@ Both are similar at runtime. The difference is primarily at startup.
 #### Your Personal Projects (Autofac)
 
 For **your own applications** where you control everything:
+
 - ✅ Use Autofac if you prefer it
 - ✅ Assembly scanning is fine
 - ✅ Modules are convenient
@@ -293,6 +300,7 @@ For **your own applications** where you control everything:
 #### Idevs Framework (Library for Others)
 
 For a **library consumed by others**:
+
 - ✅ Use standard .NET patterns
 - ✅ Low friction for adoption
 - ✅ Works with any .NET host
@@ -333,6 +341,7 @@ For a **library consumed by others**:
 1. **Less Convenient for Complex Registration**
    - **Mitigation**: Provide `AddIdevs()` extension methods that encapsulate complexity
    - **Example**:
+
      ```csharp
      services.AddIdevs(options =>
      {
@@ -349,6 +358,7 @@ For a **library consumed by others**:
 3. **Decorator Registration Verbosity**
    - **Mitigation**: Use Scrutor (MIT) or built-in .NET 7+ decorators
    - **Example**:
+
      ```csharp
      services.AddIdevsDecorators(); // Adds logging, validation, caching decorators
      ```
@@ -371,6 +381,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 ```
 
 **Benefits**:
+
 - Core framework doesn't require Autofac
 - Consumers who want Autofac can opt-in
 - Best of both worlds
@@ -464,11 +475,13 @@ public class IdevsAutofacModule : Module
 ### Alternative 1: Require Autofac
 
 **Pros**:
+
 - More convenient for complex scenarios
 - Assembly scanning out of the box
 - Module pattern
 
 **Cons**:
+
 - ❌ Forces consumers to replace default DI
 - ❌ Conflicts with "Explicit Over Magic" principle
 - ❌ Higher adoption barrier
@@ -481,23 +494,27 @@ public class IdevsAutofacModule : Module
 
 ### Alternative 2: Use MEDI + Scrutor
 
-**Package**: `Scrutor` (https://github.com/khellang/Scrutor)  
+**Package**: `Scrutor` (<https://github.com/khellang/Scrutor>)  
 **License**: MIT
 
 **Pros**:
+
 - Clean decorator syntax
 - Works with `IServiceCollection` (no container replacement)
 - MIT licensed
 - Well-maintained (4.2k+ stars)
 
 **Cons**:
+
 - ❌ **Includes assembly scanning** - Scrutor's main feature alongside decorators:
+
   ```csharp
   services.Scan(scan => scan
       .FromAssemblyOf<ITransientService>()
       .AddClasses(classes => classes.AssignableTo<ITransientService>())
       .AsImplementedInterfaces());
   ```
+
 - ❌ **Conflicts with "Explicit Over Magic" principle** - Even if we don't use the scanning feature, having it available goes against our design philosophy
 - ❌ **External dependency** - One more package to audit and maintain
 - ❌ **Not needed** - .NET 8.0 provides everything we need (keyed services, factory pattern)
@@ -506,10 +523,12 @@ public class IdevsAutofacModule : Module
 
 From Phase 0 Design Principles:
 > **E. Explicit Over Magic**
+>
 > - ❌ Assembly scanning for handlers
 > - ❌ Attribute-based magic registration
 
 Scrutor's primary value proposition is assembly scanning + decorators. If we only use decorators, we're:
+
 1. Adding a dependency for 50% of its functionality
 2. Having assembly scanning capabilities in the dependency tree (even if unused)
 3. Missing the opportunity to enforce explicit registration
@@ -523,10 +542,12 @@ Scrutor's primary value proposition is assembly scanning + decorators. If we onl
 Create `Idevs.Abstractions.DI` with `IServiceRegistrar` interface.
 
 **Pros**:
+
 - Ultimate flexibility
 - Support any container
 
 **Cons**:
+
 - ❌ Over-engineering
 - ❌ Additional abstraction layer
 - ❌ Maintenance burden
@@ -541,6 +562,7 @@ Create `Idevs.Abstractions.DI` with `IServiceRegistrar` interface.
 Use MEDI with manual factory registration for decorators.
 
 **Pros**:
+
 - ✅ Standard .NET (built-in)
 - ✅ Zero external dependencies
 - ✅ Decorator support via factory pattern
@@ -550,6 +572,7 @@ Use MEDI with manual factory registration for decorators.
 - ✅ Easier debugging
 
 **Cons**:
+
 - More verbose than Scrutor (mitigated by helper methods)
 
 **Verdict**: ✅ **Selected**
@@ -559,15 +582,18 @@ Use MEDI with manual factory registration for decorators.
 ## Recommendation for Your Personal Apps
 
 ### For Idevs Framework (Library)
+
 - ✅ Use MEDI + Scrutor
 - ✅ Provide optional Autofac adapter package
 
 ### For Your Applications (Retail, Billing, Finance)
+
 - ✅ Use Autofac if you prefer it
 - ✅ Use the `Idevs.DependencyInjection.Autofac` adapter package
 - ✅ Enjoy assembly scanning and modules
 
 **Best of Both Worlds**:
+
 - Framework is accessible to everyone (MEDI)
 - Your apps can still use Autofac via adapter
 

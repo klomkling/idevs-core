@@ -33,6 +33,7 @@ The Idevs framework must support soft deletion to meet business and compliance r
 ### Multi-Tenant Considerations
 
 From [ADR-0001 Tenancy Strategy](./ADR-0001-Tenancy-Strategy.md):
+
 - Soft delete must respect tenant isolation
 - Deleted records must remain invisible to tenant queries
 - Purge policies may vary by tenant tier (standard vs regulated)
@@ -40,6 +41,7 @@ From [ADR-0001 Tenancy Strategy](./ADR-0001-Tenancy-Strategy.md):
 ### Audit Integration
 
 From [ADR-0002 Audit Logging](./ADR-0002-Audit-Logging.md):
+
 - Soft delete operation must be audited
 - Audit log must capture who deleted, when, and why
 - Restoration must also be audited
@@ -761,6 +763,7 @@ public class SoftDeleteOptions
    - **Mitigation 2**: Code review checklist
    - **Mitigation 3**: Architecture tests validate query filter usage
    - **Example**:
+
      ```csharp
      // ❌ Wrong: Count includes deleted records unintentionally
      var count = await context.Customers.IgnoreQueryFilters().CountAsync();
@@ -805,11 +808,13 @@ await context.SaveChangesAsync();
 ```
 
 **Pros**:
+
 - Simple implementation
 - No storage overhead
 - No unique constraint issues
 
 **Cons**:
+
 - ❌ Data loss (cannot restore)
 - ❌ No audit trail of deleted data
 - ❌ Violates compliance requirements (data retention)
@@ -837,11 +842,13 @@ DELETE FROM customers WHERE id = @id;
 ```
 
 **Pros**:
+
 - Active table stays lean (better performance)
 - No unique constraint conflicts
 - Clear separation of active vs archived data
 
 **Cons**:
+
 - ❌ Double schema maintenance (customers + customers_archive)
 - ❌ Migration complexity (apply to both tables)
 - ❌ Query complexity (join active + archive for full history)
@@ -865,11 +872,13 @@ public class CustomerDeletedEvent
 ```
 
 **Pros**:
+
 - Complete audit trail by design
 - Can replay events to any point in time
 - Natural undo/redo
 
 **Cons**:
+
 - ❌ High complexity (event store, projections, snapshots)
 - ❌ Not suitable for simple CRUD operations
 - ❌ Over-engineering for soft delete use case
@@ -891,9 +900,11 @@ ON DELETE SET NULL;
 ```
 
 **Pros**:
+
 - Preserves related records
 
 **Cons**:
+
 - ❌ Loses referential integrity
 - ❌ Doesn't hide deleted records from queries
 - ❌ Still need soft delete for parent records

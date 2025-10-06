@@ -5,6 +5,7 @@ Welcome to the **Idevs** framework documentation hub. This directory contains co
 ## 📋 Overview
 
 **Idevs** is a CQRS-centric, multi-tenant framework that powers first-party solutions such as:
+
 - Multi-store retail management systems
 - Subscription billing platforms  
 - Accounting and finance suites

@@ -63,6 +63,7 @@ warp-idevs-core/
 ### 3. Build Configuration
 
 #### Directory.Build.props
+
 - Nullable reference types enabled
 - Warnings treated as errors
 - Latest C# language version
@@ -71,12 +72,14 @@ warp-idevs-core/
 - Package metadata configured (Apache-2.0 license, repository links, symbol packages)
 
 #### Directory.Packages.props (Central Package Management)
+
 - Centralized version management for all NuGet packages
 - Testing packages: xUnit 2.9.0, Shouldly 4.2.1, NSubstitute 5.1.0
 - Coverage tools: Coverlet 6.0.2
 - Suppressed NU1604/NU1701 warnings (CPM-related false positives)
 
 #### NuGet.config
+
 - Restricts package sources to nuget.org only
 - Prevents conflicts with other configured feeds
 
@@ -94,6 +97,7 @@ warp-idevs-core/
 ### 5. CI/CD Workflows
 
 #### `.github/workflows/ci.yml` - Continuous Integration
+
 - **Triggers**: Push to `develop`/`main`, PRs to `develop`
 - **Steps**:
   1. Checkout code
@@ -106,6 +110,7 @@ warp-idevs-core/
   8. Upload test results and coverage reports
 
 #### `.github/workflows/release.yml` - Automated Publishing
+
 - **Triggers**:
   - Push to `develop` → publish pre-release to GitHub Packages
   - Push tag to `main` → publish stable release to NuGet.org
@@ -116,14 +121,18 @@ warp-idevs-core/
 ### 6. Baseline Code
 
 #### Guard Class
+
 Static utility class providing defensive programming helpers:
+
 - `NotNull<T>(T? value, string parameterName)` - Ensures non-null values
 - `NotNullOrWhiteSpace(string? value, string parameterName)` - Validates strings
 
 #### IIdevsMarker Interface
+
 Assembly marker interface for package identification (no reflection required).
 
 #### Test Coverage
+
 - **Total Tests**: 15
 - **Branch Coverage**: 100% (4/4 branches)
 - **Sequence Coverage**: 100% (6/6 points)
@@ -139,21 +148,25 @@ Assembly marker interface for package identification (no reflection required).
 ## Key Decisions & Rationale
 
 ### Why Central Package Management (CPM)?
+
 - Ensures consistent package versions across all projects
 - Simplifies dependency updates
 - Reduces version conflicts
 
 ### Why GitFlow?
+
 - Clear branching strategy for solo/small team development
 - `main` remains stable for production releases
 - `develop` for active development with pre-releases
 
 ### Why Warnings As Errors?
+
 - Enforces code quality at build time
 - Prevents technical debt accumulation
 - Aligns with professional .NET development standards
 
 ### Why No Reflection?
+
 - **Performance**: Eliminates runtime discovery overhead
 - **AOT Compatibility**: Supports ahead-of-time compilation scenarios
 - **Explicit Design**: Forces intentional, maintainable architectures
@@ -162,16 +175,19 @@ Assembly marker interface for package identification (no reflection required).
 ## Deviations from Original Plan
 
 ### 1. Solo Developer Sign-off
+
 **Deviation**: Single developer self-approval instead of team review  
 **Rationale**: Solo development context; formal review process unnecessary  
 **Mitigation**: All decisions documented in ADRs with clear rationale
 
 ### 2. NuGet Source Configuration
+
 **Unplanned Addition**: Created `NuGet.config` to restrict package sources  
 **Reason**: Global NuGet config included `serenity.is` feed pulling ancient package versions  
 **Resolution**: Local config restricts to `nuget.org` only
 
 ### 3. Package Version Suppression
+
 **Unplanned**: Added `NoWarn` for NU1604 and NU1701  
 **Reason**: CPM generates false positive warnings about version bounds  
 **Justification**: Standard practice for CPM; doesn't hide real issues
@@ -191,24 +207,28 @@ Assembly marker interface for package identification (no reflection required).
 ## Readiness Checklist for Phase 1
 
 ### Infrastructure ✅
+
 - [x] Build system operational
 - [x] Test harness with coverage
 - [x] CI/CD pipelines configured
 - [x] Version management automated
 
 ### Governance ✅
+
 - [x] ADRs established
 - [x] Contribution guidelines documented
 - [x] Git Flow adopted
 - [x] Conventional commits enforced
 
 ### Code Quality ✅
+
 - [x] Warnings as errors
 - [x] Nullable reference types enabled
 - [x] Code style enforcement (.editorconfig)
 - [x] Test coverage ≥80%
 
 ### Documentation ✅
+
 - [x] Architecture decisions recorded
 - [x] Development process documented
 - [x] Package structure defined
@@ -250,6 +270,7 @@ Phase 1 will focus on implementing foundational domain primitives:
 **Sign-off**: Accepted (solo developer context)
 
 All exit criteria met:
+
 - ✅ ADRs documented and accepted
 - ✅ Project structure established
 - ✅ Build and test infrastructure operational
@@ -262,6 +283,7 @@ All exit criteria met:
 ---
 
 **References**:
+
 - [Phase 0 Discovery Document](./phase-0-discovery.md)
 - [Implementation Plan](./implementation-plan/README.md)
 - [Execution Log](./implementation-plan/execution-log.md)

@@ -29,7 +29,7 @@ This document reviews all NuGet packages used in Phase 1 to ensure they have per
 | `Microsoft.NET.Test.Sdk` | 17.8.0+ | MIT | ✅ Safe |
 
 **Verification**: All Microsoft packages are MIT licensed  
-**Source**: https://github.com/dotnet/runtime/blob/main/LICENSE.TXT
+**Source**: <https://github.com/dotnet/runtime/blob/main/LICENSE.TXT>
 
 ---
 
@@ -40,7 +40,7 @@ This document reviews all NuGet packages used in Phase 1 to ensure they have per
 | `Npgsql.EntityFrameworkCore.PostgreSQL` | 8.0.0+ | PostgreSQL License | ✅ Safe |
 
 **Verification**: PostgreSQL License is permissive and similar to MIT/BSD  
-**Source**: https://github.com/npgsql/npgsql  
+**Source**: <https://github.com/npgsql/npgsql>  
 **Note**: Npgsql is explicitly safe for commercial use
 
 ---
@@ -59,7 +59,7 @@ This document reviews all NuGet packages used in Phase 1 to ensure they have per
 | `OpenTelemetry.Exporter.Prometheus.AspNetCore` | 1.7.0+ | Apache 2.0 | ✅ Safe |
 
 **Verification**: CNCF projects use Apache 2.0  
-**Source**: https://github.com/open-telemetry/opentelemetry-dotnet
+**Source**: <https://github.com/open-telemetry/opentelemetry-dotnet>
 
 ---
 
@@ -75,10 +75,11 @@ This document reviews all NuGet packages used in Phase 1 to ensure they have per
 | `coverlet.collector` | 6.0.0+ | MIT | ✅ Safe |
 
 **Verification**:
-- xUnit: https://github.com/xunit/xunit/blob/main/LICENSE
-- NSubstitute: https://github.com/nsubstitute/NSubstitute/blob/main/LICENSE.txt
-- Shouldly: https://github.com/shouldly/shouldly/blob/master/LICENSE.txt
-- NetArchTest: https://github.com/BenMorris/NetArchTest/blob/master/LICENSE
+
+- xUnit: <https://github.com/xunit/xunit/blob/main/LICENSE>
+- NSubstitute: <https://github.com/nsubstitute/NSubstitute/blob/main/LICENSE.txt>
+- Shouldly: <https://github.com/shouldly/shouldly/blob/master/LICENSE.txt>
+- NetArchTest: <https://github.com/BenMorris/NetArchTest/blob/master/LICENSE>
 
 ---
 
@@ -160,12 +161,14 @@ These licenses are NOT used in this project:
    - Verify it's MIT, Apache 2.0, BSD, or similar
 
 2. **Review GitHub Repository**
+
    ```bash
    # Check for LICENSE file
    curl https://raw.githubusercontent.com/org/repo/main/LICENSE
    ```
 
 3. **Use Automated Tools**
+
    ```bash
    # Install license checker
    dotnet tool install --global dotnet-project-licenses
@@ -252,6 +255,7 @@ MIT and BSD licenses require copyright notice in distributions. This is automati
 **Schedule**: Review all dependencies annually (every January)
 
 **Checklist**:
+
 - [ ] Re-verify licenses of all packages
 - [ ] Check for license changes in updated packages
 - [ ] Review new dependencies added during the year
@@ -259,6 +263,7 @@ MIT and BSD licenses require copyright notice in distributions. This is automati
 - [ ] Generate updated license report for compliance
 
 **Command**:
+
 ```bash
 dotnet-project-licenses --input idevs-core.sln --export-license-texts
 ```
@@ -270,7 +275,7 @@ dotnet-project-licenses --input idevs-core.sln --export-license-texts
 For license questions or concerns:
 
 **Internal**: Platform Team Lead  
-**Legal**: legal@idevs.work  
+**Legal**: <legal@idevs.work>  
 **External**: OSS community (GitHub issues)
 
 ---

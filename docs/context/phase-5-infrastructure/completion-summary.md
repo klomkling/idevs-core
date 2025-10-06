@@ -108,6 +108,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 ## 🎯 Key Achievements
 
 ### 1. **DbContext Architecture Established**
+
 - BaseDbContext with automatic tenant filtering
 - Automatic audit metadata population
 - Global soft delete query filters
@@ -115,6 +116,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 - SaveChangesAsync override with context awareness
 
 ### 2. **Repository Pattern Implemented**
+
 - Generic IRepository<T> interface
 - Specification pattern for complex queries
 - Paging support with PagedResult<T>
@@ -122,6 +124,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 - AsNoTracking for read-only queries
 
 ### 3. **PostgreSQL Row-Level Security Configured**
+
 - RLS policies for tenant isolation
 - Connection interceptor sets tenant context
 - current_setting() integration
@@ -129,6 +132,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 - Multi-tenant data isolation
 
 ### 4. **Unit of Work Pattern Complete**
+
 - Transaction coordination
 - Repository access via generic methods
 - Commit/rollback support
@@ -136,6 +140,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 - IDisposable implementation
 
 ### 5. **Distributed Caching Infrastructure**
+
 - IDistributedCache abstraction
 - Tenant-aware cache keys
 - Configurable expiration
@@ -143,6 +148,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 - Error-resilient implementation
 
 ### 6. **Migration & Seeding Strategy**
+
 - Code-first migrations
 - Design-time DbContext factory
 - Tenant-aware seeding
@@ -150,6 +156,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 - Clear migration documentation
 
 ### 7. **Connection Resiliency**
+
 - Retry policies on failure
 - Configurable timeouts
 - Connection pooling
@@ -213,36 +220,43 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 ## 🔑 Key Technical Decisions
 
 ### 1. **Shadow Properties for Metadata**
+
 **Decision**: Use EF Core shadow properties for audit and tenant data  
 **Rationale**: Keeps domain models clean, no infrastructure leakage  
 **Benefit**: Domain entities don't know about persistence concerns
 
 ### 2. **Global Query Filters**
+
 **Decision**: Apply tenant and soft delete filters at DbContext level  
 **Rationale**: Automatic filtering, no manual WHERE clauses  
 **Trade-off**: Slight performance overhead, but better security
 
 ### 3. **Specification Pattern**
+
 **Decision**: Use specification pattern instead of exposing IQueryable  
 **Rationale**: Encapsulates query logic, prevents N+1 problems  
 **Pattern**: Criteria, Includes, OrderBy, AsNoTracking flags
 
 ### 4. **PostgreSQL Row-Level Security**
+
 **Decision**: Use native PostgreSQL RLS for tenant isolation  
 **Rationale**: Database-enforced security, defense in depth  
 **Implementation**: Connection interceptor sets session variable
 
 ### 5. **Generic Repository with Constraints**
+
 **Decision**: Generic IRepository<T> where T : IAggregateRoot  
 **Rationale**: Work only with aggregate roots, enforce DDD boundaries  
 **Benefit**: Prevents repository per entity proliferation
 
 ### 6. **Tenant-Aware Caching**
+
 **Decision**: Prefix cache keys with tenant ID  
 **Rationale**: Prevents cross-tenant cache leakage  
 **Pattern**: `{tenantId}:{key}` format
 
 ### 7. **Explicit Repository Registration**
+
 **Decision**: Manual DI registration per ADR-0005  
 **Rationale**: No reflection, predictable startup  
 **Pattern**: `services.AddScoped<IOrderRepository, OrderRepository>()`
@@ -254,6 +268,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 ### Dependencies on Previous Phases
 
 ✅ **Phase 2: Domain & Contracts**
+
 - IAggregateRoot for repository constraints
 - ITenantEntity for multi-tenant entities
 - IAuditable for audit trail support
@@ -261,16 +276,19 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 - Value objects and strongly-typed IDs
 
 ✅ **Phase 3: Application Layer**
+
 - ICorrelationContext for audit correlation
 - ICurrentUser for audit user tracking
 - IDateTimeProvider for testable timestamps
 
 ✅ **Phase 4: Web Adapters**
+
 - ITenantContext from tenant resolution middleware
 - Health check infrastructure for DB connectivity
 - Configuration patterns for connection strings
 
 ✅ **ADRs**
+
 - ADR-0001: Row-level security implementation
 - ADR-0002: Audit interceptor design
 - ADR-0003: Soft delete query filters
@@ -279,6 +297,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 ### Outputs to Next Phase
 
 **Phase 6: Documentation, Samples & Release Readiness**
+
 - Migration scripts and deployment guide
 - Performance tuning recommendations
 - Database monitoring dashboards
@@ -290,6 +309,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 ## 🧪 Testing Coverage
 
 ### Integration Tests
+
 - ✅ Repository CRUD operations with in-memory DB
 - ✅ Specification pattern filtering
 - ✅ Unit of Work transactions
@@ -297,11 +317,13 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 - ✅ Audit metadata population
 
 ### Unit Tests
+
 - ✅ Specification evaluator logic
 - ✅ Cache key generation
 - ✅ RLS interceptor behavior
 
 ### Test Patterns Used
+
 - **In-Memory Database**: For fast integration tests
 - **Test Fixtures**: Reusable test contexts
 - **IDisposable**: Proper resource cleanup
@@ -382,6 +404,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 ### Prerequisites Complete
 
 ✅ Phase 5 has established:
+
 - Complete persistence infrastructure
 - Repository and Unit of Work patterns
 - Multi-tenant database access with RLS
@@ -450,6 +473,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 **Phase 5: Infrastructure Extensibility & Persistence is officially complete!**
 
 The infrastructure layer is now fully documented, with production-ready patterns for:
+
 - Entity Framework Core with multi-tenant support
 - Repository and Unit of Work patterns
 - Specification pattern for complex queries
@@ -459,6 +483,7 @@ The infrastructure layer is now fully documented, with production-ready patterns
 - Connection resiliency and performance optimization
 
 **Key Statistics**:
+
 - 1,900 lines of comprehensive documentation
 - 13 production-ready code examples
 - 22 validated references (internal + external)

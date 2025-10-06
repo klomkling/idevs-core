@@ -394,6 +394,7 @@ Visit `https://localhost:5001/swagger` to see your API!
 - [Multi-Tenant Setup](tutorials/multi-tenancy.md)
 - [Authentication & Authorization](tutorials/auth.md)
 - [Testing Strategies](tutorials/testing.md)
+
 ```
 
 ---
@@ -405,6 +406,7 @@ Visit `https://localhost:5001/swagger` to see your API!
 #### Minimal API Sample Structure
 
 ```
+
 samples/
 ├── MinimalApi/
 │   ├── MinimalApi.csproj
@@ -428,6 +430,7 @@ samples/
     ├── Benchmarks/
     ├── BenchmarkDotNet.Artifacts/
     └── README.md
+
 ```
 
 #### Minimal API Sample (Program.cs)
@@ -682,6 +685,7 @@ We use GitHub Flow:
 We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
+
 <type>(<scope>): <subject>
 
 <body>
@@ -690,6 +694,7 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/):
 ```
 
 Types:
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation only
@@ -700,6 +705,7 @@ Types:
 - `chore`: Maintenance tasks
 
 Examples:
+
 ```
 feat(application): add command validation behavior
 fix(infrastructure): resolve tenant context in RLS interceptor
@@ -743,22 +749,26 @@ dotnet test tests/Idevs.Application.Tests
    - Docker (optional, for databases)
 
 2. **Clone Repository**
+
    ```bash
    git clone https://github.com/idevs/idevs-core.git
    cd idevs-core
    ```
 
 3. **Restore Packages**
+
    ```bash
    dotnet restore
    ```
 
 4. **Run Tests**
+
    ```bash
    dotnet test
    ```
 
 5. **Build Documentation**
+
    ```bash
    cd docs
    docfx build
@@ -775,6 +785,7 @@ dotnet test tests/Idevs.Application.Tests
 ## Issue Reporting
 
 Use GitHub Issues with these labels:
+
 - `bug`: Something isn't working
 - `enhancement`: New feature request
 - `documentation`: Documentation improvements
@@ -787,6 +798,7 @@ See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 ## License
 
 By contributing, you agree that your contributions will be licensed under the MIT License.
+
 ```
 
 ---
@@ -810,17 +822,20 @@ Task<Result> ExecuteAsync(ICommand command);
 ```
 
 **After (v2.0)**:
+
 ```csharp
 Task<Result> ExecuteAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default)
     where TCommand : ICommand;
 ```
 
 **Migration Steps**:
+
 1. Add `CancellationToken` parameter to all executor calls
 2. Replace `ICommand` with generic type parameter
 3. Pass cancellation token from controller/handler
 
 **Example**:
+
 ```csharp
 // Before
 var result = await _executor.ExecuteAsync(command);
@@ -832,22 +847,26 @@ var result = await _executor.ExecuteAsync(command, cancellationToken);
 ### 2. Repository Interface Changes
 
 **Before (v1.x)**:
+
 ```csharp
 Task<TEntity?> GetByIdAsync(Guid id);
 ```
 
 **After (v2.0)**:
+
 ```csharp
 Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 ```
 
 **Migration Steps**:
+
 1. Add `CancellationToken` parameter to all repository method calls
 2. Update custom repositories to include cancellation token
 
 ### 3. Configuration Changes
 
 **Before (v1.x)**:
+
 ```csharp
 services.AddIdevs(options =>
 {
@@ -856,6 +875,7 @@ services.AddIdevs(options =>
 ```
 
 **After (v2.0)**:
+
 ```csharp
 services.AddIdevs(builder =>
 {
@@ -874,6 +894,7 @@ services.AddIdevs(builder =>
 **Replacement**: Use `IUnitOfWork.SaveEntitiesAsync()`
 
 **Migration**:
+
 ```csharp
 // Before
 await _unitOfWork.SaveChangesAsync();
@@ -929,9 +950,11 @@ var orders = await _repository.GetAsync(spec);
 ## Support
 
 If you encounter issues:
+
 - Check [GitHub Issues](https://github.com/idevs/idevs-core/issues)
 - Join [Discord Community](https://discord.gg/idevs)
-- Email: support@idevs.work
+- Email: <support@idevs.work>
+
 ```
 
 ---
@@ -1091,6 +1114,7 @@ public class CommandExecutorBenchmarks
 ## Tracking Checklist
 
 ### API Documentation
+
 - [ ] XML documentation for all public APIs
 - [ ] Code examples in documentation
 - [ ] Architecture decision records complete
@@ -1098,6 +1122,7 @@ public class CommandExecutorBenchmarks
 - [ ] SourceLink configured
 
 ### Getting Started
+
 - [ ] Quick start guide (5-minute)
 - [ ] Installation guide
 - [ ] First application tutorial
@@ -1106,6 +1131,7 @@ public class CommandExecutorBenchmarks
 - [ ] Deployment guide
 
 ### Sample Applications
+
 - [ ] Minimal API sample
 - [ ] Todo CRUD application
 - [ ] Multi-tenant shop demo
@@ -1114,6 +1140,7 @@ public class CommandExecutorBenchmarks
 - [ ] Sample README files
 
 ### NuGet Packages
+
 - [ ] Package metadata configured
 - [ ] Package dependencies defined
 - [ ] Package icons created
@@ -1122,6 +1149,7 @@ public class CommandExecutorBenchmarks
 - [ ] Symbol packages (snupkg)
 
 ### Release Process
+
 - [ ] GitVersion configured
 - [ ] GitHub Actions workflow
 - [ ] Release notes automation
@@ -1130,6 +1158,7 @@ public class CommandExecutorBenchmarks
 - [ ] Pre-release process (alpha/beta/rc)
 
 ### Contribution Guidelines
+
 - [ ] CONTRIBUTING.md complete
 - [ ] Code of Conduct
 - [ ] Issue templates
@@ -1138,6 +1167,7 @@ public class CommandExecutorBenchmarks
 - [ ] Code review standards
 
 ### Migration Guides
+
 - [ ] Breaking changes documented
 - [ ] Upgrade steps clear
 - [ ] Code migration examples
@@ -1145,6 +1175,7 @@ public class CommandExecutorBenchmarks
 - [ ] Compatibility matrix
 
 ### Performance
+
 - [ ] BenchmarkDotNet suite
 - [ ] Baseline metrics published
 - [ ] Performance optimization guide
@@ -1158,6 +1189,7 @@ public class CommandExecutorBenchmarks
 ### Prerequisites
 
 #### All Previous Phases (0-5)
+
 - Complete codebase
 - All patterns implemented
 - Tests passing
@@ -1166,12 +1198,14 @@ public class CommandExecutorBenchmarks
 ### Outputs
 
 #### Public Deliverables
+
 - NuGet packages on nuget.org
 - API documentation website
 - GitHub repository with samples
 - Getting started guides
 
 #### Community Resources
+
 - Contribution guidelines
 - Issue tracking
 - Community forum/Discord
@@ -1218,20 +1252,24 @@ public class CommandExecutorBenchmarks
 ### External References
 
 #### Documentation Tools
+
 - [DocFX Documentation](https://dotnet.github.io/docfx/)
 - [XML Documentation Comments](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/)
 - [SourceLink](https://github.com/dotnet/sourcelink)
 
 #### NuGet Packaging
+
 - [NuGet Package Creation](https://learn.microsoft.com/en-us/nuget/create-packages/creating-a-package)
 - [Semantic Versioning](https://semver.org/)
 - [GitVersion](https://gitversion.net/)
 
 #### Performance
+
 - [BenchmarkDotNet](https://benchmarkdotnet.org/)
 - [Performance Best Practices](https://learn.microsoft.com/en-us/dotnet/framework/performance/)
 
 #### Community
+
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [GitHub Flow](https://guides.github.com/introduction/flow/)
 - [Code of Conduct Template](https://www.contributor-covenant.org/)

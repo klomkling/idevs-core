@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - .NET solution structure with `Idevs` core library and `Idevs.Tests` test project
 - Guard class with `NotNull<T>` and `NotNullOrWhiteSpace` methods using .NET 8 helpers
 - IIdevsMarker interface for assembly identification
@@ -24,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Phase 0 completion summary document
 
 ### Changed
+
 - Accepted ADR-0002, ADR-0003, ADR-0004, and ADR-0005 (previously proposed)
 - Normalized formatting across all ADRs
 - Updated Phase 0 status to Complete in all documentation
@@ -31,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated context documentation with accurate phase tracking
 
 ### Documentation
+
 - Phase 0: ✅ Complete (Discovery & Guardrails)
 - Phase 1: Platform Scaffold & Build Infrastructure
 - Phase 2: Domain & Contracts
@@ -49,24 +52,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.1] - 2025-10-05
 
 ### Added
+
 - Initial commit with comprehensive documentation framework
 - Repository structure and Git configuration
 - Documentation tree with 40 files
 - CI/CD workflow definitions
 
 ### Changed
+
 - N/A
 
 ### Deprecated
+
 - N/A
 
 ### Removed
+
 - N/A
 
 ### Fixed
+
 - N/A
 
 ### Security
+
 - N/A
 
 ---

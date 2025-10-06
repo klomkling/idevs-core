@@ -40,6 +40,7 @@
 From Phase 0 Design Principles:
 
 > **"Explicit Over Magic"**
+>
 > - ✅ Explicit service registration
 > - ✅ Source generators acceptable
 > - ❌ Assembly scanning
@@ -219,13 +220,14 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 
 ## Frequently Asked Questions
 
-### Q: Why not use Scrutor? It's MIT licensed.
+### Q: Why not use Scrutor? It's MIT licensed
 
 **A**: Scrutor includes assembly scanning functionality, which conflicts with our "Explicit Over Magic" principle. While you don't have to use the scanning features, having them available goes against our design philosophy.
 
 ### Q: Isn't manual registration tedious?
 
 **A**: We provide helper methods (`AddCommandHandler`, `AddQueryHandler`) that reduce boilerplate. The explicitness is intentional and beneficial for:
+
 - IDE navigation (F12 works)
 - Compile-time safety
 - Clear dependency graph
@@ -234,6 +236,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 ### Q: Can I still use Autofac in my apps?
 
 **A**: Yes! Two ways:
+
 1. Use the optional `Idevs.DependencyInjection.Autofac` adapter package
 2. Register Idevs handlers manually in your Autofac modules
 

@@ -49,6 +49,7 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
 **Activity**: Document framework boundaries and non-goals
 
 **Deliverables**:
+
 - **discovery-summary.md** ✅ (already completed)
   - Stakeholders and first-party solutions (retail, billing, finance)
   - Tenant personas: Dedicated, Tiered Multi-Tenant, Offline-First, Regulated
@@ -56,12 +57,14 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
   - Business drivers and non-functional requirements
 
 **Key Decisions**:
+
 - ✅ Target .NET 8.0 LTS (with .NET 10.0 forward compatibility documented)
 - ✅ CQRS-first architecture without MediatR (direct handler invocation with decorators)
 - ✅ PostgreSQL-first persistence strategy
 - ✅ Avoid System.Reflection where possible (explicit registration or source generators)
 
 **Non-Goals** (explicitly out of scope):
+
 - ❌ Supporting non-relational primary databases (Postgres only; others via adapters)
 - ❌ Built-in UI components (framework is backend-focused)
 - ❌ Runtime plugin/module discovery (security and performance risk)
@@ -76,8 +79,9 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
 **Core Principles**:
 
 #### A. CQRS Without MediatR
+
 - **Principle**: Direct handler invocation with decorator pattern for cross-cutting concerns
-- **Rationale**: 
+- **Rationale**:
   - Simpler mental model (no pipeline abstraction)
   - Easier debugging (explicit call chains)
   - Avoid over-engineering for small-to-medium complexity
@@ -88,6 +92,7 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
   - Action filters for controller-level logic
 
 #### B. Domain-Driven Design (DDD)
+
 - **Principle**: Bounded contexts, aggregates, entities, value objects
 - **Enforcement**:
   - Clear aggregate boundaries (documented in phase-2-domain)
@@ -96,6 +101,7 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
   - Domain events for inter-aggregate communication
 
 #### C. Multi-Tenancy First
+
 - **Principle**: Every design must consider multi-tenant implications
 - **Default Strategy**: Row-level tenancy with `tenant_id` column
 - **Isolation Levels**:
@@ -105,6 +111,7 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
   - **PostgreSQL RLS**: Optional additional layer
 
 #### D. Test-Driven Development (TDD)
+
 - **Principle**: Tests are first-class citizens, not an afterthought
 - **Coverage Target**: ≥80% line coverage (enforced in CI)
 - **Testing Stack**:
@@ -114,6 +121,7 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
   - Testcontainers for integration tests (Postgres)
 
 #### E. Explicit Over Magic
+
 - **Principle**: Prefer explicit code over convention-based discovery
 - **Rationale**: Avoids System.Reflection, improves startup performance, better debugging
 - **Examples**:
@@ -123,6 +131,7 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
   - ❌ Attribute-based magic registration
 
 #### F. Observability Built-In
+
 - **Principle**: Telemetry is not optional
 - **Requirements**:
   - Structured logging (Serilog) with correlation IDs
@@ -139,6 +148,7 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
 **Deliverable**: **glossary.md** ✅ (already completed)
 
 **Key Terms**:
+
 - CQRS: Command Query Responsibility Segregation
 - Handler: Class responsible for processing a command or query
 - Decorator: Wrapper that adds behavior to a handler (validation, logging, etc.)
@@ -148,6 +158,7 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
 - Audit Trail: Immutable log of data changes
 
 **Style Guide**:
+
 - Use consistent capitalization (e.g., "Command Handler" not "command handler")
 - Define acronyms on first use
 - Link to glossary from all technical documents
@@ -161,14 +172,17 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
 **Deliverables**: Create 4 initial ADRs in `docs/context/adrs/`
 
 #### ADR-0001: Tenancy Strategy
+
 **Decision**: Row-level multi-tenancy via `tenant_id` column as default, with optional PostgreSQL RLS
 
 **Context**:
+
 - Need to support multiple tenants efficiently
 - Balance between cost (shared resources) and isolation (security)
 - Must support dedicated deployments for enterprise customers
 
 **Consequences**:
+
 - ✅ Cost-efficient (shared infrastructure)
 - ✅ Flexible (can migrate tenant to dedicated later)
 - ✅ Performance (single query can serve tenant)
@@ -176,24 +190,29 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
 - ⚠️ Risk of data leakage if filters missed (mitigated by RLS)
 
 **Alternatives Considered**:
+
 - Schema-per-tenant: More isolation but migration complexity
 - Database-per-tenant: Maximum isolation but operational overhead
 
-**Related Documents**: 
+**Related Documents**:
+
 - [Discovery Summary](../discovery-summary.md#tenant-personas)
 - [Threat Model](../threat-model.md#multi-tenant-isolation)
 
 ---
 
 #### ADR-0002: Audit Logging Strategy
+
 **Decision**: Structured audit trails via EF Core SaveChanges interceptors + Serilog
 
 **Context**:
+
 - Compliance requirements (SOC2, GDPR, HIPAA)
 - Need to track who changed what, when
 - Support both real-time monitoring and forensic analysis
 
 **Consequences**:
+
 - ✅ Automatic capture (developers don't need to remember)
 - ✅ Immutable append-only log
 - ✅ Tenant-aware (every change tagged with tenant_id)
@@ -201,6 +220,7 @@ Phase 0 establishes the **foundation** for the **Idevs** framework (repo: `idevs
 - ⚠️ PII considerations (must redact sensitive fields)
 
 **Implementation Pattern**:
+
 ```csharp
 public class AuditInterceptor : SaveChangesInterceptor
 {
@@ -232,21 +252,25 @@ public class AuditInterceptor : SaveChangesInterceptor
 ```
 
 **Related Documents**:
+
 - [Threat Model](../threat-model.md#audit-requirements)
 - [Observability Blueprint](../observability-blueprint.md#audit-trail)
 
 ---
 
 #### ADR-0003: Soft Delete Strategy
+
 **Decision**: Soft delete with `IsDeleted` flag + global query filters
 
 **Context**:
+
 - Users often "delete" data accidentally
 - Regulatory requirements may prohibit permanent deletion
 - Need to support undelete functionality
 - Must maintain referential integrity
 
 **Consequences**:
+
 - ✅ Data recovery possible
 - ✅ Audit trail of deletions
 - ✅ Supports compliance (data retention policies)
@@ -255,6 +279,7 @@ public class AuditInterceptor : SaveChangesInterceptor
 - ⚠️ Storage cost (deleted data retained)
 
 **Implementation Pattern**:
+
 ```csharp
 public interface ISoftDeletable
 {
@@ -275,27 +300,32 @@ modelBuilder.Entity<MyEntity>()
 ```
 
 **Purge Policy**:
+
 - Soft-deleted records retained for 90 days (configurable)
 - After retention period, eligible for hard delete (purge job)
 - Purge requires explicit approval for production tenants
 - Purge is audited with justification
 
 **Related Documents**:
+
 - [Discovery Summary](../discovery-summary.md#compliance-requirements)
 - [Phase 5: Infrastructure Plan](../phase-5-infrastructure/phase-5-infrastructure.md)
 
 ---
 
 #### ADR-0004: Release Governance & Versioning
+
 **Decision**: Git Flow + GitVersion + Conventional Commits
 
 **Context**:
+
 - Need predictable, automated versioning
 - Support multiple release streams (LTS, current)
 - Enable hotfixes without disrupting feature development
 - Generate release notes automatically
 
 **Branching Model**:
+
 ```
 main (production)
   ↑ merge (tagged releases only)
@@ -308,11 +338,13 @@ hotfix/security-patch
 ```
 
 **Version Bump Rules**:
+
 - **Major (x.0.0)**: Breaking changes to public API
 - **Minor (1.x.0)**: New features, backward compatible
 - **Patch (1.0.x)**: Bug fixes, no API changes
 
 **Conventional Commits**:
+
 ```
 feat: add tenant isolation middleware
 fix: resolve soft-delete query filter bug
@@ -323,6 +355,7 @@ BREAKING CHANGE: ICommandHandler signature changed
 ```
 
 **GitVersion Configuration** (documented, not implemented):
+
 ```yaml
 # GitVersion.yml (future implementation)
 mode: ContinuousDeployment
@@ -339,6 +372,7 @@ branches:
 ```
 
 **Hotfix Protocol**:
+
 1. Branch from `develop` (not `main`)
 2. Implement fix with tests
 3. Merge to `develop` first
@@ -347,11 +381,13 @@ branches:
 6. **Changed**: Hotfixes follow feature flow (merge to develop, then release branch to main)
 
 **Support Windows**:
+
 - **Current**: Latest major.minor version, full support
 - **LTS**: Designated versions, security fixes only (18 months)
 - **EOL**: End-of-life versions, no support
 
 **Related Documents**:
+
 - [CQRS Framework Plan](../cqrs-framework-plan.md#versioning-strategy)
 - [Phase 1: Platform Plan](../phase-1-platform/phase-1-platform.md)
 
@@ -364,6 +400,7 @@ branches:
 **Deliverable**: **threat-model.md** ✅ (already completed)
 
 **Key Threats**:
+
 1. **Cross-Tenant Data Leakage** (Spoofing, Information Disclosure)
    - Mitigation: Global query filters + optional RLS
    - Validation: Automated tests for tenant isolation
@@ -381,6 +418,7 @@ branches:
    - Validation: Pre-commit hooks + secret scanning
 
 **ASVS Checklist** (Level 2 compliance):
+
 - [x] V1: Architecture, Design, and Threat Modeling
 - [ ] V2: Authentication (planned in Phase 4)
 - [ ] V3: Session Management (planned in Phase 4)
@@ -398,6 +436,7 @@ branches:
 **Deliverable**: **observability-blueprint.md** ✅ (already completed)
 
 **Key Requirements**:
+
 - **Logging**: Structured logs with Serilog, correlation IDs, PII redaction
 - **Tracing**: OpenTelemetry with W3C Trace Context, automatic instrumentation
 - **Metrics**: RED metrics (Request rate, Error rate, Duration) per command/query
@@ -405,6 +444,7 @@ branches:
 - **Alerts**: Critical (page immediately), Warning (investigate), Info (awareness)
 
 **SLO Targets**:
+
 - Availability (Dedicated): 99.9% (43 min downtime/month)
 - Availability (Multi-tenant): 99.5% (3.6 hrs downtime/month)
 - P99 Latency: <150ms
@@ -452,40 +492,48 @@ branches:
 ## Risks & Mitigations
 
 ### Risk 1: Stakeholder Misalignment
+
 **Impact**: High  
 **Probability**: Medium  
 **Symptom**: Conflicting priorities, scope creep  
 **Mitigation**:
+
 - Hold alignment workshop with all stakeholders
 - Document explicit sign-offs
 - Create RACI matrix (Responsible, Accountable, Consulted, Informed)
 - Schedule monthly steering committee meetings
 
 ### Risk 2: Over-Engineering
+
 **Impact**: Medium  
 **Probability**: Medium  
 **Symptom**: Complex abstractions, slow progress  
 **Mitigation**:
+
 - Validate designs against discovery personas and scenarios
 - "Two-way door" principle: prefer reversible decisions
 - Defer optimization until proven need
 - Regular architecture review with "can we simplify?" lens
 
 ### Risk 3: Insufficient Security Analysis
+
 **Impact**: High  
 **Probability**: Low  
 **Symptom**: Vulnerabilities discovered late  
 **Mitigation**:
+
 - Threat model review by security team (external if available)
 - STRIDE analysis for each trust boundary
 - Security champion assigned to each phase
 - Penetration testing budget allocated
 
 ### Risk 4: Documentation Drift
+
 **Impact**: Medium  
 **Probability**: High  
 **Symptom**: Docs out of sync with decisions  
 **Mitigation**:
+
 - ADR process enforced (no design decision without ADR)
 - Documentation updates in PR checklist
 - Quarterly documentation review
@@ -498,6 +546,7 @@ branches:
 Phase 0 is **complete** when:
 
 ### Must Have (Blocking)
+
 - [x] **Discovery summary** finalized and approved by stakeholders
 - [x] **Glossary** published and cross-referenced in all docs
 - [x] **Threat model** baseline approved by security lead
@@ -507,11 +556,13 @@ Phase 0 is **complete** when:
 - [x] **Stakeholder sign-off** obtained (solo developer: documented self-approval 2025-10-05)
 
 ### Should Have (Non-Blocking)
+
 - [ ] Architecture review workshop conducted
 - [ ] Initial risk register created with owners
 - [ ] Onboarding guide for new contributors drafted
 
 ### Nice to Have (Future)
+
 - [ ] Demo of discovery findings to broader team
 - [ ] Blog post on "Why we're not using MediatR"
 - [ ] Comparison matrix with idevs-foundation
@@ -523,18 +574,21 @@ Phase 0 is **complete** when:
 Use this checklist to track progress within Phase 0:
 
 ### Scope & Guardrails
+
 - [x] Framework scope documented
 - [x] Non-goals explicitly stated
 - [x] Constraints captured (PostgreSQL, no reflection)
 - [x] Relation to other projects clarified
 
 ### Stakeholders & Personas
+
 - [x] Stakeholders identified and contacted
 - [x] Tenant personas defined (4 types)
 - [x] Primary scenarios prioritized
 - [x] Acceptance criteria for each scenario
 
 ### Design Principles
+
 - [x] CQRS approach decided (no MediatR)
 - [x] DDD patterns documented
 - [x] Multi-tenancy strategy outlined
@@ -542,26 +596,29 @@ Use this checklist to track progress within Phase 0:
 - [x] Observability requirements defined
 
 ### Governance
+
 - [x] ADR process established
 - [x] ADR-0001 through ADR-0005 drafted and accepted
 - [x] Review cadence scheduled (weekly during active phases)
 - [x] Sign-off workflow defined (solo developer: documented self-approval)
 
 **Notes on Governance**:
+
 - **Git Flow**: Adopted (main/develop branches, feature branches, PRs)
 - **GitVersion**: Configured with Conventional Commits for automated versioning
 - **CI/CD**: Build, test with ≥80% branch coverage, automated releases
 - **Central Package Management**: Directory.Packages.props for version control
 - **Solo Developer Process**: As a solo developer project, stakeholder sign-off is documented self-approval with clear rationale and date logging (2025-10-05)
 
-
 ### Security & Compliance
+
 - [x] Threat model baseline created
 - [x] STRIDE analysis completed
 - [x] ASVS checklist initialized
 - [ ] Security champion assigned
 
 ### Documentation
+
 - [x] Glossary published
 - [x] Discovery summary completed
 - [x] Observability blueprint completed
@@ -573,9 +630,11 @@ Use this checklist to track progress within Phase 0:
 ## Dependencies & Relationships
 
 ### Prerequisites
+
 - None (Phase 0 is the foundation)
 
 ### Outputs to Other Phases
+
 - **Phase 1 (Platform)**: Versioning strategy (ADR-0004), build requirements
 - **Phase 2 (Domain)**: Design principles, DDD patterns, testing strategy
 - **Phase 3 (Application)**: CQRS approach, tenant context requirements
@@ -584,6 +643,7 @@ Use this checklist to track progress within Phase 0:
 - **Phase 6 (Release)**: Release governance (ADR-0004), documentation standards
 
 ### External Dependencies
+
 - Stakeholder availability for sign-off meetings
 - Security team review capacity for threat model
 - Legal review (optional) for compliance requirements
@@ -604,6 +664,7 @@ Use this checklist to track progress within Phase 0:
 ## References
 
 ### Internal Documents
+
 - [Discovery Summary](../discovery-summary.md)
 - [CQRS Framework Plan](../cqrs-framework-plan.md)
 - [Glossary](../glossary.md)
@@ -612,6 +673,7 @@ Use this checklist to track progress within Phase 0:
 - [AGENTS.md](../../AGENTS.md)
 
 ### External References
+
 - [STRIDE Threat Modeling](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats)
 - [ASVS 4.0](https://owasp.org/www-project-application-security-verification-standard/)
 - [Multi-Tenancy Patterns](https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/overview)
@@ -667,7 +729,9 @@ Week 4: Review & Sign-off
 **Sign-off**: Documented self-approval (solo developer context)
 
 ### Summary
+
 Phase 0 has been successfully completed with all exit criteria met:
+
 - ✅ All foundational ADRs accepted (ADR-0001 through ADR-0005)
 - ✅ Solution structure created with build system operational
 - ✅ CI/CD workflows configured (build, test, release)
@@ -676,11 +740,13 @@ Phase 0 has been successfully completed with all exit criteria met:
 - ✅ Documentation complete with cross-references validated
 
 ### Deviations Accepted
+
 1. **Solo Developer Sign-off**: Self-approval documented with rationale (2025-10-05)
 2. **NuGet Configuration**: Added NuGet.config to restrict package sources
 3. **Warning Suppression**: NU1604 and NU1701 suppressed for CPM compatibility
 
 ### Artifacts Delivered
+
 - Solution with `src/Idevs` and `tests/Idevs.Tests` projects
 - Central Package Management (Directory.Packages.props)
 - Shared build configuration (Directory.Build.props)
@@ -696,4 +762,3 @@ Phase 0 has been successfully completed with all exit criteria met:
 See [Phase 0 Completion Summary](./phase-0-completion-summary.md) for full details.
 
 **Ready to proceed to Phase 1: Core Domain Abstractions**
-

@@ -29,6 +29,7 @@ This document defines the observability strategy for the **Idevs** framework (re
 ### Correlation Strategy
 
 All three pillars are correlated via:
+
 - **Correlation ID**: Unique per request, propagated across all components
 - **Tenant ID**: Multi-tenant context for filtering and isolation
 - **User ID**: Actor identification (when authenticated)
@@ -586,6 +587,7 @@ Every dashboard should answer these four questions:
 ##### Queries (Prometheus/Grafana)
 
 **Request Rate (Time Series)**:
+
 ```promql
 # Total commands per second
 sum(rate(commands_executed_total[5m]))
@@ -595,6 +597,7 @@ sum by (command_type) (rate(commands_executed_total[5m]))
 ```
 
 **Error Rate Percentage (Gauge + Graph)**:
+
 ```promql
 # Current error rate
 (
@@ -608,6 +611,7 @@ sum by (command_type) (rate(commands_executed_total[5m]))
 ```
 
 **Latency Percentiles (Multi-line Graph)**:
+
 ```promql
 # P50 latency
 histogram_quantile(0.50, sum by (le) (rate(commands_duration_bucket[5m])))
@@ -623,12 +627,14 @@ histogram_quantile(0.99, sum by (le) (rate(commands_duration_bucket[5m])))
 ```
 
 **Top Commands by Volume (Table)**:
+
 ```promql
 # Top 10 most executed commands
 topk(10, sum by (command_type) (rate(commands_executed_total[5m])))
 ```
 
 **Slowest Operations (Table)**:
+
 ```promql
 # Average duration by command type (only >100ms)
 topk(10, 
@@ -643,6 +649,7 @@ topk(10,
 ```
 
 **Active Connections**:
+
 ```promql
 # Current active HTTP connections
 sum(aspnetcore_connections_active)
@@ -652,6 +659,7 @@ sum(db_connection_pool_size)
 ```
 
 **Memory Usage (Gauge)**:
+
 ```promql
 # Current process memory in MB
 process_memory_bytes / 1024 / 1024
@@ -669,6 +677,7 @@ rate(dotnet_gc_collections_total[1m])
 **Target Audience**: Product managers, customer success, operations
 
 **Key Concerns**:
+
 - Noisy neighbor detection
 - Tenant-specific performance degradation
 - Usage patterns for billing
@@ -704,6 +713,7 @@ rate(dotnet_gc_collections_total[1m])
 ##### Queries (Prometheus/Grafana)
 
 **Top Tenants by Request Volume**:
+
 ```promql
 # Top 10 most active tenants (last 1 hour)
 topk(10, sum by (tenant_id) (rate(commands_executed_total[1h])))
@@ -717,6 +727,7 @@ topk(10,
 ```
 
 **Error Rate by Tenant**:
+
 ```promql
 # Tenants with error rate > 1%
 (
@@ -734,6 +745,7 @@ topk(20,
 ```
 
 **Resource Consumption by Tenant**:
+
 ```promql
 # Database query time per tenant (in seconds)
 sum by (tenant_id) (rate(db_query_duration_sum{tenant_id!=""}[5m]))
@@ -743,6 +755,7 @@ sum by (tenant_id) (rate(tenant_memory_allocated_bytes[5m]))
 ```
 
 **Latency Percentiles by Tenant Tier**:
+
 ```promql
 # P99 latency for Enterprise tier
 histogram_quantile(
@@ -762,6 +775,7 @@ histogram_quantile(
 ```
 
 **Noisy Neighbor Detection**:
+
 ```promql
 # Tenants consuming >10% of total database time
 (
@@ -809,6 +823,7 @@ histogram_quantile(
 ##### Queries (Prometheus)
 
 **Connection Pool Utilization**:
+
 ```promql
 # Current active connections
 db_connection_pool_active
@@ -823,6 +838,7 @@ db_connection_pool_size
 ```
 
 **Query Duration Percentiles**:
+
 ```promql
 # P50, P95, P99 of all queries
 histogram_quantile(0.50, rate(db_query_duration_bucket[5m]))
@@ -831,6 +847,7 @@ histogram_quantile(0.99, rate(db_query_duration_bucket[5m]))
 ```
 
 **Slow Query Count**:
+
 ```promql
 # Queries taking longer than 100ms
 sum(rate(db_query_duration_bucket{le="100"}[5m])) 
@@ -842,6 +859,7 @@ sum(rate(db_slow_queries_total[5m]))
 ```
 
 **Query Rate by Operation**:
+
 ```promql
 # Queries per second by type
 sum by (operation) (rate(db_queries_total[5m]))
@@ -850,6 +868,7 @@ sum by (operation) (rate(db_queries_total[5m]))
 ```
 
 **Deadlock Detection** (requires custom instrumentation):
+
 ```promql
 # Deadlock events
 increase(db_deadlocks_total[1h])
@@ -902,6 +921,7 @@ Too many false positives train teams to ignore alerts. Use appropriate threshold
 Alert on user-visible problems (high latency, errors) rather than implementation details (high CPU).
 
 **Rule #4: Use Severity Appropriately**
+
 - **Critical**: Page immediately, user-facing outage or data loss risk
 - **Warning**: Investigate during business hours, potential issue
 - **Info**: For awareness, no action required
@@ -951,11 +971,13 @@ These alerts indicate **active user impact** or **imminent system failure**.
 ```
 
 **Why this threshold?**
+
 - 5% error rate means 1 in 20 requests fail—significant user impact
 - `for: 2m` prevents false positives from brief spikes
 - Shorter than SLO violation (we want to catch issues before SLO breach)
 
 **Common causes**:
+
 - Recent deployment with bugs
 - Database connectivity issues
 - External service outage (payment gateway, email provider)
@@ -992,6 +1014,7 @@ These alerts indicate **active user impact** or **imminent system failure**.
 ```
 
 **Why P99 and not P50?**
+
 - P99 captures the worst user experience (1 in 100 requests)
 - P50 can look good while some users have terrible experience
 - 1 second is a psychological threshold for user frustration
@@ -1053,6 +1076,7 @@ These alerts indicate **active user impact** or **imminent system failure**.
 ```
 
 **Why 1 minute?**
+
 - Security violations require immediate response
 - No false positives expected (this should NEVER happen)
 - Part of ASVS compliance requirement
@@ -1280,6 +1304,7 @@ These alerts indicate **potential problems** that should be investigated but don
 **Stack**: Prometheus + Grafana + Alertmanager
 
 **Pros**:
+
 - Industry standard, battle-tested
 - Rich ecosystem of exporters and integrations
 - Excellent query language (PromQL)
@@ -1287,6 +1312,7 @@ These alerts indicate **potential problems** that should be investigated but don
 - Alertmanager handles complex routing and silencing
 
 **Cons**:
+
 - Separate infrastructure to maintain
 - Learning curve for PromQL
 - Additional cost (hosting, cloud services)
@@ -1391,6 +1417,7 @@ app.Run();
 ```
 
 **Package Required**:
+
 ```bash
 dotnet add package OpenTelemetry.Exporter.Prometheus.AspNetCore
 ```
@@ -1400,12 +1427,14 @@ dotnet add package OpenTelemetry.Exporter.Prometheus.AspNetCore
 #### Option 2: Internal Dashboard (Built-in .NET Metrics)
 
 **Use Case**: Lightweight monitoring without external infrastructure, suitable for:
+
 - Development/staging environments
 - Small deployments
 - Internal tooling
 - Teams preferring embedded solutions
 
 **Pros**:
+
 - No external dependencies (uses built-in System.Diagnostics.Metrics)
 - Embedded in application
 - Easy authentication (use existing auth)
@@ -1413,6 +1442,7 @@ dotnet add package OpenTelemetry.Exporter.Prometheus.AspNetCore
 - Apache 2.0 license (safe for commercial use)
 
 **Cons**:
+
 - Limited scalability
 - Manual implementation effort
 - Less sophisticated than Grafana
@@ -1423,6 +1453,7 @@ dotnet add package OpenTelemetry.Exporter.Prometheus.AspNetCore
 **1. No Additional Packages Required**:
 
 Uses built-in .NET libraries:
+
 - `System.Diagnostics.Metrics` (included in .NET 8+)
 - `System.Diagnostics.DiagnosticSource` (included in .NET 8+)
 - `Microsoft.AspNetCore.Diagnostics.HealthChecks` (MIT license)
@@ -2182,17 +2213,20 @@ builder.Services.AddHostedService<AlertMonitoringService>();
 ### Recommendation
 
 **For Production**: Use **Prometheus + Grafana + Alertmanager**
+
 - Industry standard, battle-tested
 - Rich ecosystem and community support
 - Better for multi-service architectures
 
 **For Development/Staging**: Start with **Internal Dashboard**
+
 - Faster initial setup
 - No external dependencies
 - Easy to iterate and customize
 - Can migrate to Prometheus later
 
 **Hybrid Approach** (Best of Both):
+
 1. Expose Prometheus metrics endpoint (`/metrics`)
 2. Build lightweight internal dashboard for quick checks
 3. Use Grafana for detailed analysis
@@ -2212,6 +2246,7 @@ builder.Services.AddHostedService<AlertMonitoringService>();
 | Error Rate | < 0.1% | 0.1% of requests |
 
 **Error Budget Calculation**:
+
 ```promql
 # Remaining error budget percentage
 100 - ((1 - (sum(rate(http_requests_total{status!~"5.."}[30d])) / sum(rate(http_requests_total[30d])))) / (1 - 0.999)) * 100
@@ -2301,6 +2336,7 @@ public class SamplingEnricher : ILogEventEnricher
 ## Implementation Checklist
 
 ### Logging
+
 - [ ] Serilog configured with structured logging
 - [ ] Correlation ID enricher implemented
 - [ ] Tenant context enricher implemented
@@ -2310,6 +2346,7 @@ public class SamplingEnricher : ILogEventEnricher
 - [ ] Console, File, and remote sinks configured
 
 ### Tracing
+
 - [ ] OpenTelemetry configured with W3C Trace Context
 - [ ] ASP.NET Core automatic instrumentation enabled
 - [ ] EF Core automatic instrumentation enabled
@@ -2318,6 +2355,7 @@ public class SamplingEnricher : ILogEventEnricher
 - [ ] Traces exported to Jaeger/Zipkin/AppInsights
 
 ### Metrics
+
 - [ ] RED metrics implemented for all handlers
 - [ ] Domain-specific metrics defined
 - [ ] Resource metrics (DB, memory, connections) tracked
@@ -2325,6 +2363,7 @@ public class SamplingEnricher : ILogEventEnricher
 - [ ] Tenant tags applied to all metrics
 
 ### Dashboards & Alerts
+
 - [ ] Service health dashboard created
 - [ ] Multi-tenant dashboard created
 - [ ] Database performance dashboard created

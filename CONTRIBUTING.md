@@ -45,6 +45,7 @@ git push -u origin feature/your-feature-name
 ```
 
 **Branch Naming Conventions**:
+
 - `feature/` - New features or enhancements
 - `hotfix/` - Emergency bug fixes
 - `release/` - Release preparation branches
@@ -63,6 +64,7 @@ All commits **must** follow [Conventional Commits](https://www.conventionalcommi
 ```
 
 **Types**:
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -74,6 +76,7 @@ All commits **must** follow [Conventional Commits](https://www.conventionalcommi
 - `build`: Build system changes
 
 **Examples**:
+
 ```bash
 feat(core): add Guard class for input validation
 fix(data): resolve soft-delete query filter issue
@@ -83,6 +86,7 @@ chore: bump Microsoft.Extensions.DependencyInjection to 8.0.1
 ```
 
 **Breaking Changes**:
+
 ```bash
 feat!: change ICommandHandler signature
 
@@ -98,6 +102,7 @@ We follow the **Red → Green → Refactor** cycle:
 3. **Refactor**: Improve code while keeping tests green
 
 **Coverage Requirements**:
+
 - **≥80% branch coverage** enforced in CI
 - Tests must be added for all new features
 - Bug fixes should include regression tests
@@ -114,6 +119,7 @@ We follow the **Red → Green → Refactor** cycle:
 ### C# Language Features
 
 **Prefer Modern C# Features**:
+
 - ✅ Primary constructors
 - ✅ Collection expressions (`[]`, `[item1, item2]`)
 - ✅ Pattern matching (`is`, `switch` expressions)
@@ -122,6 +128,7 @@ We follow the **Red → Green → Refactor** cycle:
 - ✅ Records for immutable data
 
 **Avoid**:
+
 - ❌ `System.Reflection` (use explicit registration or source generators)
 - ❌ Magic strings and convention-based discovery
 - ❌ Assembly scanning for service registration
@@ -152,11 +159,13 @@ All package versions are managed in `Directory.Packages.props`. **Do not** add `
 To add a new package:
 
 1. Add the version to `Directory.Packages.props`:
+
    ```xml
    <PackageVersion Include="NewPackage" Version="1.2.3" />
    ```
 
 2. Reference it in your project without version:
+
    ```xml
    <PackageReference Include="NewPackage" />
    ```
@@ -223,6 +232,7 @@ dotnet test --logger "console;verbosity=detailed"
 ### Before Opening a PR
 
 1. **Sync with develop**:
+
    ```bash
    git checkout develop
    git pull origin develop
@@ -231,6 +241,7 @@ dotnet test --logger "console;verbosity=detailed"
    ```
 
 2. **Run local checks**:
+
    ```bash
    dotnet restore
    dotnet build
@@ -311,6 +322,7 @@ Significant design decisions must be documented as ADRs in `docs/context/adrs/`.
 ### When to Create an ADR
 
 Create an ADR when:
+
 - Making a significant architectural choice
 - Choosing between multiple approaches
 - Establishing a new pattern or convention

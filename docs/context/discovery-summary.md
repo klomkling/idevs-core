@@ -11,13 +11,15 @@ This document captures the results of the discovery phase for the **Idevs** fram
 ## Stakeholders
 
 ### Product Owner
-- **Responsibilities**: 
+
+- **Responsibilities**:
   - Shapes multi-solution roadmap (retail, billing, accounting)
   - Defines tenant onboarding priorities and offline-first requirements
   - Aligns feature roadmap with business objectives
   - Prioritizes scenarios based on first-party solution needs
 
 ### Platform Engineering
+
 - **Responsibilities**:
   - Owns infrastructure automation and GitHub workflows
   - Manages GitVersion governance and semantic versioning
@@ -25,6 +27,7 @@ This document captures the results of the discovery phase for the **Idevs** fram
   - Ensures build and deployment pipeline reliability
 
 ### Security & Compliance
+
 - **Responsibilities**:
   - Ensures ASVS Level 2 adherence across all components
   - Defines audit logging coverage and retention policies
@@ -32,6 +35,7 @@ This document captures the results of the discovery phase for the **Idevs** fram
   - Reviews tenant isolation strategies and data protection controls
 
 ### Developer Experience
+
 - **Responsibilities**:
   - Represents consumer teams integrating WebAPI and GraphQL endpoints
   - Advocates for clean APIs and intuitive abstractions
@@ -39,6 +43,7 @@ This document captures the results of the discovery phase for the **Idevs** fram
   - Documents consumption patterns and usage examples
 
 ### Operations
+
 - **Responsibilities**:
   - Manages deployment, tenant configuration, and monitoring
   - Handles support rotations and incident escalation
@@ -50,6 +55,7 @@ This document captures the results of the discovery phase for the **Idevs** fram
 The **Idevs** framework powers these first-party SaaS and ERP solutions:
 
 ### Multi-Store Retail Management
+
 - Inventory tracking across multiple locations
 - Point-of-sale (POS) integration with offline support
 - Multi-currency pricing and promotion management
@@ -57,6 +63,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 - Customer loyalty programs and gift card management
 
 ### Subscription Billing Platforms
+
 - Recurring billing with flexible pricing models (flat, tiered, usage-based)
 - Subscription lifecycle management (trials, upgrades, downgrades, cancellations)
 - Invoice generation and payment processing
@@ -64,6 +71,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 - Dunning management and payment retry logic
 
 ### Accounting & Finance Suites
+
 - General ledger and chart of accounts management
 - Accounts payable and receivable automation
 - Multi-currency support with real-time exchange rates
@@ -78,6 +86,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 **Profile**: Enterprise customers with strict data isolation and compliance requirements.
 
 **Characteristics**:
+
 - Isolated database or dedicated schema
 - Custom SLA guarantees (99.9%+ uptime)
 - Fine-grained audit trails with extended retention
@@ -85,12 +94,14 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 - Dedicated support channels
 
 **Needs**:
+
 - Guaranteed performance with no noisy neighbor issues
 - Data residency controls (specific geographic regions)
 - Custom backup and disaster recovery policies
 - Ability to schedule maintenance windows
 
 **Risks**:
+
 - Higher infrastructure costs
 - Complexity in multi-tenant deployment automation
 - Schema migration coordination challenges
@@ -102,6 +113,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 **Profile**: Small to medium businesses sharing infrastructure with logical isolation.
 
 **Characteristics**:
+
 - Shared database with row-level security
 - Standard SLA (99.5% uptime)
 - Cost-optimized infrastructure
@@ -109,12 +121,14 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 - Throttling and rate limiting per tenant tier
 
 **Needs**:
+
 - Predictable pricing and transparent resource allocation
 - Self-service tenant configuration
 - Ability to upgrade tiers seamlessly
 - Fair resource allocation to prevent tenant starvation
 
 **Risks**:
+
 - Tenant data leakage through misconfiguration
 - Performance degradation from resource contention
 - Complexity in tenant-level billing and metering
@@ -126,12 +140,14 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 **Profile**: Mobile or field devices requiring resilient operation without connectivity.
 
 **Characteristics**:
+
 - Retail associates with mobile POS devices
 - Field technicians with tablets
 - Warehouse staff with handheld scanners
 - Remote kiosks with intermittent connectivity
 
 **Needs**:
+
 - Delta sync endpoints with conflict detection
 - Retry-aware throttling policies
 - Offline data caching with automatic sync on reconnect
@@ -139,6 +155,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 - Background sync with progress indication
 
 **Risks**:
+
 - Sync conflicts with concurrent modifications
 - Data loss during network failures
 - Increased complexity in state management
@@ -151,6 +168,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 **Profile**: Organizations subject to strict regulatory compliance (healthcare, finance, government).
 
 **Characteristics**:
+
 - Extended audit retention (7+ years)
 - Immutable audit logs with cryptographic verification
 - Data residency enforcement
@@ -158,6 +176,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 - Regular compliance reporting and attestation
 
 **Needs**:
+
 - Automated compliance reporting (SOC 2, HIPAA, GDPR)
 - Rapid incident notifications with detailed forensics
 - Role-based access control (RBAC) with least privilege
@@ -165,6 +184,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 - Data anonymization and pseudonymization capabilities
 
 **Risks**:
+
 - High operational overhead for compliance maintenance
 - Audit log storage costs
 - Complexity in right-to-erasure implementation (GDPR)
@@ -178,6 +198,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 **Description**: Ensure complete data isolation between tenants across all layers (database, cache, logs, backups).
 
 **Success Criteria**:
+
 - [ ] Zero cross-tenant data leakage incidents
 - [ ] Tenant filters applied automatically at repository level
 - [ ] Query plan analysis confirms tenant predicate pushdown
@@ -185,6 +206,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 - [ ] Cache keys include tenant identifiers
 
 **Acceptance Tests**:
+
 - Attempt to query another tenant's data (should return empty results)
 - Verify tenant_id filters in all generated SQL queries
 - Test soft-delete filters with multi-tenant data
@@ -195,6 +217,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 **Description**: Commands execute reliably with idempotency, retries, and graceful degradation.
 
 **Success Criteria**:
+
 - [ ] Commands complete within P99 latency targets (<150ms nominal load)
 - [ ] Duplicate command submissions are idempotent
 - [ ] Transient failures trigger automatic retries with exponential backoff
@@ -202,6 +225,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 - [ ] Dead letter queue captures failed commands for manual review
 
 **Acceptance Tests**:
+
 - Submit duplicate commands with same idempotency key (verify single execution)
 - Introduce database transient errors (verify automatic retry)
 - Simulate downstream service failure (verify circuit breaker activation)
@@ -212,6 +236,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 **Description**: Offline clients synchronize changes with conflict detection and resolution.
 
 **Success Criteria**:
+
 - [ ] Delta feeds include only changed entities since last sync token
 - [ ] Concurrent modifications detected via optimistic concurrency (ETags, version numbers)
 - [ ] Conflict resolution strategies configurable (last-write-wins, manual, custom)
@@ -219,6 +244,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 - [ ] Background sync with progress tracking and error reporting
 
 **Acceptance Tests**:
+
 - Modify same entity offline on two clients, sync both (verify conflict detection)
 - Interrupt sync midway, resume (verify resumption from last checkpoint)
 - Sync large dataset, measure throughput and resource usage
@@ -229,6 +255,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 **Description**: Comprehensive audit logging with tenant awareness and compliance export.
 
 **Success Criteria**:
+
 - [ ] All commands and queries logged with tenant, user, correlation IDs
 - [ ] Audit events include before/after snapshots for data changes
 - [ ] PII redacted automatically in logs per data classification policy
@@ -237,6 +264,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 - [ ] Retention policy enforced with automated purging after defined period
 
 **Acceptance Tests**:
+
 - Execute commands, verify audit entries with all required metadata
 - Attempt to modify audit log (verify immutability)
 - Export audit trail for specific tenant and date range
@@ -245,31 +273,37 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 ## Business Drivers
 
 ### Velocity
+
 - **Goal**: Reduce time-to-market for new SaaS/ERP features by 40%
 - **Measure**: Feature delivery cycle time from concept to production
 - **Enablers**: Pre-built CQRS handlers, repository patterns, multi-tenancy abstractions, decorator patterns
 
 ### Reliability
+
 - **Goal**: Achieve 99.9% uptime for dedicated tenants, 99.5% for tiered multi-tenant
 - **Measure**: Service availability, mean time to recovery (MTTR)
 - **Enablers**: Circuit breakers, retries, idempotency, health checks, chaos testing
 
 ### Observability
+
 - **Goal**: Mean time to detection (MTTD) < 5 minutes for critical incidents
 - **Measure**: Alert latency, dashboard coverage, trace completeness
 - **Enablers**: Structured logging (Serilog), distributed tracing (OpenTelemetry), RED metrics
 
 ### Performance
+
 - **Goal**: P99 command latency < 150ms under nominal load
 - **Measure**: Command processing time, database query duration, cache hit ratio
 - **Enablers**: Repository-level caching, optimized EF Core queries, database indexing
 
 ### Cost Efficiency
+
 - **Goal**: Reduce infrastructure costs by 30% through resource optimization
 - **Measure**: Cost per tenant, database storage growth rate, compute utilization
 - **Enablers**: Multi-tenant shared infrastructure, tiered resource allocation, soft-delete purging
 
 ### Developer Experience
+
 - **Goal**: New developers productive within 2 days
 - **Measure**: Time to first contribution, API satisfaction score
 - **Enablers**: Clear abstractions, comprehensive documentation, usage examples, strong typing
@@ -277,6 +311,7 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 ## Non-Functional Goals
 
 ### Security
+
 - ASVS Level 2 compliance across all components
 - Secrets never committed to repository (use managed secret stores)
 - Input validation at application layer with FluentValidation
@@ -284,12 +319,14 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 - Supply chain security (dependency scanning, SCA tools)
 
 ### Scalability
+
 - Horizontal scaling with stateless components
 - Per-tenant configuration overrides (rate limits, feature flags)
 - Database read replicas for query load distribution
 - Caching strategy to reduce database load
 
 ### Maintainability
+
 - ≥80% branch coverage with xUnit, Shouldly, NSubstitute
 - Modular pipeline components with clear extension points
 - Comprehensive XML documentation for public APIs
@@ -300,14 +337,16 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 ### Technical Constraints
 
 #### No System.Reflection (Where Possible)
+
 - **Rationale**: Avoid runtime reflection for performance and ahead-of-time (AOT) compilation compatibility
-- **Alternatives**: 
+- **Alternatives**:
   - Incremental source generators for service registration
   - Explicit registration with open generics
   - Compile-time code generation (e.g., Mapperly for object mapping)
 - **Exceptions**: Limited reflection allowed in test fixtures and developer tools
 
 #### PostgreSQL-First EF Core Approach
+
 - **Rationale**: PostgreSQL as primary database; SQL Server/MySQL support as optional extensions
 - **Implications**:
   - Leverage PostgreSQL-specific features (JSONB, row-level security, generated columns)
@@ -318,18 +357,21 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 ### Process Constraints
 
 #### Git Flow Branching Model
+
 - `main` branch: production-ready releases only
 - `develop` branch: integration branch for features
 - `feature/*`, `hotfix/*`, `release/*` branches per Git Flow conventions
 - Pull requests require approval and passing CI before merge
 
 #### Conventional Commits
+
 - Commit messages follow Conventional Commits specification
 - Format: `<type>(<scope>): <subject>`
 - Types: `feat`, `fix`, `docs`, `chore`, `test`, `refactor`, `perf`, `ci`
 - Enables GitVersion to calculate semantic versions automatically
 
 #### Coverage Target
+
 - ≥80% branch coverage required for all new code
 - Coverage reports published in CI artifacts
 - Coverage gates enforced in pull request checks
@@ -337,21 +379,25 @@ The **Idevs** framework powers these first-party SaaS and ERP solutions:
 ## Open Questions
 
 ### Hosting Strategy
+
 - [ ] Finalize guidance for single-tenant vs shared deployments
 - [ ] Determine Kubernetes vs serverless deployment model
 - [ ] Define infrastructure-as-code (IaC) tooling (Terraform, Pulumi, Bicep)
 
 ### Legal & Compliance
+
 - [ ] Confirm audit log retention periods per jurisdiction
 - [ ] Validate GDPR right-to-erasure with soft-delete strategy
 - [ ] Determine data residency requirements by region
 
 ### Offline Sync Format
+
 - [ ] Finalize delta sync payload format (custom, JSON Patch, OData)
 - [ ] Validate offline sync format with pilot consumer applications
 - [ ] Define conflict resolution UI patterns for end users
 
 ### Incident Management
+
 - [ ] Establish incident notification SLAs with operations and compliance
 - [ ] Define tenant-specific communication protocols during outages
 - [ ] Create runbooks for common incident scenarios

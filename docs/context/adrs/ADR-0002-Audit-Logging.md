@@ -18,7 +18,7 @@ The Idevs framework must provide comprehensive audit logging to meet compliance 
    - Track all data modifications (who, what, when, where)
    - Immutable audit trails
    - Log retention for defined periods
-   
+
 2. **GDPR** - General Data Protection Regulation
    - Right to access (provide audit trail of data access)
    - Right to erasure (track deletion requests)
@@ -37,6 +37,7 @@ The Idevs framework must provide comprehensive audit logging to meet compliance 
 ### Multi-Tenant Considerations
 
 From [ADR-0001 Tenancy Strategy](./ADR-0001-Tenancy-Strategy.md):
+
 - Every audit entry must include `tenant_id`
 - Cross-tenant audit queries prohibited
 - Tenant-specific retention policies required
@@ -45,6 +46,7 @@ From [ADR-0001 Tenancy Strategy](./ADR-0001-Tenancy-Strategy.md):
 ### Regulated Tenant Persona Requirements
 
 From [Discovery Summary - Regulated Tenant](../discovery-summary.md#4-regulated-tenant):
+
 - Extended retention (7+ years)
 - Immutable logs with cryptographic verification
 - Rapid incident notifications
@@ -54,11 +56,13 @@ From [Discovery Summary - Regulated Tenant](../discovery-summary.md#4-regulated-
 ### Performance and Storage Constraints
 
 **Constraints**:
+
 - Audit logging must not block business operations
 - Storage costs must be predictable and manageable
 - Query performance on audit data must support investigations
 
 **Targets**:
+
 - P99 write latency < 50ms overhead
 - Audit storage growth rate: ~5-10% of primary database size annually
 - Audit query response < 3 seconds for 90-day windows
@@ -572,6 +576,7 @@ public class AuditPurgeJob : IHostedService, IDisposable
    - **Mitigation 2**: Code review checklist includes PII marking
    - **Mitigation 3**: Default to redact all string properties (opt-out model)
    - **Test**:
+
      ```csharp
      [Fact]
      public void Entities_With_PII_Must_Have_Metadata_Annotations()
@@ -611,11 +616,13 @@ public class OrderCreatedEvent
 ```
 
 **Pros**:
+
 - Complete audit trail by design
 - Time-travel queries (replay events)
 - Natural fit for CQRS
 
 **Cons**:
+
 - ❌ High complexity (event store, projections, snapshots)
 - ❌ Event schema evolution challenges
 - ❌ Not suitable for all entities (only aggregates)
@@ -646,10 +653,12 @@ FOR EACH ROW EXECUTE FUNCTION audit_trigger_function();
 ```
 
 **Pros**:
+
 - Captures all changes (even direct SQL)
 - No application code needed
 
 **Cons**:
+
 - ❌ No access to application context (user, correlation ID, tenant)
 - ❌ Harder to test (database-level logic)
 - ❌ Difficult to customize per entity type
@@ -683,10 +692,12 @@ public async Task<Result> CreateOrder(CreateOrderCommand command)
 ```
 
 **Pros**:
+
 - Full control over what is logged
 - Can add custom context
 
 **Cons**:
+
 - ❌ Developers must remember to log (error-prone)
 - ❌ Inconsistent audit trails
 - ❌ High maintenance burden
@@ -701,10 +712,12 @@ public async Task<Result> CreateOrder(CreateOrderCommand command)
 **Approach**: Use PostgreSQL logical replication or Debezium
 
 **Pros**:
+
 - No application code changes
 - Real-time change streaming
 
 **Cons**:
+
 - ❌ Infrastructure complexity (Kafka, Debezium, connectors)
 - ❌ No application context (user, correlation)
 - ❌ Requires external systems

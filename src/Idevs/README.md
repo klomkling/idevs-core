@@ -20,6 +20,7 @@ dotnet add package Idevs
 ### Core Utilities
 
 - **Guard** - Input validation helpers
+
   ```csharp
   public void ProcessOrder(Order order)
   {
