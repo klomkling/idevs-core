@@ -162,7 +162,7 @@ Phase 2 establishes the foundational domain contracts and abstractions required 
 
 ## 📁 File Structure
 
-```
+```text
 docs/context/phase-2-domain/
 ├── phase-2-domain.md           # Main implementation plan (1,325 lines)
 ├── REFERENCES-VALIDATED.md     # Link and reference validation
@@ -181,7 +181,7 @@ samples/Phase2.Domain.Samples/  # Sample project (partial)
 │   ├── IAuditableEntity.cs
 │   └── ISoftDeletableEntity.cs
 └── Phase2.Domain.Samples.csproj
-```
+```text
 
 ---
 

@@ -154,12 +154,12 @@ Phase 3 established the application layer with a decorator-based execution pipel
 
 ## 📁 File Structure
 
-```
+```text
 docs/context/phase-3-application/
 ├── phase-3-application.md          # Main implementation plan (~1,550 lines)
 ├── REFERENCES-VALIDATED.md         # Link and reference validation
 └── PHASE-3-COMPLETION.md           # This completion summary
-```
+```text
 
 ---
 

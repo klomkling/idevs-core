@@ -12,7 +12,7 @@ This document defines the observability strategy for the **Idevs** framework (re
 
 ### The Three Pillars
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                    OBSERVABILITY PILLARS                        │
 ├─────────────────────┬───────────────────┬───────────────────────┤
@@ -24,7 +24,7 @@ This document defines the observability strategy for the **Idevs** framework (re
 │ • Error details     │ • Histograms      │ • Dependencies        │
 │ • Audit trail       │ • Summaries       │ • Critical path       │
 └─────────────────────┴───────────────────┴───────────────────────┘
-```
+```text
 
 ### Correlation Strategy
 
@@ -52,7 +52,7 @@ Log.Information(
     tenantId, 
     orderId
 );
-```
+```text
 
 ### Minimum Enrichment Requirements
 
@@ -73,7 +73,7 @@ All log entries must include:
         "Version": "1.2.3"                          // Semantic version
     }
 }
-```
+```text
 
 ### Log Levels
 
@@ -127,7 +127,7 @@ Log.Information(
     commandType, 
     duration
 );
-```
+```text
 
 ### PII Redaction Policy
 
@@ -159,7 +159,7 @@ public class PiiRedactionEnricher : ILogEventEnricher
             factory.CreateProperty("SafeMessage", message));
     }
 }
-```
+```text
 
 #### Manual Masking for Known PII Fields
 
@@ -182,7 +182,7 @@ Log.Information(
     PiiMask.Email(email), 
     PiiMask.CreditCard(cardNumber)
 );
-```
+```text
 
 ### Serilog Configuration
 
@@ -216,7 +216,7 @@ public static IHostBuilder ConfigureLogging(this IHostBuilder host)
                 TelemetryConverter.Traces);
     });
 }
-```
+```text
 
 ## Distributed Tracing Strategy
 
@@ -224,14 +224,14 @@ public static IHostBuilder ConfigureLogging(this IHostBuilder host)
 
 **Standard**: W3C Trace Context for trace propagation
 
-```
+```text
 Traceparent: 00-{trace-id}-{span-id}-{flags}
 Example: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
-```
+```text
 
 ### Trace Hierarchy
 
-```
+```text
 Trace: HTTP Request (trace-id: abc-123)
 ├─ Span: TenantResolutionMiddleware (10ms)
 ├─ Span: AuthenticationMiddleware (15ms)
@@ -248,7 +248,7 @@ Trace: HTTP Request (trace-id: abc-123)
 └─ Span: Response Serialization (5ms)
 
 Total Duration: 150ms
-```
+```text
 
 ### Automatic Instrumentation
 
@@ -289,7 +289,7 @@ public static IServiceCollection AddObservability(
     
     return services;
 }
-```
+```text
 
 ### Manual Span Creation
 
@@ -325,7 +325,7 @@ public class OrderCommandHandler
         }
     }
 }
-```
+```text
 
 ### Trace Sampling Strategy
 
@@ -351,7 +351,7 @@ public class AdaptiveSampler : Sampler
             : new SamplingResult(SamplingDecision.Drop);
     }
 }
-```
+```text
 
 ## Metrics Strategy
 
@@ -441,7 +441,7 @@ public class MetricsCommandHandler<T> : ICommandHandler<T>
         }
     }
 }
-```
+```text
 
 ### Domain Metrics
 
@@ -468,7 +468,7 @@ public static readonly Counter<long> CacheHits = Meter.CreateCounter<long>(
 public static readonly Counter<long> CacheMisses = Meter.CreateCounter<long>(
     "cache.misses",
     description: "Cache miss count");
-```
+```text
 
 ### Resource Metrics
 
@@ -488,7 +488,7 @@ public static readonly Gauge<int> DbConnectionPoolSize = Meter.CreateObservableG
 public static readonly Gauge<long> MemoryUsage = Meter.CreateObservableGauge(
     "process.memory.bytes",
     () => GC.GetTotalMemory(false));
-```
+```text
 
 ## Dashboards & Alerts
 
@@ -509,7 +509,7 @@ Every dashboard should answer these four questions:
 
 #### Dashboard Hierarchy
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │ Level 1: EXECUTIVE DASHBOARD                                 │
 │ • System-wide health status (red/yellow/green)               │
@@ -544,7 +544,7 @@ Every dashboard should answer these four questions:
 │ • Detailed logs with filtering                               │
 │ • Correlation of metrics, traces, and logs                   │
 └──────────────────────────────────────────────────────────────┘
-```
+```text
 
 ### Essential Dashboards
 
@@ -560,7 +560,7 @@ Every dashboard should answer these four questions:
 
 ##### Panels Layout
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │ SERVICE HEALTH: Idevs Framework               [Last 1 hour] │
 ├───────────────────────┬───────────────────────┬─────────────┤
@@ -582,7 +582,7 @@ Every dashboard should answer these four questions:
 │ 09:22:15 | acme-corp | CreateOrder    | ValidationFailed    │
 │ 09:21:03 | xyz-inc   | UpdatePayment  | PaymentGatewayError │
 └─────────────────────────────────────────────────────────────┘
-```
+```text
 
 ##### Queries (Prometheus/Grafana)
 
@@ -594,7 +594,7 @@ sum(rate(commands_executed_total[5m]))
 
 # Broken down by command type
 sum by (command_type) (rate(commands_executed_total[5m]))
-```
+```text
 
 **Error Rate Percentage (Gauge + Graph)**:
 
@@ -608,7 +608,7 @@ sum by (command_type) (rate(commands_executed_total[5m]))
 
 # Error rate with threshold line at 0.1%
 # Use Grafana threshold visualization: green <0.05%, yellow 0.05-0.1%, red >0.1%
-```
+```text
 
 **Latency Percentiles (Multi-line Graph)**:
 
@@ -624,14 +624,14 @@ histogram_quantile(0.95, sum by (le) (rate(commands_duration_bucket[5m])))
 
 # P99 latency (critical)
 histogram_quantile(0.99, sum by (le) (rate(commands_duration_bucket[5m])))
-```
+```text
 
 **Top Commands by Volume (Table)**:
 
 ```promql
 # Top 10 most executed commands
 topk(10, sum by (command_type) (rate(commands_executed_total[5m])))
-```
+```text
 
 **Slowest Operations (Table)**:
 
@@ -646,7 +646,7 @@ topk(10,
     rate(commands_duration_count[5m])
   )
 ) > 100
-```
+```text
 
 **Active Connections**:
 
@@ -656,7 +656,7 @@ sum(aspnetcore_connections_active)
 
 # Database connection pool size
 sum(db_connection_pool_size)
-```
+```text
 
 **Memory Usage (Gauge)**:
 
@@ -666,7 +666,7 @@ process_memory_bytes / 1024 / 1024
 
 # GC pressure (collections per second)
 rate(dotnet_gc_collections_total[1m])
-```
+```text
 
 ---
 
@@ -685,7 +685,7 @@ rate(dotnet_gc_collections_total[1m])
 
 ##### Panels Layout
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │ MULTI-TENANT INSIGHTS                         [Last 6 hours]│
 ├─────────────────────────────────────────────────────────────┤
@@ -708,7 +708,7 @@ rate(dotnet_gc_collections_total[1m])
 │ Request Latency by Tenant Tier                [Heatmap]     │
 │ Shows P99 latency distribution across tenant tiers          │
 └─────────────────────────────────────────────────────────────┘
-```
+```text
 
 ##### Queries (Prometheus/Grafana)
 
@@ -724,7 +724,7 @@ topk(10,
     rate(commands_executed_total[1h])
   )
 )
-```
+```text
 
 **Error Rate by Tenant**:
 
@@ -742,7 +742,7 @@ topk(20,
   /
   sum by (tenant_id) (rate(commands_executed_total[5m]))
 )
-```
+```text
 
 **Resource Consumption by Tenant**:
 
@@ -752,7 +752,7 @@ sum by (tenant_id) (rate(db_query_duration_sum{tenant_id!=""}[5m]))
 
 # Memory allocation per tenant (if instrumented)
 sum by (tenant_id) (rate(tenant_memory_allocated_bytes[5m]))
-```
+```text
 
 **Latency Percentiles by Tenant Tier**:
 
@@ -772,7 +772,7 @@ histogram_quantile(
     rate(commands_duration_bucket{tenant_tier="basic"}[5m])
   )
 )
-```
+```text
 
 **Noisy Neighbor Detection**:
 
@@ -785,7 +785,7 @@ histogram_quantile(
 ) > 0.1
 
 # Alert if single tenant exceeds 20% of resources
-```
+```text
 
 ---
 
@@ -797,7 +797,7 @@ histogram_quantile(
 
 ##### Panels Layout
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │ DATABASE PERFORMANCE: PostgreSQL              [Last 1 hour] │
 ├───────────────────────┬─────────────────────────────────────┤
@@ -818,7 +818,7 @@ histogram_quantile(
 │ Deadlocks: 0 (last hour) ✓                                  │
 │ Lock wait time: P95 = 5ms                                   │
 └─────────────────────────────────────────────────────────────┘
-```
+```text
 
 ##### Queries (Prometheus)
 
@@ -835,7 +835,7 @@ db_connection_pool_size
 (db_connection_pool_active / db_connection_pool_size) * 100
 
 # Alert if >80% for 5+ minutes
-```
+```text
 
 **Query Duration Percentiles**:
 
@@ -844,7 +844,7 @@ db_connection_pool_size
 histogram_quantile(0.50, rate(db_query_duration_bucket[5m]))
 histogram_quantile(0.95, rate(db_query_duration_bucket[5m]))
 histogram_quantile(0.99, rate(db_query_duration_bucket[5m]))
-```
+```text
 
 **Slow Query Count**:
 
@@ -856,7 +856,7 @@ sum(rate(db_query_duration_bucket{le="+Inf"}[5m]))
 
 # Or using custom metric:
 sum(rate(db_slow_queries_total[5m]))
-```
+```text
 
 **Query Rate by Operation**:
 
@@ -865,7 +865,7 @@ sum(rate(db_slow_queries_total[5m]))
 sum by (operation) (rate(db_queries_total[5m]))
 
 # Where operation in [SELECT, INSERT, UPDATE, DELETE]
-```
+```text
 
 **Deadlock Detection** (requires custom instrumentation):
 
@@ -875,7 +875,7 @@ increase(db_deadlocks_total[1h])
 
 # Lock wait time P95
 histogram_quantile(0.95, rate(db_lock_wait_duration_bucket[5m]))
-```
+```text
 
 ---
 
@@ -903,7 +903,7 @@ sum(rate(orders_value_sum[1h])) / sum(rate(orders_value_count[1h]))
   / 
   (sum(rate(cache_hits_total[5m])) + sum(rate(cache_misses_total[5m])))
 ) * 100
-```
+```text
 
 ---
 
@@ -968,7 +968,7 @@ These alerts indicate **active user impact** or **imminent system failure**.
       
       Dashboard: https://grafana.company.com/d/service-health
     dashboard: https://grafana.company.com/d/service-health
-```
+```text
 
 **Why this threshold?**
 
@@ -1011,7 +1011,7 @@ These alerts indicate **active user impact** or **imminent system failure**.
       4. Verify no tenant is monopolizing resources (noisy neighbor)
       
       Dashboard: https://grafana.company.com/d/database-performance
-```
+```text
 
 **Why P99 and not P50?**
 
@@ -1045,7 +1045,7 @@ These alerts indicate **active user impact** or **imminent system failure**.
       2. Review long-running queries
       3. Consider increasing pool size (temporary)
       4. Check for missing `using` statements in code
-```
+```text
 
 ---
 
@@ -1073,7 +1073,7 @@ These alerts indicate **active user impact** or **imminent system failure**.
       5. Check for similar attempts in last 24 hours
       
       Logs: `grep "CrossTenantAccessAttempt" /var/log/idevs/*.log`
-```
+```text
 
 **Why 1 minute?**
 
@@ -1103,7 +1103,7 @@ These alerts indicate **active user impact** or **imminent system failure**.
       3. Check database logs for crash/OOM
       4. Initiate failover to replica if available
       5. Update status page
-```
+```text
 
 ---
 
@@ -1131,7 +1131,7 @@ These alerts indicate **active user impact** or **imminent system failure**.
       2. Clean up old backups
       3. Archive old audit logs
       4. Consider emergency disk expansion
-```
+```text
 
 ---
 
@@ -1162,7 +1162,7 @@ These alerts indicate **potential problems** that should be investigated but don
       - Check for slow queries (>100ms)
       - Monitor for continued degradation
       - May escalate to critical if P99 approaches 1s
-```
+```text
 
 ---
 
@@ -1193,7 +1193,7 @@ These alerts indicate **potential problems** that should be investigated but don
       - Cache size too small (check eviction rate)
       - New traffic pattern not in cache
       - Cache warming needed after deployment
-```
+```text
 
 ---
 
@@ -1221,7 +1221,7 @@ These alerts indicate **potential problems** that should be investigated but don
       - Check for connection leaks
       - Review long-running transactions
       - Consider increasing pool size if sustained
-```
+```text
 
 ---
 
@@ -1249,7 +1249,7 @@ These alerts indicate **potential problems** that should be investigated but don
       - Review recent tenant configuration changes
       - May indicate tenant-specific data issue
       - Contact tenant if persistent
-```
+```text
 
 ---
 
@@ -1272,7 +1272,7 @@ These alerts indicate **potential problems** that should be investigated but don
       - Review failed jobs
       - Consider adding workers if sustained
       - Check for poison messages
-```
+```text
 
 ---
 
@@ -1293,7 +1293,7 @@ These alerts indicate **potential problems** that should be investigated but don
   annotations:
     summary: "Error budget 50% consumed"
     description: "Consider slowing feature velocity or improving reliability."
-```
+```text
 
 ---
 
@@ -1359,7 +1359,7 @@ services:
 volumes:
   prometheus-data:
   grafana-data:
-```
+```text
 
 **Prometheus Configuration**:
 
@@ -1392,7 +1392,7 @@ scrape_configs:
   - job_name: 'postgresql'
     static_configs:
       - targets: ['postgres-exporter:9187']
-```
+```text
 
 **ASP.NET Core Integration**:
 
@@ -1414,13 +1414,13 @@ var app = builder.Build();
 app.MapPrometheusScrapingEndpoint();  // Adds /metrics route
 
 app.Run();
-```
+```text
 
 **Package Required**:
 
 ```bash
 dotnet add package OpenTelemetry.Exporter.Prometheus.AspNetCore
-```
+```text
 
 ---
 
@@ -1513,7 +1513,7 @@ public class MetricsCollectionService
         return $"{name}{{{tagString}}}";
     }
 }
-```
+```text
 
 **3. Create Dashboard Controller**:
 
@@ -1611,7 +1611,7 @@ public class ObservabilityDashboardController : Controller
         return match.Success ? match.Groups[1].Value : "unknown";
     }
 }
-```
+```text
 
 **4. Dashboard View (Razor)** (unchanged):
 
@@ -1757,7 +1757,7 @@ public class ObservabilityDashboardController : Controller
     </script>
 </body>
 </html>
-```
+```text
 
 **4. Authorization Policy**:
 
@@ -1778,7 +1778,7 @@ builder.Services.AddAuthorization(options =>
         });
     });
 });
-```
+```text
 
 ---
 
@@ -1873,7 +1873,7 @@ inhibit_rules:
     target_match:
       severity: 'warning'
     equal: ['alertname', 'cluster', 'service']
-```
+```text
 
 ---
 
@@ -1904,7 +1904,7 @@ public enum AlertSeverity
     Warning,
     Critical
 }
-```
+```text
 
 **2. Alert Service Implementation**:
 
@@ -1992,7 +1992,7 @@ public class AlertNotificationService : IAlertService
             """;
     }
 }
-```
+```text
 
 **3. Slack Notifier Implementation**:
 
@@ -2035,7 +2035,7 @@ public class SlackNotifier : ISlackNotifier
         response.EnsureSuccessStatusCode();
     }
 }
-```
+```text
 
 **4. PagerDuty Notifier**:
 
@@ -2089,7 +2089,7 @@ public class PagerDutyNotifier : IPagerDutyNotifier
         response.EnsureSuccessStatusCode();
     }
 }
-```
+```text
 
 **5. Background Alert Monitoring Service**:
 
@@ -2161,7 +2161,7 @@ public class AlertMonitoringService : BackgroundService
         }
     }
 }
-```
+```text
 
 **6. Service Registration**:
 
@@ -2172,7 +2172,7 @@ builder.Services.AddHttpClient<IPagerDutyNotifier, PagerDutyNotifier>();
 builder.Services.AddScoped<IEmailNotifier, EmailNotifier>();
 builder.Services.AddScoped<IAlertService, AlertNotificationService>();
 builder.Services.AddHostedService<AlertMonitoringService>();
-```
+```text
 
 **7. Configuration**:
 
@@ -2191,7 +2191,7 @@ builder.Services.AddHostedService<AlertMonitoringService>();
     "CheckIntervalSeconds": 30
   }
 }
-```
+```text
 
 ---
 
@@ -2250,7 +2250,7 @@ builder.Services.AddHostedService<AlertMonitoringService>();
 ```promql
 # Remaining error budget percentage
 100 - ((1 - (sum(rate(http_requests_total{status!~"5.."}[30d])) / sum(rate(http_requests_total[30d])))) / (1 - 0.999)) * 100
-```
+```text
 
 ## Developer Workflow
 
@@ -2285,7 +2285,7 @@ builder.Services.AddHostedService<AlertMonitoringService>();
     "Endpoint": "http://localhost:4317"  // Local Jaeger
   }
 }
-```
+```text
 
 ### Testing Logging
 
@@ -2309,7 +2309,7 @@ public async Task CreateOrder_LogsCommandExecution()
         e.MessageTemplate.Text.Contains("Order created") &&
         e.Properties.ContainsKey("OrderId"));
 }
-```
+```text
 
 ### Log Sampling in High-Volume Scenarios
 
@@ -2331,7 +2331,7 @@ public class SamplingEnricher : ILogEventEnricher
         }
     }
 }
-```
+```text
 
 ## Implementation Checklist
 

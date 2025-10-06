@@ -335,7 +335,7 @@ All referenced packages are available and compatible with .NET 8:
 
 ✅ **Middleware Ordering**
 
-```
+```text
 1. Exception handling (first)
 2. Correlation ID
 3. HTTPS redirection
@@ -345,7 +345,7 @@ All referenced packages are available and compatible with .NET 8:
 7. Tenant resolution
 8. Rate limiting
 9. Endpoint routing (last)
-```
+```text
 
 Status: ✅ Correctly documented and implemented
 

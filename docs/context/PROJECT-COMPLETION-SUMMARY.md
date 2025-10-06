@@ -236,7 +236,7 @@ The **Idevs Framework Documentation Project** is now **100% complete**. All 7 ph
 
 ## 📦 Package Structure
 
-```
+```text
 Idevs Framework Packages:
 
 ├── Idevs                              # Core abstractions
@@ -247,7 +247,7 @@ Idevs Framework Packages:
 ├── Idevs.Infrastructure.Redis         # Redis caching
 ├── Idevs.Web                          # ASP.NET Core integration
 └── Idevs.Testing                      # Testing utilities
-```
+```text
 
 ---
 

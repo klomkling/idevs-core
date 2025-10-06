@@ -53,7 +53,7 @@ Phase 1 establishes the **platform foundation** for the **Idevs** framework (rep
 
 #### Recommended Structure
 
-```
+```text
 idevs-core/
 ├── src/
 │   ├── Idevs/                               # Core package (abstractions + domain)
@@ -83,7 +83,7 @@ idevs-core/
 ├── GitVersion.yml                           # GitVersion configuration (future)
 ├── global.json                              # .NET SDK version pinning
 └── idevs-core.sln                          # Solution file
-```
+```text
 
 #### Project Naming Conventions
 
@@ -112,7 +112,7 @@ idevs-core/
 
 **Principle**: Dependencies flow inward toward the domain
 
-```
+```text
 Presentation Layer (Web, GraphQL)
     ↓ depends on
 Application Layer (Handlers, Decorators)
@@ -120,7 +120,7 @@ Application Layer (Handlers, Decorators)
 Domain Layer (Entities, Interfaces)
     ↑ implements
 Infrastructure Layer (EF Core, Caching, etc.)
-```
+```text
 
 **Enforcement**:
 
@@ -146,7 +146,7 @@ Infrastructure Layer (EF Core, Caching, etc.)
     "allowPrerelease": false
   }
 }
-```
+```text
 
 **Rationale**:
 
@@ -168,7 +168,7 @@ Infrastructure Layer (EF Core, Caching, etc.)
 <PropertyGroup>
   <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
 </PropertyGroup>
-```
+```text
 
 **Decision Criteria for Multi-Targeting**:
 
@@ -228,7 +228,7 @@ Infrastructure Layer (EF Core, Caching, etc.)
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
   </ItemGroup>
 </Project>
-```
+```text
 
 **Benefits**:
 
@@ -245,7 +245,7 @@ Infrastructure Layer (EF Core, Caching, etc.)
 
 <!-- After (CPM): -->
 <PackageReference Include="Serilog.AspNetCore" />
-```
+```text
 
 ---
 
@@ -307,7 +307,7 @@ Infrastructure Layer (EF Core, Caching, etc.)
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>
-```
+```text
 
 **Key Settings**:
 
@@ -454,7 +454,7 @@ dotnet_diagnostic.CA2007.severity = none
 
 # IDE0058: Expression value is never used
 dotnet_diagnostic.IDE0058.severity = none
-```
+```text
 
 **Custom Analyzers** (future consideration):
 
@@ -544,7 +544,7 @@ branches:
 ignore:
   sha: []
 merge-message-formats: {}
-```
+```text
 
 #### Versioning Examples
 
@@ -557,7 +557,7 @@ git commit -m "feat: add tenant isolation middleware"
 
 git commit -m "fix: resolve null reference in tenant context"
 # GitVersion: 1.2.0-alpha.2
-```
+```text
 
 **Scenario 2: Release**
 
@@ -575,7 +575,7 @@ git checkout main
 git merge release/1.2.0
 git tag v1.2.0
 # GitVersion: 1.2.0
-```
+```text
 
 **Scenario 3: Hotfix**
 
@@ -597,7 +597,7 @@ git checkout main
 git merge release/1.2.1
 git tag v1.2.1
 # GitVersion: 1.2.1
-```
+```text
 
 #### Conventional Commits Integration
 
@@ -628,7 +628,7 @@ feat!: change ICommandHandler signature
 feat: change ICommandHandler signature
 
 BREAKING CHANGE: ICommandHandler now requires CancellationToken
-```
+```text
 
 ---
 
@@ -908,7 +908,7 @@ jobs:
             --api-key ${{ secrets.NUGET_API_KEY }} \
             --source https://api.nuget.org/v3/index.json \
             --skip-duplicate
-```
+```text
 
 #### Quality Gates
 
@@ -929,7 +929,7 @@ jobs:
 
 #### Testing Pyramid
 
-```
+```text
            ┌───────────────┐
            │   E2E Tests   │  Small (PostgreSQL, slow, thorough)
            │  (PostgreSQL) │  Run on main/develop only
@@ -943,7 +943,7 @@ jobs:
         │    Unit Tests     │   Large (Mocked, very fast)
         │    (Mocked)       │   Run on every commit
         └───────────────────┘
-```
+```text
 
 #### Test Categories
 
@@ -974,7 +974,7 @@ public class CreateOrderHandlerTests
         await repository.Received(1).AddAsync(Arg.Any<Order>());
     }
 }
-```
+```text
 
 **2. Integration Tests** (InMemory)
 
@@ -1018,7 +1018,7 @@ public class OrderRepositoryIntegrationTests : IDisposable
         result.Id.ShouldBe(order.Id);
     }
 }
-```
+```text
 
 **3. E2E Tests with PostgreSQL** (Selective)
 
@@ -1069,7 +1069,7 @@ public class PostgreSQLSpecificTests
         // This is critical for multi-tenant data isolation
     }
 }
-```
+```text
 
 #### Test Selection Strategy
 
@@ -1093,7 +1093,7 @@ public class PostgreSQLSpecificTests
 
 #### CI Pipeline Flow
 
-```
+```text
 Pull Request (Feature Branch)
 ├─ Unit Tests (always run) ✅
 ├─ Integration Tests - InMemory (always run) ✅
@@ -1106,7 +1106,7 @@ Main/Develop Branch
 ├─ E2E Tests - PostgreSQL ✅ (thorough validation)
 ├─ Architecture Tests ✅
 └─ Coverage Check ≥80% ✅
-```
+```text
 
 **Benefits**:
 
@@ -1121,7 +1121,7 @@ Main/Develop Branch
 
 ```bash
 dotnet test  # Runs unit + integration tests with InMemory
-```
+```text
 
 **Option B: With PostgreSQL (For E2E validation)**
 
@@ -1133,7 +1133,7 @@ docker-compose up -d postgres
 export USE_REAL_DATABASE=true
 export ConnectionStrings__DefaultConnection="Host=localhost;Database=idevs_core_dev;Username=postgres;Password=postgres"
 dotnet test
-```
+```text
 
 **Docker Compose** (for local PostgreSQL):
 
@@ -1154,7 +1154,7 @@ services:
 
 volumes:
   postgres-data:
-```
+```text
 
 ---
 
@@ -1179,7 +1179,7 @@ Each project that ships as NuGet should have:
   <PackageReleaseNotes>See https://github.com/yourorg/idevs-core/releases</PackageReleaseNotes>
   <PackageProjectUrl>https://idevs.work</PackageProjectUrl>
 </PropertyGroup>
-```
+```text
 
 #### Package Dependencies
 
@@ -1198,7 +1198,7 @@ Each project that ships as NuGet should have:
 
 <!-- ✅ Good: Build-time dependency -->
 <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
-```
+```text
 
 ---
 
@@ -1235,7 +1235,7 @@ public interface ICommandHandler<in TCommand, TResponse>
 {
     Task<Result<TResponse>> HandleAsync(TCommand command, CancellationToken cancellationToken = default);
 }
-```
+```text
 
 **Decorator Base Class**:
 
@@ -1255,7 +1255,7 @@ public abstract class CommandHandlerDecoratorBase<TCommand> : ICommandHandler<TC
         TCommand command, 
         CancellationToken cancellationToken = default);
 }
-```
+```text
 
 **Example Decorators**:
 
@@ -1343,7 +1343,7 @@ public class ValidationCommandHandler<TCommand> : CommandHandlerDecoratorBase<TC
         return await Inner.HandleAsync(command, cancellationToken);
     }
 }
-```
+```text
 
 #### Service Registration Helpers
 
@@ -1422,7 +1422,7 @@ public static class IServiceCollectionExtensions
         return services;
     }
 }
-```
+```text
 
 #### Consumer Usage
 
@@ -1447,7 +1447,7 @@ builder.Services.AddQueryHandler<GetOrder, Order, GetOrderHandler>();
 builder.Services.AddQueryHandler<ListOrders, PagedResult<Order>, ListOrdersHandler>();
 
 var app = builder.Build();
-```
+```text
 
 **Benefits of Explicit Registration**:
 
@@ -1493,7 +1493,7 @@ public static IServiceCollection AddCommandHandlerWithKey<TCommand, THandler>(
     
     return services;
 }
-```
+```text
 
 #### Optional: Autofac Adapter (Future)
 
@@ -1523,7 +1523,7 @@ public class IdevsAutofacModule : Module
             typeof(ICommandHandler<>));
     }
 }
-```
+```text
 
 **Usage in Consumer App**:
 
@@ -1534,7 +1534,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 {
     container.RegisterModule<IdevsAutofacModule>();
 });
-```
+```text
 
 #### Summary
 
@@ -1748,7 +1748,7 @@ dotnet tool install --global GitVersion.Tool
 
 # Install ReportGenerator (optional, for local coverage reports)
 dotnet tool install --global dotnet-reportgenerator-globaltool
-```
+```text
 
 ### First-Time Setup
 
@@ -1768,7 +1768,7 @@ dotnet test
 
 # Check code style
 dotnet format --verify-no-changes
-```
+```text
 
 ### Recommended IDE Setup
 

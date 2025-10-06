@@ -128,7 +128,7 @@ public abstract class CommandHandler<TCommand, TResponse> : ICommandHandler<TCom
         TCommand command,
         CancellationToken cancellationToken = default);
 }
-```
+```text
 
 #### QueryHandler Base Class
 
@@ -151,7 +151,7 @@ public abstract class QueryHandler<TQuery, TResponse> : IQueryHandler<TQuery, TR
         TQuery query,
         CancellationToken cancellationToken = default);
 }
-```
+```text
 
 **Design Decisions**:
 
@@ -195,7 +195,7 @@ public interface IQueryBehavior<in TQuery, TResponse> where TQuery : IQuery<TRes
         Func<Task<Result<TResponse>>> next,
         CancellationToken cancellationToken = default);
 }
-```
+```text
 
 #### Pipeline Execution
 
@@ -219,15 +219,15 @@ public interface IQueryExecutor
         TQuery query,
         CancellationToken cancellationToken = default) where TQuery : IQuery<TResponse>;
 }
-```
+```text
 
 **Pipeline Flow**:
 
-```
+```text
 Web Layer → Executor → [Behaviors Chain] → Handler → Result
                        ↓
                    Logging → Metrics → Validation → Authorization → Transaction → Handler
-```
+```text
 
 ---
 
@@ -283,7 +283,7 @@ public sealed class ValidationBehavior<TCommand> : ICommandBehavior<TCommand>
         return await next();
     }
 }
-```
+```text
 
 #### Example Validator
 
@@ -306,14 +306,14 @@ public sealed class CreateOrderCommandValidator : AbstractValidator<CreateOrderC
             .Length(3).WithMessage("Currency must be 3 characters (ISO 4217)");
     }
 }
-```
+```text
 
 #### DI Registration
 
 ```csharp
 services.AddValidatorsFromAssemblyContaining<CreateOrderCommandValidator>();
 services.AddScoped(typeof(ICommandBehavior<>), typeof(ValidationBehavior<>));
-```
+```text
 
 ---
 
@@ -377,7 +377,7 @@ public sealed class AuthorizationBehavior<TCommand> : ICommandBehavior<TCommand>
         return await next();
     }
 }
-```
+```text
 
 #### Policy Definition
 
@@ -403,7 +403,7 @@ services.AddAuthorization(options =>
     options.AddPolicy(Policies.DeleteOrder, policy =>
         policy.RequireClaim("permission", "orders:delete"));
 });
-```
+```text
 
 #### Example Authorized Command
 
@@ -415,7 +415,7 @@ public sealed record CreateOrderCommand(
     string CustomerEmail,
     decimal TotalAmount,
     string Currency) : ICommand<Guid>;
-```
+```text
 
 ---
 
@@ -496,7 +496,7 @@ public sealed class LoggingBehavior<TCommand> : ICommandBehavior<TCommand>
         }
     }
 }
-```
+```text
 
 ---
 
@@ -575,7 +575,7 @@ public sealed class MetricsBehavior<TCommand> : ICommandBehavior<TCommand>
         }
     }
 }
-```
+```text
 
 ---
 
@@ -642,7 +642,7 @@ public sealed class TransactionBehavior<TCommand> : ICommandBehavior<TCommand>
         }
     }
 }
-```
+```text
 
 #### Transactional Attribute
 
@@ -653,7 +653,7 @@ namespace Idevs.Application.Attributes;
 public sealed class TransactionalAttribute : Attribute
 {
 }
-```
+```text
 
 #### Example Transactional Command
 
@@ -664,7 +664,7 @@ public sealed record CreateOrderCommand(
     string CustomerEmail,
     decimal TotalAmount,
     string Currency) : ICommand<Guid>;
-```
+```text
 
 ---
 
@@ -730,7 +730,7 @@ public sealed class ExceptionHandlingBehavior<TCommand> : ICommandBehavior<TComm
         }
     }
 }
-```
+```text
 
 ---
 
@@ -801,7 +801,7 @@ public static class ApplicationServiceExtensions
         return services;
     }
 }
-```
+```text
 
 #### Usage in Program.cs
 
@@ -813,7 +813,7 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddCommandHandler<CreateOrderCommand, Guid, CreateOrderHandler>();
 builder.Services.AddCommandHandler<UpdateOrderCommand, UpdateOrderHandler>();
 builder.Services.AddQueryHandler<GetOrderQuery, OrderDto, GetOrderQueryHandler>();
-```
+```text
 
 ---
 
@@ -872,7 +872,7 @@ public sealed class CommandExecutor : ICommandExecutor
         return await handlerFunc();
     }
 }
-```
+```text
 
 ---
 
@@ -1296,7 +1296,7 @@ public sealed class CreateOrderHandler : CommandHandler<CreateOrderCommand, Guid
         return Result<Guid>.Success(order.Id);
     }
 }
-```
+```text
 
 ### B. Query Example
 
@@ -1340,7 +1340,7 @@ public sealed class GetOrderQueryHandler : QueryHandler<GetOrderQuery, OrderDto>
         return Result<OrderDto>.Success(dto);
     }
 }
-```
+```text
 
 ### C. DI Registration Example
 
@@ -1367,7 +1367,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy(Policies.ViewOrders, policy =>
         policy.RequireClaim("permission", "orders:read"));
 });
-```
+```text
 
 ### D. Usage in Web Controller
 
@@ -1428,7 +1428,7 @@ public sealed class OrdersController : ControllerBase
             });
     }
 }
-```
+```text
 
 ### E. Testing Behavior Example
 
@@ -1496,7 +1496,7 @@ public sealed record TestCommand : ICommand
 {
     public int Value { get; init; }
 }
-```
+```text
 
 ### F. Performance Benchmarking
 
@@ -1535,7 +1535,7 @@ public class BehaviorPipelineBenchmarks
         await _executor.ExecuteAsync(_command);
     }
 }
-```
+```text
 
 ---
 

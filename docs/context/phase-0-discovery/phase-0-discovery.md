@@ -249,7 +249,7 @@ public class AuditInterceptor : SaveChangesInterceptor
         return result;
     }
 }
-```
+```text
 
 **Related Documents**:
 
@@ -297,7 +297,7 @@ modelBuilder.Entity<MyEntity>()
     .HasIndex(e => new { e.TenantId, e.Email })
     .HasFilter("[IsDeleted] = 0");  // SQL Server
     // For Postgres: .HasFilter("\"IsDeleted\" = false")
-```
+```text
 
 **Purge Policy**:
 
@@ -326,7 +326,7 @@ modelBuilder.Entity<MyEntity>()
 
 **Branching Model**:
 
-```
+```text
 main (production)
   ↑ merge (tagged releases only)
 develop (integration)
@@ -335,7 +335,7 @@ feature/my-feature (topic branch)
 
 hotfix/security-patch
   ↑ merge to develop first, then to main
-```
+```text
 
 **Version Bump Rules**:
 
@@ -345,14 +345,14 @@ hotfix/security-patch
 
 **Conventional Commits**:
 
-```
+```text
 feat: add tenant isolation middleware
 fix: resolve soft-delete query filter bug
 docs: update ADR-0003 with purge policy
 chore: bump dependencies
 
 BREAKING CHANGE: ICommandHandler signature changed
-```
+```text
 
 **GitVersion Configuration** (documented, not implemented):
 
@@ -369,7 +369,7 @@ branches:
   feature:
     tag: useBranchName
     increment: Inherit
-```
+```text
 
 **Hotfix Protocol**:
 
@@ -685,7 +685,7 @@ Use this checklist to track progress within Phase 0:
 
 ## Appendix: Phase 0 Timeline (Example)
 
-```
+```text
 Week 1: Kickoff & Discovery
 ├─ Day 1-2: Stakeholder interviews
 ├─ Day 3: Discovery summary draft
@@ -708,7 +708,7 @@ Week 4: Review & Sign-off
 ├─ Day 3: Security review
 ├─ Day 4: Stakeholder presentation
 └─ Day 5: Sign-off and Phase 1 kickoff
-```
+```text
 
 **Note**: This is an example timeline. Actual duration depends on team size and stakeholder availability.
 

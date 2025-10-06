@@ -131,13 +131,13 @@ These are included in .NET 8.0 runtime and require no additional packages:
 
 All packages in this project are compatible with MIT license (the framework's chosen license):
 
-```
+```text
 Idevs Framework (MIT)
 ├── Can use: MIT ✅
 ├── Can use: Apache 2.0 ✅
 ├── Can use: BSD (2-clause, 3-clause) ✅
 └── Can use: PostgreSQL License ✅
-```
+```text
 
 ### Not Compatible (Avoided)
 
@@ -195,7 +195,7 @@ dotnet-project-licenses --input src/Idevs/Idevs.csproj -f json -o licenses.json
 
 # Manual check via NuGet
 dotnet list package --include-transitive
-```
+```text
 
 ### Check for Known Vulnerabilities
 
@@ -205,7 +205,7 @@ dotnet list package --vulnerable --include-transitive
 
 # Update packages to address vulnerabilities
 dotnet outdated
-```
+```text
 
 ---
 
@@ -235,12 +235,12 @@ dotnet outdated
 
 When using Apache 2.0 licensed packages, include this notice:
 
-```
+```text
 This product includes software developed by:
 - Serilog (Apache 2.0) - https://serilog.net/
 - OpenTelemetry (Apache 2.0) - https://opentelemetry.io/
 - xUnit (Apache 2.0) - https://xunit.net/
-```
+```text
 
 Place in `NOTICE.txt` file at repository root.
 
@@ -266,7 +266,7 @@ MIT and BSD licenses require copyright notice in distributions. This is automati
 
 ```bash
 dotnet-project-licenses --input idevs-core.sln --export-license-texts
-```
+```text
 
 ---
 
@@ -294,7 +294,7 @@ For license questions or concerns:
 
 ### MIT License (Framework License)
 
-```
+```text
 MIT License
 
 Copyright (c) 2025 idevs.work
@@ -316,7 +316,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-```
+```text
 
 ### Key Takeaway
 

@@ -18,7 +18,7 @@ Thank you for your interest in contributing to the **Idevs** framework! This doc
 
 We follow **Git Flow** with `main` and `develop` as permanent branches:
 
-```
+```text
 main (production releases only)
   ↑
 develop (integration branch)
@@ -55,7 +55,7 @@ git push -u origin feature/your-feature-name
 
 All commits **must** follow [Conventional Commits](https://www.conventionalcommits.org/) format:
 
-```
+```text
 <type>(<scope>): <description>
 
 [optional body]

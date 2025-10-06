@@ -62,7 +62,7 @@ public interface IEntity<TKey> where TKey : notnull
 {
     TKey Id { get; }
 }
-```
+```text
 
 **IAuditableEntity<TUserKey>** - Entity with audit trail (per ADR-0002)
 
@@ -79,7 +79,7 @@ public interface IAuditableEntity<TUserKey> where TUserKey : IEquatable<TUserKey
 
 // Convenience interface for Guid-based user IDs (most common)
 public interface IAuditableEntity : IAuditableEntity<Guid> { }
-```
+```text
 
 **ISoftDeletableEntity<TUserKey>** - Entity with soft-delete support (per ADR-0003)
 
@@ -95,7 +95,7 @@ public interface ISoftDeletableEntity<TUserKey> where TUserKey : IEquatable<TUse
 
 // Convenience interface for Guid-based user IDs (most common)
 public interface ISoftDeletableEntity : ISoftDeletableEntity<Guid> { }
-```
+```text
 
 **ITenantEntity<TTenantKey>** - Entity belonging to a tenant (per ADR-0001)
 
@@ -109,7 +109,7 @@ public interface ITenantEntity<TTenantKey> where TTenantKey : IEquatable<TTenant
 
 // Convenience interface for Guid-based tenancy (most common)
 public interface ITenantEntity : ITenantEntity<Guid> { }
-```
+```text
 
 **Design Decisions**:
 
@@ -166,7 +166,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
 
     public static bool operator !=(ValueObject? left, ValueObject? right) => !(left == right);
 }
-```
+```text
 
 #### Example Value Objects
 
@@ -205,7 +205,7 @@ public sealed class Money : ValueObject
 
     public override string ToString() => $"{Amount:N2} {Currency}";
 }
-```
+```text
 
 **Email** - Validated email address
 
@@ -242,7 +242,7 @@ public sealed class Email : ValueObject
 
     public static implicit operator string(Email email) => email.Value;
 }
-```
+```text
 
 **Design Principles**:
 
@@ -281,7 +281,7 @@ public class Result
     
     public static Result Failure(IEnumerable<string> errors) => new(false, errors.ToArray());
 }
-```
+```text
 
 #### Result<T> (Generic)
 
@@ -306,7 +306,7 @@ public class Result<T> : Result
     // Implicit conversion from T to Result<T>
     public static implicit operator Result<T>(T value) => Success(value);
 }
-```
+```text
 
 #### PagedResult<T>
 
@@ -334,7 +334,7 @@ public sealed class PagedResult<T>
     public static PagedResult<T> Empty(int pageNumber, int pageSize) 
         => new([], 0, pageNumber, pageSize);
 }
-```
+```text
 
 **Usage Pattern**:
 
@@ -355,7 +355,7 @@ public async Task<Result<Order>> HandleAsync(CreateOrderCommand command)
     
     return Result<Order>.Success(order);
 }
-```
+```text
 
 ---
 
@@ -385,7 +385,7 @@ public interface ICommandHandler<in TCommand, TResponse> where TCommand : IComma
 {
     Task<Result<TResponse>> HandleAsync(TCommand command, CancellationToken cancellationToken = default);
 }
-```
+```text
 
 #### Query Contracts
 
@@ -400,7 +400,7 @@ public interface IQueryHandler<in TQuery, TResponse> where TQuery : IQuery<TResp
 {
     Task<Result<TResponse>> HandleAsync(TQuery query, CancellationToken cancellationToken = default);
 }
-```
+```text
 
 #### Example Command & Handler
 
@@ -445,7 +445,7 @@ public sealed class CreateOrderHandler : ICommandHandler<CreateOrderCommand, Gui
         return Result<Guid>.Success(order.Id);
     }
 }
-```
+```text
 
 **Registration Pattern** (per ADR-0005 - no reflection):
 
@@ -455,7 +455,7 @@ services.AddScoped<ICommandHandler<CreateOrderCommand, Guid>, CreateOrderHandler
 
 // Or using extension method
 services.AddCommandHandler<CreateOrderCommand, Guid, CreateOrderHandler>();
-```
+```text
 
 ---
 
@@ -501,7 +501,7 @@ public abstract class Entity<TKey> : IEntity<TKey>, IEquatable<Entity<TKey>>
 
     public static bool operator !=(Entity<TKey>? left, Entity<TKey>? right) => !(left == right);
 }
-```
+```text
 
 #### Aggregate Root Base Class
 
@@ -528,7 +528,7 @@ public abstract class AggregateRoot<TKey> : Entity<TKey> where TKey : notnull
         _domainEvents.Clear();
     }
 }
-```
+```text
 
 #### Example: Order Aggregate Root
 
@@ -614,7 +614,7 @@ public enum OrderStatus
     Delivered = 3,
     Cancelled = 4
 }
-```
+```text
 
 **Design Principles**:
 
@@ -642,7 +642,7 @@ public interface ITenantContext
     Guid UserId { get; }        // Current user ID for audit
     string UserName { get; }    // Current username for display
 }
-```
+```text
 
 #### ICurrentUser Interface (Alternative)
 
@@ -656,7 +656,7 @@ public interface ICurrentUser
     string? Email { get; }
     IReadOnlyList<string> Roles { get; }
 }
-```
+```text
 
 **Design Note**:
 
@@ -685,7 +685,7 @@ public sealed class CreateOrderHandler : ICommandHandler<CreateOrderCommand, Gui
         return Result<Guid>.Success(order.Id);
     }
 }
-```
+```text
 
 ---
 
@@ -717,7 +717,7 @@ public interface IRepository<TEntity, TKey>
     Task<IReadOnlyList<TEntity>> FindAllAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default);
     Task<PagedResult<TEntity>> FindPagedAsync(ISpecification<TEntity> specification, int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 }
-```
+```text
 
 **Note**: Repositories are **scoped to tenant** - all queries automatically filter by `TenantId`.
 
@@ -732,7 +732,7 @@ public interface IUnitOfWork : IDisposable
     Task<Result> CommitAsync(CancellationToken cancellationToken = default);
     Task RollbackAsync(CancellationToken cancellationToken = default);
 }
-```
+```text
 
 **Usage Pattern**:
 
@@ -771,7 +771,7 @@ public sealed class CreateOrderHandler : ICommandHandler<CreateOrderCommand, Gui
             : Result<Guid>.Failure(result.Errors);
     }
 }
-```
+```text
 
 ---
 
@@ -790,7 +790,7 @@ public interface IDomainEvent
     DateTime OccurredAt { get; }
     Guid TenantId { get; }
 }
-```
+```text
 
 #### Base Domain Event
 
@@ -803,7 +803,7 @@ public abstract record DomainEvent : IDomainEvent
     public DateTime OccurredAt { get; } = DateTime.UtcNow;
     public required Guid TenantId { get; init; }
 }
-```
+```text
 
 #### Example Domain Events
 
@@ -832,7 +832,7 @@ public sealed record OrderDeletedEvent(
 {
     public Guid OrderId { get; } = OrderId;
 }
-```
+```text
 
 #### Domain Event Publisher (Interface)
 
@@ -844,7 +844,7 @@ public interface IDomainEventPublisher
     Task PublishAsync(IDomainEvent domainEvent, CancellationToken cancellationToken = default);
     Task PublishAsync(IEnumerable<IDomainEvent> domainEvents, CancellationToken cancellationToken = default);
 }
-```
+```text
 
 **Event Publishing Strategy**:
 
@@ -855,7 +855,7 @@ public interface IDomainEventPublisher
 
 **Event Flow**:
 
-```
+```text
 1. Command → Handler creates/modifies Aggregate
 2. Aggregate raises domain events (stored in memory)
 3. Repository saves aggregate
@@ -864,7 +864,7 @@ public interface IDomainEventPublisher
    ├─ If successful, publish domain events
    └─ Clear events from aggregate
 5. Event handlers react asynchronously
-```
+```text
 
 ---
 
@@ -895,7 +895,7 @@ public interface ISpecification<T>
     int Skip { get; }
     bool IsPagingEnabled { get; }
 }
-```
+```text
 
 #### Base Specification Class
 
@@ -945,7 +945,7 @@ public abstract class Specification<T> : ISpecification<T>
         IsPagingEnabled = true;
     }
 }
-```
+```text
 
 #### Example Specifications
 
@@ -978,7 +978,7 @@ public sealed class OrdersPagedSpec : Specification<Order>
         ApplyOrderByDescending(o => o.CreatedAt);
     }
 }
-```
+```text
 
 #### Specification Combinators
 
@@ -1024,7 +1024,7 @@ internal class ReplaceParameterVisitor : ExpressionVisitor
         return node == _oldParameter ? _newParameter : base.VisitParameter(node);
     }
 }
-```
+```text
 
 **Usage Pattern**:
 
@@ -1042,7 +1042,7 @@ var filteredOrders = await _orderRepository.FindAllAsync(combined);
 // Paged specification
 var pagedSpec = new OrdersPagedSpec(pageNumber: 1, pageSize: 20);
 var paged = await _orderRepository.FindPagedAsync(pagedSpec, 1, 20);
-```
+```text
 
 ---
 

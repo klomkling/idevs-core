@@ -169,7 +169,7 @@ public interface ICommandExecutor
         CancellationToken cancellationToken = default)
         where TCommand : ICommand<TResult>;
 }
-```
+```text
 
 #### DocFX Configuration
 
@@ -231,7 +231,7 @@ public interface ICommandExecutor
     "disableGitFeatures": false
   }
 }
-```
+```text
 
 ---
 
@@ -266,7 +266,7 @@ dotnet add package Idevs.Application
 dotnet add package Idevs.Domain
 dotnet add package Idevs.Infrastructure.PostgreSQL
 dotnet add package Idevs.Web
-```
+```text
 
 ### 2. Configure Services
 
@@ -292,7 +292,7 @@ app.UseIdevs();
 
 app.MapControllers();
 app.Run();
-```
+```text
 
 ### 3. Define Your Domain
 
@@ -317,7 +317,7 @@ public sealed class Product : AggregateRoot<ProductId>
         return product;
     }
 }
-```
+```text
 
 ### 4. Create Command Handler
 
@@ -345,7 +345,7 @@ public sealed class CreateProductHandler
         return Result.Success(product.Id);
     }
 }
-```
+```text
 
 ### 5. Create API Controller
 
@@ -371,20 +371,20 @@ public class ProductsController : ApiControllerBase
         return ToCreatedResult(result, nameof(GetById), new { id = result.Value });
     }
 }
-```
+```text
 
 ### 6. Run Migrations
 
 ```bash
 dotnet ef migrations add InitialCreate
 dotnet ef database update
-```
+```text
 
 ### 7. Run Application
 
 ```bash
 dotnet run
-```
+```text
 
 Visit `https://localhost:5001/swagger` to see your API!
 
@@ -395,7 +395,7 @@ Visit `https://localhost:5001/swagger` to see your API!
 - [Authentication & Authorization](tutorials/auth.md)
 - [Testing Strategies](tutorials/testing.md)
 
-```
+```text
 
 ---
 
@@ -405,7 +405,7 @@ Visit `https://localhost:5001/swagger` to see your API!
 
 #### Minimal API Sample Structure
 
-```
+```text
 
 samples/
 ├── MinimalApi/
@@ -431,7 +431,7 @@ samples/
     ├── BenchmarkDotNet.Artifacts/
     └── README.md
 
-```
+```text
 
 #### Minimal API Sample (Program.cs)
 
@@ -477,7 +477,7 @@ app.MapPost("/api/products", async (CreateProductCommand command, ICommandExecut
 });
 
 app.Run();
-```
+```text
 
 ---
 
@@ -487,7 +487,7 @@ app.Run();
 
 #### Package Structure
 
-```
+```text
 packages/
 ├── Idevs/                              # Core abstractions
 ├── Idevs.Application/                  # Application layer
@@ -498,7 +498,7 @@ packages/
 ├── Idevs.Infrastructure.Redis/         # Redis caching
 ├── Idevs.Web/                          # ASP.NET Core integration
 └── Idevs.Testing/                      # Testing utilities
-```
+```text
 
 #### Package Configuration (Idevs.csproj)
 
@@ -549,7 +549,7 @@ packages/
   </ItemGroup>
 
 </Project>
-```
+```text
 
 #### GitVersion Configuration
 
@@ -580,7 +580,7 @@ branches:
 ignore:
   sha: []
 merge-message-formats: {}
-```
+```text
 
 ---
 
@@ -655,7 +655,7 @@ jobs:
         files: ./artifacts/*.nupkg
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
+```text
 
 ---
 
@@ -684,14 +684,14 @@ We use GitHub Flow:
 
 We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
-```
+```text
 
 <type>(<scope>): <subject>
 
 <body>
 
 <footer>
-```
+```text
 
 Types:
 
@@ -706,11 +706,11 @@ Types:
 
 Examples:
 
-```
+```text
 feat(application): add command validation behavior
 fix(infrastructure): resolve tenant context in RLS interceptor
 docs(readme): update getting started guide
-```
+```text
 
 ## Pull Request Process
 
@@ -739,7 +739,7 @@ dotnet test /p:CollectCoverage=true /p:CoverageReportsGenerator=html
 
 # Run specific test project
 dotnet test tests/Idevs.Application.Tests
-```
+```text
 
 ## Local Development Setup
 
@@ -799,7 +799,7 @@ See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 By contributing, you agree that your contributions will be licensed under the MIT License.
 
-```
+```text
 
 ---
 
@@ -819,14 +819,14 @@ By contributing, you agree that your contributions will be licensed under the MI
 **Before (v1.x)**:
 ```csharp
 Task<Result> ExecuteAsync(ICommand command);
-```
+```text
 
 **After (v2.0)**:
 
 ```csharp
 Task<Result> ExecuteAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default)
     where TCommand : ICommand;
-```
+```text
 
 **Migration Steps**:
 
@@ -842,7 +842,7 @@ var result = await _executor.ExecuteAsync(command);
 
 // After
 var result = await _executor.ExecuteAsync(command, cancellationToken);
-```
+```text
 
 ### 2. Repository Interface Changes
 
@@ -850,13 +850,13 @@ var result = await _executor.ExecuteAsync(command, cancellationToken);
 
 ```csharp
 Task<TEntity?> GetByIdAsync(Guid id);
-```
+```text
 
 **After (v2.0)**:
 
 ```csharp
 Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-```
+```text
 
 **Migration Steps**:
 
@@ -872,7 +872,7 @@ services.AddIdevs(options =>
 {
     options.ConnectionString = connectionString;
 });
-```
+```text
 
 **After (v2.0)**:
 
@@ -883,7 +883,7 @@ services.AddIdevs(builder =>
     builder.UseMultiTenancy();
     builder.UseAuditLogging();
 });
-```
+```text
 
 ## Deprecated Features
 
@@ -901,7 +901,7 @@ await _unitOfWork.SaveChangesAsync();
 
 // After
 await _unitOfWork.SaveEntitiesAsync();
-```
+```text
 
 ## New Features
 
@@ -923,7 +923,7 @@ public class MyBehavior : ICommandBehavior
         return result;
     }
 }
-```
+```text
 
 ### Specification Pattern
 
@@ -935,7 +935,7 @@ var spec = new OrdersByStatusSpecification(OrderStatus.Pending)
     .WithItems();
 
 var orders = await _repository.GetAsync(spec);
-```
+```text
 
 ## Upgrade Checklist
 
@@ -955,7 +955,7 @@ If you encounter issues:
 - Join [Discord Community](https://discord.gg/idevs)
 - Email: <support@idevs.work>
 
-```
+```text
 
 ---
 
@@ -1013,7 +1013,7 @@ public class CommandExecutorBenchmarks
 // |------------------------- |---------:|---------:|---------:|------:|----------:|
 // |           ExecuteCommand | 1.234 ms | 0.012 ms | 0.011 ms | 50.00 |    1.2 KB |
 // | ExecuteCommandWithValid. | 1.456 ms | 0.015 ms | 0.014 ms | 60.00 |    1.5 KB |
-```
+```text
 
 ---
 
@@ -1381,7 +1381,7 @@ products.MapDelete("/{id:guid}", async (
 .Produces(StatusCodes.Status404NotFound);
 
 app.Run();
-```
+```text
 
 ---
 

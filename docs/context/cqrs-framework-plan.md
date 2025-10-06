@@ -227,9 +227,9 @@ See [Phase 0 Completion Summary](phase-0-discovery/phase-0-completion-summary.md
 
 Versions calculated automatically by GitVersion based on Git Flow branches and Conventional Commits:
 
-```
+```text
 Major.Minor.Patch-PreReleaseTag.BuildMetadata
-```
+```text
 
 **Examples**:
 
@@ -248,13 +248,13 @@ Major.Minor.Patch-PreReleaseTag.BuildMetadata
 
 ### Branch Strategy
 
-```
+```text
 main (production)
   └── develop (integration)
        ├── feature/* → merge to develop → v1.1.0-alpha.X
        ├── hotfix/* → merge to develop → v1.0.1-alpha.X
        └── release/* → merge to main → v1.1.0
-```
+```text
 
 **Workflow**:
 

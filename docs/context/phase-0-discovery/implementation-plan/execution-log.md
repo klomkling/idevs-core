@@ -20,7 +20,7 @@ This log captures all commands executed, their outputs, and any decisions made d
 
 ```bash
 mkdir -p docs/context/phase-0-discovery/implementation-plan
-```
+```text
 
 **Status**: ✅ Complete  
 **Output**: Folder created successfully
@@ -44,9 +44,9 @@ mkdir -p docs/context/phase-0-discovery/implementation-plan
 
 #### 1. dotnet restore
 
-```
+```text
 cd /Users/sarawut/GitHub/Packages/nuget/warp-idevs-core && dotnet restore
-```
+```text
 
 **Result**: Success after fixing:
 
@@ -56,9 +56,9 @@ cd /Users/sarawut/GitHub/Packages/nuget/warp-idevs-core && dotnet restore
 
 #### 2. dotnet build
 
-```
+```text
 cd /Users/sarawut/GitHub/Packages/nuget/warp-idevs-core && dotnet build -c Release -p:ContinuousIntegrationBuild=true
-```
+```text
 
 **Result**: Build succeeded in 5.6s
 
@@ -67,9 +67,9 @@ cd /Users/sarawut/GitHub/Packages/nuget/warp-idevs-core && dotnet build -c Relea
 
 #### 3. dotnet test
 
-```
+```text
 cd /Users/sarawut/GitHub/Packages/nuget/warp-idevs-core && dotnet test -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Threshold=80 -p:ThresholdType=branch -p:ThresholdStat=total --no-build
-```
+```text
 
 **Result**: Test succeeded
 
@@ -80,9 +80,9 @@ cd /Users/sarawut/GitHub/Packages/nuget/warp-idevs-core && dotnet test -c Releas
 
 #### 4. dotnet pack
 
-```
+```text
 cd /Users/sarawut/GitHub/Packages/nuget/warp-idevs-core && dotnet pack -c Release -o artifacts/packages
-```
+```text
 
 **Result**: Build succeeded in 0.5s after removing non-existent PackageIcon reference
 
@@ -91,9 +91,9 @@ cd /Users/sarawut/GitHub/Packages/nuget/warp-idevs-core && dotnet pack -c Releas
 
 #### 5. dotnet gitversion
 
-```
+```text
 cd /Users/sarawut/GitHub/Packages/nuget/warp-idevs-core && dotnet tool restore && dotnet gitversion
-```
+```text
 
 **Result**: Success
 

@@ -54,7 +54,7 @@ CREATE TABLE orders (
 );
 
 CREATE INDEX idx_orders_tenant_id ON orders(tenant_id);
-```
+```text
 
 ### Automatic Filtering
 
@@ -73,7 +73,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     
     // ... apply to all tenant-scoped entities
 }
-```
+```text
 
 **Layer 2: Repository-Level Filtering**
 
@@ -97,7 +97,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         return _context.Set<TEntity>().AsQueryable();
     }
 }
-```
+```text
 
 **Layer 3: Optional PostgreSQL RLS (Enhanced Isolation)**
 
@@ -113,7 +113,7 @@ CREATE POLICY tenant_isolation_policy ON orders
 
 -- Grant access
 GRANT ALL ON orders TO app_role;
-```
+```text
 
 Application sets tenant context per connection:
 
@@ -122,11 +122,11 @@ Application sets tenant context per connection:
 await connection.ExecuteAsync(
     "SELECT set_config('app.current_tenant_id', @tenantId, false)",
     new { tenantId = _tenantContext.TenantId });
-```
+```text
 
 ### Tenant Resolution Precedence
 
-```
+```text
 1. Explicit Header: X-Tenant-Id (highest priority)
    ↓
 2. JWT Token Claim: "tenant_id" claim
@@ -136,7 +136,7 @@ await connection.ExecuteAsync(
 4. Query Parameter: ?tenantId= (development/testing only)
    ↓
 5. Fallback/Error: No tenant resolved → 401 Unauthorized
-```
+```text
 
 ### Configuration-Based Isolation Levels
 
@@ -150,7 +150,7 @@ await connection.ExecuteAsync(
     "AllowTenantSwitching": false   // Security: prevent mid-request switching
   }
 }
-```
+```text
 
 ---
 
@@ -270,7 +270,7 @@ CREATE TABLE tenant_acme.orders (...);
 
 CREATE SCHEMA tenant_xyz;
 CREATE TABLE tenant_xyz.orders (...);
-```
+```text
 
 **Pros**:
 
@@ -293,10 +293,10 @@ CREATE TABLE tenant_xyz.orders (...);
 
 **Approach**: Each tenant gets its own PostgreSQL database
 
-```
+```text
 postgresql://host/tenant_acme
 postgresql://host/tenant_xyz
-```
+```text
 
 **Pros**:
 
@@ -326,7 +326,7 @@ modelBuilder.Entity<Order>()
     .HasDiscriminator<string>("TenantType")
     .HasValue<OrderAcme>("Acme")
     .HasValue<OrderXyz>("Xyz");
-```
+```text
 
 **Cons**:
 
@@ -363,7 +363,7 @@ public class Order : IEntity<Guid>, ITenantEntity, IAuditableEntity, ISoftDeleta
     public DateTime? DeletedAt { get; set; }
     public string? DeletedBy { get; set; }
 }
-```
+```text
 
 ### 2. Migration Template
 
@@ -402,7 +402,7 @@ public partial class CreateOrders : Migration
             columns: new[] { "tenant_id", "customer_id" });
     }
 }
-```
+```text
 
 ### 3. Testing Tenant Isolation
 
@@ -448,7 +448,7 @@ public class TenantIsolationTests : IClassFixture<DatabaseFixture>
         }
     }
 }
-```
+```text
 
 ---
 

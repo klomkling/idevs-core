@@ -57,7 +57,7 @@ From Phase 0 Design Principles:
 services.AddCommandHandler<CreateOrder, CreateOrderHandler>();
 services.AddCommandHandler<UpdateOrder, UpdateOrderHandler>();
 services.AddCommandHandler<DeleteOrder, DeleteOrderHandler>();
-```
+```text
 
 ### ❌ Incorrect: Assembly Scanning
 
@@ -67,7 +67,7 @@ services.Scan(scan => scan
     .FromAssemblyOf<ICommandHandler>()
     .AddClasses(classes => classes.AssignableTo(typeof(ICommandHandler<>)))
     .AsImplementedInterfaces());
-```
+```text
 
 ---
 
@@ -96,7 +96,7 @@ services.AddScoped<ICommandHandler<CreateOrder>>(sp =>
     
     return handler;
 });
-```
+```text
 
 ### Helper Extension Method
 
@@ -104,7 +104,7 @@ services.AddScoped<ICommandHandler<CreateOrder>>(sp =>
 // Cleaner usage
 services.AddCommandHandler<CreateOrder, CreateOrderHandler>();
 services.AddCommandHandler<UpdateOrder, UpdateOrderHandler>();
-```
+```text
 
 ---
 
@@ -124,7 +124,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 {
     container.RegisterModule<IdevsAutofacModule>(); // Pre-configured
 });
-```
+```text
 
 ### Option 2: Keep Using Explicit Registration
 
@@ -133,7 +133,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 builder.Services.AddIdevs();
 builder.Services.AddCommandHandler<CreateOrder, CreateOrderHandler>();
 // ... more handlers
-```
+```text
 
 ---
 
@@ -161,20 +161,20 @@ builder.Services.AddCommandHandler<CreateOrder, CreateOrderHandler>();
 
 ### Core Framework (Required)
 
-```
+```text
 Idevs                     → Uses MEDI, manual registration
 Idevs.Application         → Uses MEDI, manual registration
 Idevs.Data                → Uses MEDI, manual registration
 Idevs.Web                 → Uses MEDI, manual registration
-```
+```text
 
 **Dependencies**: Zero external DI packages
 
 ### Optional Adapters (Future)
 
-```
+```text
 Idevs.DependencyInjection.Autofac  → Optional Autofac support
-```
+```text
 
 **Use Case**: For consumers who must use Autofac
 
@@ -190,7 +190,7 @@ Your personal apps likely use Autofac today:
 builder.RegisterAssemblyTypes(assembly)
     .Where(t => t.Name.EndsWith("Handler"))
     .AsImplementedInterfaces();
-```
+```text
 
 ### Future State (Two Options)
 
@@ -200,7 +200,7 @@ builder.RegisterAssemblyTypes(assembly)
 builder.Services.AddCommandHandler<CreateOrder, CreateOrderHandler>();
 builder.Services.AddCommandHandler<UpdateOrder, UpdateOrderHandler>();
 // ... more handlers
-```
+```text
 
 **Benefits**: Learn the pattern, better debugging, clearer code
 
@@ -212,7 +212,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
     container.RegisterModule<IdevsAutofacModule>(); // Handles Idevs types
     container.RegisterModule<YourAppModule>();       // Your app's types
 });
-```
+```text
 
 **Benefits**: Minimal changes to existing apps
 

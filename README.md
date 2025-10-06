@@ -29,7 +29,7 @@ A .NET building-block framework for modern SaaS and ERP applications. Built with
 
 ## 📦 Packages
 
-```
+```text
 Idevs                              # Core abstractions
 Idevs.Application                  # Application layer patterns
 Idevs.Domain                       # Domain primitives
@@ -38,7 +38,7 @@ Idevs.Infrastructure.PostgreSQL    # PostgreSQL implementation
 Idevs.Infrastructure.Redis         # Redis caching
 Idevs.Web                          # ASP.NET Core integration
 Idevs.Testing                      # Testing utilities
-```
+```text
 
 ## 🚀 Quick Start
 
@@ -53,7 +53,7 @@ dotnet add package Idevs.Application
 
 # Install PostgreSQL infrastructure
 dotnet add package Idevs.Infrastructure.PostgreSQL
-```
+```text
 
 ## 📚 Documentation
 
@@ -170,7 +170,7 @@ dotnet pack -c Release -o artifacts/packages
 # Check semantic version
 dotnet tool restore
 dotnet gitversion
-```
+```text
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed development workflow, Git Flow branching, conventional commits, and PR guidelines.
 

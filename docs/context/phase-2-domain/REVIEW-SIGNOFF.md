@@ -51,11 +51,11 @@
 
 **Sign-Off**:
 
-```
+```text
 Name: _______________________
 Date: _______________________
 Comments:
-```
+```text
 
 ---
 
@@ -98,11 +98,11 @@ Comments:
 
 **Sign-Off**:
 
-```
+```text
 Name: _______________________
 Date: _______________________
 Comments:
-```
+```text
 
 ---
 
@@ -149,11 +149,11 @@ Comments:
 
 **Sign-Off**:
 
-```
+```text
 Name: _______________________
 Date: _______________________
 Comments:
-```
+```text
 
 ---
 
@@ -182,11 +182,11 @@ Comments:
 
 **Sign-Off**:
 
-```
+```text
 Name: _______________________
 Date: _______________________
 Comments:
-```
+```text
 
 ---
 
@@ -194,27 +194,27 @@ Comments:
 
 ### Architecture Feedback
 
-```
+```text
 [To be filled during review]
-```
+```text
 
 ### Engineering Feedback
 
-```
+```text
 [To be filled during review]
-```
+```text
 
 ### Documentation Feedback
 
-```
+```text
 [To be filled during review]
-```
+```text
 
 ### Security Feedback
 
-```
+```text
 [To be filled during review]
-```
+```text
 
 ---
 
@@ -243,14 +243,14 @@ Comments:
 
 **Phase Owner**: Domain Architecture Team
 
-```
+```text
 I hereby approve Phase 2: Domain & Contracts as complete and ready for implementation.
 
 Signature: _______________________
 Name:      _______________________
 Title:     _______________________
 Date:      _______________________
-```
+```text
 
 ---
 

@@ -67,7 +67,7 @@ From [AGENTS.md](../../AGENTS.md):
 
 ### Branch Strategy: Git Flow
 
-```
+```text
 main (production releases only)
   ↑
   merge for release
@@ -77,7 +77,7 @@ develop (integration branch)
   merge PRs
   ↑
 feature/*, hotfix/*, release/*
-```
+```text
 
 #### Branch Descriptions
 
@@ -197,7 +197,7 @@ merge-message-formats:
   PullRequest: 'Merge pull request #{PullRequestNumber} from {SourceBranch}'
 
 workflow: GitFlow/v1
-```
+```text
 
 **Version Examples** (workflow-based):
 
@@ -218,7 +218,7 @@ workflow: GitFlow/v1
 
 **Format**: `<type>(<scope>): <description>`
 
-```
+```text
 feat(auth): add JWT token refresh
 fix(orders): prevent duplicate order creation
 docs(readme): update installation instructions
@@ -227,7 +227,7 @@ test(users): add user creation tests
 refactor(validation): extract validation logic
 perf(queries): optimize customer lookup query
 ci(build): add coverage reporting
-```
+```text
 
 #### Commit Types
 
@@ -246,12 +246,12 @@ ci(build): add coverage reporting
 
 #### Breaking Changes
 
-```
+```text
 feat(api)!: remove deprecated endpoints
 
 BREAKING CHANGE: The `/api/v1/users/legacy` endpoint has been removed.
 Migrate to `/api/v2/users` instead.
-```
+```text
 
 - Breaking changes **must** include `!` after type/scope
 - Breaking changes **must** include `BREAKING CHANGE:` footer
@@ -277,7 +277,7 @@ jobs:
           fetch-depth: 0
       
       - uses: wagoid/commitlint-github-action@v5
-```
+```text
 
 ### CI/CD Pipeline
 
@@ -360,7 +360,7 @@ jobs:
         with:
           header: coverage
           path: coverage/Summary.md
-```
+```text
 
 #### Stage 2: Package (develop branch)
 
@@ -424,7 +424,7 @@ jobs:
           body_path: release-notes.md
           prerelease: true
           files: ./artifacts/*.nupkg
-```
+```text
 
 #### Stage 3: Release (main branch)
 
@@ -529,7 +529,7 @@ jobs:
           files: ./artifacts/*.nupkg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
+```text
 
 ### Hotfix Workflow
 
@@ -578,7 +578,7 @@ git branch -d hotfix/security-cve-2024-001
 git branch -d release/1.1.1
 git push origin --delete hotfix/security-cve-2024-001
 git push origin --delete release/1.1.1
-```
+```text
 
 **GitVersion Behavior**:
 
@@ -658,7 +658,7 @@ updates:
     commit-message:
       prefix: "ci"
       include: "scope"
-```
+```text
 
 **Dependabot PR Workflow**:
 
@@ -706,7 +706,7 @@ jobs:
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
+```text
 
 ---
 
@@ -738,7 +738,7 @@ git push origin develop
 # 6. Delete release branch
 git branch -d release/1.2.0
 git push origin --delete release/1.2.0
-```
+```text
 
 ---
 
@@ -819,13 +819,13 @@ git push origin --delete release/1.2.0
 
 **Approach**: Single `main` branch with feature branches
 
-```
+```text
 main (production)
   ↑
   merge PRs directly
   ↑
 feature/*, hotfix/*
-```
+```text
 
 **Pros**:
 
@@ -925,7 +925,7 @@ git commit -m "chore: initial commit"
 # Push both branches
 git push -u origin main
 git push -u origin develop
-```
+```text
 
 ### 2. Install GitVersion
 
@@ -933,7 +933,7 @@ git push -u origin develop
 # .config/dotnet-tools.json
 dotnet new tool-manifest
 dotnet tool install GitVersion.Tool
-```
+```text
 
 **`.config/dotnet-tools.json`**:
 
@@ -948,7 +948,7 @@ dotnet tool install GitVersion.Tool
     }
   }
 }
-```
+```text
 
 ### 3. Add GitVersion Configuration
 
@@ -999,7 +999,7 @@ git checkout main
 git merge develop
 git push origin main
 # → Creates v1.0.0 production release
-```
+```text
 
 ### 8. Developer Workflow
 
@@ -1014,7 +1014,7 @@ git add .
 git commit -m "feat(auth): add JWT authentication"
 git push origin feature/add-user-authentication
 # Create PR: feature/add-user-authentication → develop
-```
+```text
 
 **Creating a Hotfix**:
 
@@ -1030,7 +1030,7 @@ Fixes #123"
 git push origin hotfix/fix-validation-bug
 # Create PR: hotfix/fix-validation-bug → main
 # After merge, back-merge to develop
-```
+```text
 
 ---
 

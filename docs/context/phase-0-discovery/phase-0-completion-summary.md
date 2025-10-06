@@ -37,7 +37,7 @@ Five foundational ADRs were created and accepted:
 
 Created a well-organized .NET solution:
 
-```
+```text
 warp-idevs-core/
 ├── src/
 │   └── Idevs/                      # Core library package
@@ -55,7 +55,7 @@ warp-idevs-core/
 ├── NuGet.config                     # Package source configuration
 ├── GitVersion.yml                   # Semantic versioning config
 └── .editorconfig                    # Code style enforcement
-```
+```text
 
 **Target Framework**: .NET 8.0  
 **Build SDK**: .NET 9.0.305
