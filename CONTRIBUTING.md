@@ -89,7 +89,7 @@ feat!: change ICommandHandler signature
 BREAKING CHANGE: ICommandHandler now requires CancellationToken parameter
 ```
 
-###Test-Driven Development (TDD)
+### Test-Driven Development (TDD)
 
 We follow the **Red → Green → Refactor** cycle:
 

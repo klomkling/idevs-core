@@ -2,7 +2,7 @@
 
 **Document Owner**: Platform Team  
 **Last Updated**: 2025-10-04  
-**Status: Phase 0 - ✅ Complete (2025-10-05)
+**Status**: Phase 0 - ✅ Complete (2025-10-05)
 
 ## Overview
 
@@ -27,9 +27,9 @@ Deliver a production-ready, CQRS-centric framework that:
 ## Phase Completion Checklist
 
 ### Phase 0: Discovery & Guardrails
-**Status: ✅ Complete
+**Status**: ✅ Complete
 
-- [ ] Stakeholder alignment on scope and personas
+- [x] Stakeholder alignment on scope and personas
 - [x] Discovery summary finalized
 - [x] Glossary published with standardized terminology
 - [x] Threat model baseline established

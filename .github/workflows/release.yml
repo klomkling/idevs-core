@@ -35,7 +35,7 @@ jobs:
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v1
         with:
-          versionSpec: '6.x'
+          versionSpec: '6.0.x'
       
       - name: Determine Version
         id: gitversion
@@ -97,9 +97,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      # Publish stable release to NuGet.org on main branch with tag
+      # Publish stable release to NuGet.org on tagged versions
       - name: Publish to NuGet.org (Stable Release)
-        if: github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/v')
         run: |
           dotnet nuget push "./artifacts/packages/*.nupkg" \
             --source "https://api.nuget.org/v3/index.json" \
@@ -133,7 +133,7 @@ jobs:
           echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           if [ "${{ github.ref }}" == "refs/heads/develop" ]; then
             echo "- **Published to**: GitHub Packages (pre-release)" >> $GITHUB_STEP_SUMMARY
-          elif [ "${{ github.ref }}" == "refs/heads/main" ] && [[ "${{ github.ref }}" == refs/tags/* ]]; then
+          elif [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             echo "- **Published to**: NuGet.org (stable release)" >> $GITHUB_STEP_SUMMARY
           else
             echo "- **Published to**: Artifacts only" >> $GITHUB_STEP_SUMMARY
