@@ -121,7 +121,7 @@ Phase 1 platform foundation has been successfully implemented, delivering a prod
 
 ## Git History
 
-```
+```text
 7e7d476 docs: add comprehensive Phase 1 platform foundation documentation
 d580637 test: expand unit tests to achieve 90%+ code coverage
 7935b38 test: add comprehensive unit tests for Phase 1
@@ -142,6 +142,7 @@ These limitations are documented in tests as skipped and will be addressed in Ph
 ## Next Steps
 
 ### Immediate
+
 1. ✅ Create PR from `feat/phase-1-platform-foundation` to `develop`
 2. ✅ Review and merge PR
 3. ✅ Merge to `main` for first production release
@@ -150,6 +151,7 @@ These limitations are documented in tests as skipped and will be addressed in Ph
 6. ✅ Publish package to NuGet.org
 
 ### Phase 2 Planning
+
 1. Implement remaining decorator types (validation for commands with response, queries)
 2. Add retry and circuit breaker decorators
 3. Add caching decorator

@@ -19,26 +19,31 @@ This document records all significant design decisions, trade-offs, and deviatio
 **Status**: ✅ Approved
 
 **Context**:
+
 - Original Phase 1 plan specified .NET 8.0 LTS
 - Current development environment uses .NET SDK 9.0.305
 - Need to decide on target framework
 
 **Decision**:
+
 - Target .NET 9.0 instead of .NET 8.0
 - No global.json needed (using system-wide SDK)
 
 **Rationale**:
+
 - Aligns with installed SDK version
 - .NET 9 provides performance improvements and new language features
 - Simplifies development setup (no SDK version switching)
 - Can add multi-targeting later if .NET 8 support is required
 
 **Impact**:
+
 - All projects updated to `<TargetFramework>net9.0</TargetFramework>`
 - Package versions updated to .NET 9 compatible versions
 - CI workflows updated to use .NET 9 SDK
 
 **Risks**:
+
 - Some consumers may still be on .NET 8
 - Mitigation: Can add multi-targeting in future if needed
 
@@ -50,16 +55,19 @@ This document records all significant design decisions, trade-offs, and deviatio
 **Status**: 📋 Pending Implementation
 
 **Context**:
+
 - Need to decide between record vs sealed class for Error type
 - Need to decide on deconstruction support
 
 **Options**:
+
 1. **Record** - Immutable by default, built-in equality, concise syntax
 2. **Sealed Class** - More explicit, can hide implementation details
 
 **Decision**: TBD during implementation
 
 **Considerations**:
+
 - Records provide cleaner syntax for immutable data
 - Records have built-in equality semantics
 - Sealed classes provide more control over initialization
@@ -72,19 +80,23 @@ This document records all significant design decisions, trade-offs, and deviatio
 **Status**: ✅ Approved
 
 **Context**:
+
 - Need to establish standard order for decorator composition
 
 **Decision**:
+
 - Outermost to innermost: **Logging → Validation → Metrics → Core Handler**
 
 **Rationale**:
+
 - Logging first: Captures all events including validation failures
 - Validation second: Short-circuits on validation failure before metrics
 - Metrics third: Only measures valid commands
 - Core handler last: Actual business logic execution
 
 **Example Pipeline**:
-```
+
+```text
 LoggingDecorator(
   ValidationDecorator(
     MetricsDecorator(
@@ -92,7 +104,7 @@ LoggingDecorator(
     )
   )
 )
-```
+```text
 
 ---
 
@@ -102,13 +114,16 @@ LoggingDecorator(
 **Status**: ✅ Approved
 
 **Context**:
+
 - Need to decide how ValidationDecorator behaves when no validator is registered
 
 **Decision**:
+
 - Skip validation silently if `IValidator<TCommand>` is not registered
 - Allow optional per-handler configuration to require validator
 
 **Rationale**:
+
 - Not all commands need validation (e.g., simple queries)
 - Explicit opt-in reduces boilerplate
 - Consumers can use FluentValidation or custom validators
@@ -132,9 +147,11 @@ services.AddCommandHandler<CreateOrder, CreateOrderHandler>(
 **Status**: 📋 Pending Implementation
 
 **Context**:
+
 - Need to design IMetrics interface that works with multiple providers
 
 **Options**:
+
 1. **OpenTelemetry-specific** - Tight coupling to OTel
 2. **Generic abstraction** - Provider-agnostic
 3. **System.Diagnostics.Metrics** - Built-in .NET metrics
@@ -142,6 +159,7 @@ services.AddCommandHandler<CreateOrder, CreateOrderHandler>(
 **Decision**: TBD
 
 **Considerations**:
+
 - System.Diagnostics.Metrics is built-in and well-supported
 - OpenTelemetry has good tooling ecosystem
 - Generic abstraction provides flexibility but adds complexity
@@ -166,12 +184,14 @@ services.AddCommandHandler<CreateOrder, CreateOrderHandler>(
 **Alternative**: Assembly Scanning (Scrutor/Autofac)
 
 **Pros of Explicit**:
+
 - ✅ No reflection overhead
 - ✅ Clear dependency graph
 - ✅ IDE navigation works (F12)
 - ✅ Compile-time safety
 
 **Cons of Explicit**:
+
 - ❌ More verbose
 - ❌ Manual maintenance required
 
@@ -185,12 +205,14 @@ services.AddCommandHandler<CreateOrder, CreateOrderHandler>(
 **Alternative**: Autofac with decorator support
 
 **Pros of MEDI**:
+
 - ✅ Zero external dependencies
 - ✅ Works with any .NET app out of the box
 - ✅ Microsoft guarantee of support
 - ✅ Familiar to all .NET developers
 
 **Cons of MEDI**:
+
 - ❌ No built-in decorator pattern
 - ❌ More verbose factory registrations
 
@@ -205,6 +227,7 @@ services.AddCommandHandler<CreateOrder, CreateOrderHandler>(
 **Question**: Should we multi-target .NET 8 and .NET 9?
 
 **Considerations**:
+
 - Pro: Broader compatibility
 - Con: Increased complexity
 - Pro: Enterprise users may be on .NET 8 LTS
@@ -218,7 +241,8 @@ services.AddCommandHandler<CreateOrder, CreateOrderHandler>(
 **Question**: Do we need separate decorators for query handlers?
 
 **Considerations**:
-- Queries may not need validation (read-only)
+
+- Queries may not need validation
 - Logging and metrics still useful
 - Could reuse command decorators with minimal changes
 
@@ -235,7 +259,6 @@ services.AddCommandHandler<CreateOrder, CreateOrderHandler>(
 ---
 
 **Last Updated**: 2025-10-07
-
 ---
 
 ## Phase 1 Status: ✅ COMPLETE
