@@ -19,6 +19,8 @@ Phase 1 delivers a solid, production-ready foundation for building modern .NET a
 dotnet add package Idevs --version 0.1.0
 ```
 
+> **Note**: For feature branches, the version includes a pre-release label like `0.1.0-feat-phase-1-platform-foundation`. After merging to `main`, the stable version `0.1.0` will be released.
+
 ### Basic Setup
 
 ```csharp

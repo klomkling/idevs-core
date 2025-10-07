@@ -3,7 +3,7 @@
 **Status**: ✅ Complete  
 **Date**: October 8, 2025  
 **Branch**: `feat/phase-1-platform-foundation`  
-**Version**: 1.0.0
+**Version**: 0.1.0-feat-phase-1-platform-foundation
 
 ## Summary
 
@@ -92,8 +92,8 @@ Phase 1 platform foundation has been successfully implemented, delivering a prod
 
 ### ✅ Package Artifacts
 
-- **Package**: `Idevs.1.0.0.nupkg` (15 KB)
-- **Symbols Package**: `Idevs.1.0.0.snupkg` (13 KB)
+- **Package**: `Idevs.0.1.0-feat-phase-1-platform-foundation.nupkg` (15 KB)
+- **Symbols Package**: `Idevs.0.1.0-feat-phase-1-platform-foundation.snupkg` (13 KB)
 - **Target Framework**: .NET 9.0
 - **Dependencies**:
   - Microsoft.Extensions.DependencyInjection
@@ -144,9 +144,10 @@ These limitations are documented in tests as skipped and will be addressed in Ph
 ### Immediate
 1. ✅ Create PR from `feat/phase-1-platform-foundation` to `develop`
 2. ✅ Review and merge PR
-3. ✅ Create release tag `v1.0.0`
-4. ✅ Publish package to GitHub Packages
-5. ✅ Publish package to NuGet.org
+3. ✅ Merge to `main` for first production release
+4. ✅ Create release tag `v0.1.0`
+5. ✅ Publish package to GitHub Packages
+6. ✅ Publish package to NuGet.org
 
 ### Phase 2 Planning
 1. Implement remaining decorator types (validation for commands with response, queries)
@@ -181,4 +182,5 @@ Phase 1 platform foundation is complete and ready for review and release.
 **Date**: October 8, 2025  
 **Build Status**: ✅ Passing  
 **Test Coverage**: 90.1% line, 70% branch  
+**Package Version**: 0.1.0-feat-phase-1-platform-foundation  
 **Package**: Ready for release

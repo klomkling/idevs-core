@@ -2,6 +2,10 @@ mode: ContinuousDeployment
 tag-prefix: v
 commit-message-incrementing: Enabled
 
+major-version-bump-message: '^(breaking|major):'
+minor-version-bump-message: '^(feat|feature|minor):'
+patch-version-bump-message: '^(fix|patch|chore):'
+
 branches:
   main:
     regex: ^main$
