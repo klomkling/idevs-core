@@ -1,6 +1,6 @@
 # Idevs Framework
 
-[![.NET](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download)
+[![.NET](https://img.shields.io/badge/.NET-9.0-blue.svg)](https://dotnet.microsoft.com/download)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-in%20development-yellow.svg)](https://github.com/klomkling/idevs-core)
 
@@ -42,18 +42,60 @@ Idevs.Testing                      # Testing utilities
 
 ## 🚀 Quick Start
 
-> **Note**: This framework is currently in active development. Full implementation coming soon.
+### Installation
 
 ```bash
-# Install the core package (when available)
-dotnet add package Idevs
+# Install the core package
+dotnet add package Idevs --version 0.1.0
+```
 
-# Install application layer
-dotnet add package Idevs.Application
+### Basic Usage
 
-# Install PostgreSQL infrastructure
-dotnet add package Idevs.Infrastructure.PostgreSQL
-```text
+```csharp
+using Idevs.Abstractions;
+using Idevs.Common;
+using Idevs.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+
+// Define a command
+public sealed record CreateUserCommand(string Email, string Name) : ICommand;
+
+// Implement the handler
+public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
+{
+    public async Task<Result> HandleAsync(
+        CreateUserCommand command,
+        CancellationToken cancellationToken)
+    {
+        // Business logic here
+        return Result.Success();
+    }
+}
+
+// Register in DI
+var services = new ServiceCollection();
+services.AddIdevs(options =>
+{
+    options.Decorators.EnableLogging = true;
+    options.Decorators.EnableValidation = true;
+});
+services.AddCommandHandler<CreateUserCommand, CreateUserCommandHandler>();
+
+var provider = services.BuildServiceProvider();
+
+// Execute the command
+var handler = provider.GetRequiredService<ICommandHandler<CreateUserCommand>>();
+var result = await handler.HandleAsync(
+    new CreateUserCommand("user@example.com", "John Doe"),
+    cancellationToken);
+
+if (result.IsSuccess)
+{
+    // Success!
+}
+```
+
+See [Phase 1 Documentation](./docs/context/phase-1-platform/implementation/phase-1-platform-foundation/README.md) for comprehensive examples
 
 ## 📚 Documentation
 
@@ -105,12 +147,11 @@ Each implementation phase has detailed documentation:
 - **PII Redaction**: Privacy compliance built-in
 
 ## 📊 Project Status
-
-| Phase | Status | Completion | Description |
+|| Phase | Status | Completion | Description |
 |-------|--------|------------|-------------|
 | Phase 0 | ✅ Complete | 2025-10-05 | Discovery & Guardrails |
-| Phase 1 | ⏳ Up Next | - | Core Domain Abstractions |
-| Phase 2 | ⏳ Planned | - | Application Layer & CQRS Pipeline |
+| Phase 1 | ✅ Complete | 2025-10-08 | Platform Foundation - Result, CQRS, Decorators |
+| Phase 2 | ⏳ Up Next | - | Application Layer Extensions |
 | Phase 3 | ⏳ Planned | - | Infrastructure & Persistence |
 | Phase 4 | ⏳ Planned | - | Web Integration & APIs |
 | Phase 5 | ⏳ Planned | - | Advanced Features |
@@ -127,14 +168,26 @@ Each implementation phase has detailed documentation:
 - ✅ Documentation validation: Markdownlint with 2,000+ files processed
 - ✅ Development guidelines: CONTRIBUTING.md, AGENTS.md
 
+**Phase 1 Deliverables** (Complete):
+
+- ✅ Result pattern for type-safe error handling
+- ✅ CQRS abstractions (ICommand, IQuery, handlers)
+- ✅ Decorator infrastructure (logging, validation, metrics)
+- ✅ Core services (tenant context, current user, unit of work, metrics)
+- ✅ Dependency injection with zero reflection
+- ✅ 48 unit tests, 90.1% line coverage, 70% branch coverage
+- ✅ Comprehensive documentation and examples
+- ✅ NuGet package v0.1.0
+
 **Current Implementation Status**:
 
-- **Build System**: ✅ Operational (multi-platform)
+- **Build System**: ✅ Operational (multi-platform, .NET 9)
 - **CI/CD**: ✅ Configured (Linux, Windows, macOS)
 - **GitVersion**: ✅ Semantic versioning with environment variables
 - **Documentation**: ✅ Complete with automated validation
 - **Code Quality**: ✅ Linting, formatting, and style enforcement
-- **Next**: Phase 1 - Core Domain Abstractions
+- **Package**: ✅ Published v0.1.0 (pre-release)
+- **Next**: Phase 2 - Application Layer Extensions
 
 ## 🤝 Contributing
 
@@ -142,8 +195,8 @@ Contributions are welcome! Please read our [contributing guidelines](./CONTRIBUT
 
 ### Development Requirements
 
-- **.NET SDK 9.0** or later (targets .NET 8.0)
-- **PostgreSQL 15+** (for integration tests when implemented)
+- **.NET SDK 9.0** or later
+- **PostgreSQL 15+** (for future integration tests)
 - **Docker** (optional, for Testcontainers)
 
 ### Getting Started
