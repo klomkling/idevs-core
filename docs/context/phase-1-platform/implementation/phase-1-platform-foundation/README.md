@@ -5,6 +5,7 @@ This document provides a comprehensive guide to the Phase 1 platform foundation 
 ## Overview
 
 Phase 1 delivers a solid, production-ready foundation for building modern .NET applications with:
+
 - **Result Pattern**: Type-safe error handling without exceptions
 - **CQRS Abstractions**: Command/Query separation with decorator support
 - **Decorator Infrastructure**: Composable cross-cutting concerns (logging, validation, metrics)
@@ -570,6 +571,7 @@ See [testing-notes.md](./testing-notes.md) for testing guidelines and patterns.
 ## Future Enhancements
 
 Phase 2 will add:
+
 - Validation decorators for commands with responses and queries
 - Additional decorator types (retry, circuit breaker, caching)
 - Entity Framework Core integration

@@ -34,6 +34,7 @@ The decorators are composed in the following order (outermost to innermost):
 ### Execution Flow
 
 **Success Path**:
+
 1. **Logging**: Log start of command execution
 2. **Validation**: Validate command (if validator present)
 3. **Metrics**: Start timer, increment counter
@@ -43,6 +44,7 @@ The decorators are composed in the following order (outermost to innermost):
 7. **Logging**: Log success with elapsed time
 
 **Failure Path** (Validation Failure):
+
 1. **Logging**: Log start of command execution
 2. **Validation**: Validation fails → return Result.Failure
 3. **Logging**: Log failure with validation errors
@@ -66,6 +68,7 @@ builder.Services.AddIdevs(options =>
 ```
 
 **Registered Services**:
+
 - `ITenantContext` → `DefaultTenantContext` (scoped)
 - `ICurrentUser` → `DefaultCurrentUser` (scoped)
 - `IMetrics` → `NoOpMetrics` (singleton)
@@ -206,6 +209,7 @@ if (validator != null)
 ```
 
 **Benefits**:
+
 - ✅ Commands without validation don't require empty validators
 - ✅ FluentValidation validators can be registered separately
 - ✅ No unnecessary validator instantiation
@@ -240,6 +244,7 @@ services.AddCommandHandler<DeleteOrder, DeleteOrderHandler>();
 ```
 
 **Advantages**:
+
 1. **IDE Navigation**: F12 works to jump to handler implementation
 2. **Compile-Time Safety**: Typos caught at compile time
 3. **No Reflection**: Zero runtime overhead for handler discovery
@@ -247,10 +252,12 @@ services.AddCommandHandler<DeleteOrder, DeleteOrderHandler>();
 5. **Debugging**: Clear stack traces without magic
 
 **Disadvantages**:
+
 1. **Verbosity**: More lines of code
 2. **Maintenance**: Must register each handler manually
 
 **Mitigation**:
+
 - Provide optional source generator in future if verbosity becomes issue
 - Keep registration methods concise and consistent
 
@@ -322,6 +329,7 @@ public async Task AddCommandHandler_Registers_Full_Pipeline()
 **Total Decorator Overhead**: Typically < 20ms
 
 **Mitigation**:
+
 - Use structured logging to avoid string formatting overhead
 - Cache validation rules where possible
 - Use efficient metrics collectors (e.g., System.Diagnostics.Metrics)

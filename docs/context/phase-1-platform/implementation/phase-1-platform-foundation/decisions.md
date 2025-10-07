@@ -328,4 +328,3 @@ services.AddCommandHandler<CreateOrder, CreateOrderHandler>(
 8. Implement tenant resolvers (HTTP, JWT, DB) (#TBD)
 9. Create migration guide from MediatR (#TBD)
 10. Add performance benchmark suite (#TBD)
-

@@ -90,6 +90,7 @@ tests/Idevs.Tests/
 **Naming Convention**: `MethodName_StateUnderTest_ExpectedBehavior`
 
 **Example**:
+
 ```csharp
 [Fact]
 public void Result_Success_ReturnsSuccessResult()
@@ -166,6 +167,7 @@ public async Task DecoratorPipeline_ExecutesInCorrectOrder()
 **Purpose**: Test expected behavior in various scenarios
 
 **Scenarios**:
+
 - Successful command execution
 - Validation failure
 - Handler exception
@@ -209,6 +211,7 @@ public async Task ValidationDecorator_WithoutValidator_SkipsValidation()
 - **Reason**: Readable assertions, better error messages
 
 **Example**:
+
 ```csharp
 result.IsSuccess.ShouldBeTrue();
 result.Value.ShouldBe(expectedValue);
@@ -221,6 +224,7 @@ result.Error.ShouldBeNull();
 - **Reason**: Clean syntax, easy to use
 
 **Example**:
+
 ```csharp
 var logger = Substitute.For<ILogger<TestClass>>();
 logger.Received(1).LogInformation(Arg.Any<string>(), Arg.Any<object[]>());
