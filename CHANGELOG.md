@@ -9,38 +9,98 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- .NET solution structure with `Idevs` core library and `Idevs.Tests` test project
-- IIdevsMarker interface for assembly identification
-- Central Package Management via Directory.Packages.props
-- Shared build configuration with Directory.Build.props
-- Code style enforcement via .editorconfig
-- GitVersion configuration for semantic versioning
-- Multi-platform CI workflow (Linux, Windows, macOS) with build, test, and coverage gating (≥80%)
-- Multi-platform testing in release workflow before publishing
-- Release workflow for GitHub Packages and NuGet.org publishing
-- Dependabot configuration for automated dependency updates
-- CONTRIBUTING.md with development guidelines
-- Phase 0 implementation plan and execution log
-- Phase 0 completion summary document
-- Documentation validation workflow with markdownlint
-- CI matrix strategy implementation documentation
+- TBD
 
 ### Changed
 
-- Accepted ADR-0002, ADR-0003, ADR-0004, and ADR-0005 (previously proposed)
-- Normalized formatting across all ADRs
-- Updated Phase 0 status to Complete in all documentation
-- Updated project status in README with Phase 0 deliverables
-- Updated context documentation with accurate phase tracking
-- CI/CD workflows to use GitVersion environment variables instead of step outputs
-- Release workflow to require multi-platform test success before publishing
-- Documentation to recommend Ardalis.GuardClauses for input validation
-- Relaxed markdownlint rules for practical documentation maintenance
+- TBD
+
+---
+
+## [0.1.0] - 2025-10-08
+
+### Added
+
+**Phase 1: Platform Foundation**
+
+- 🎯 **Result Pattern** for type-safe error handling without exceptions
+  - `Result` and `Result<T>` classes with success/failure semantics
+  - Seven semantic error types: Validation, NotFound, Conflict, Unauthorized, Forbidden, Failure, Unexpected
+  - `Error` record with code, message, type, and optional details
+  - Result combination and deconstruction support
+
+- 📦 **CQRS Abstractions** for command/query separation
+  - `ICommand` and `ICommand<TResponse>` marker interfaces
+  - `IQuery<TResponse>` marker interface
+  - `ICommandHandler<TCommand>` and `ICommandHandler<TCommand, TResponse>` interfaces
+  - `IQueryHandler<TQuery, TResponse>` interface
+  - All handlers return `Task<Result>` or `Task<Result<T>>`
+
+- 🎭 **Decorator Infrastructure** for cross-cutting concerns
+  - `CommandHandlerDecoratorBase<TCommand>` base class
+  - `CommandHandlerDecoratorBase<TCommand, TResponse>` base class
+  - `QueryHandlerDecoratorBase<TQuery, TResponse>` base class
+  - `LoggingCommandHandlerDecorator<TCommand>` - Logs execution with duration
+  - `ValidationCommandHandlerDecorator<TCommand>` - FluentValidation integration
+  - `MetricsCommandHandlerDecorator<TCommand>` - Performance tracking
+
+- ⚙️ **Core Service Interfaces**
+  - `ITenantContext<TTenantId>` - Multi-tenant context abstraction
+  - `ICurrentUser<TUserId>` - Current user abstraction
+  - `IUnitOfWork` - Transaction management interface
+  - `IMetrics` - Application metrics interface
+  - Default implementations: `DefaultTenantContext`, `DefaultCurrentUser`, `NoOpMetrics`
+
+- 📦 **Configuration System**
+  - `IdevsOptions` - Global framework configuration
+  - `DecoratorOptions` - Enable/disable decorators globally or per-handler
+  - Options pattern integration via `Microsoft.Extensions.Options`
+
+- 🔌 **Dependency Injection Extensions**
+  - `AddIdevs(Action<IdevsOptions>)` - Register framework services
+  - `AddCommandHandler<TCommand, THandler>(Action<DecoratorOptions>)` - Register command handlers with decorator pipeline
+  - `AddQueryHandler<TQuery, TResponse, THandler>(Action<DecoratorOptions>)` - Register query handlers with decorator pipeline
+  - Zero reflection, fully explicit registration
+  - Per-handler decorator configuration overrides
+
+- ✅ **Comprehensive Testing**
+  - 48 unit tests with 90.1% line coverage, 70% branch coverage
+  - Tests for Result pattern, CQRS abstractions, decorators, and DI
+  - Integration tests for decorator pipeline composition
+  - Test helpers and validators
+
+- 📚 **Comprehensive Documentation**
+  - Phase 1 implementation plan and completion summary
+  - Architecture decision records
+  - DI pipeline and decorator composition notes
+  - Testing strategy documentation
+  - User guide with quick start and examples
+  - Updated root README with Phase 1 status
+
+### Changed
+
+- ⬆️ **Upgraded to .NET 9.0** from .NET 8.0
+  - All projects target `net9.0`
+  - Updated packages to .NET 9 compatible versions
+  - CI workflows updated to use .NET 9 SDK
+
+- 📦 **Package Management**
+  - Updated Microsoft.Extensions.* packages to 9.0.0
+  - Updated FluentValidation to 11.9.2
+  - Replaced Newtonsoft.Json with System.Text.Json (built-in)
+
+- 🔧 **GitVersion Configuration**
+  - Added semantic version bumping based on conventional commits
+  - Configured initial version to start at 0.1.0
+
+- 📝 **Documentation**
+  - Updated project status to show Phase 1 complete
+  - Added quick start guide with code examples
+  - Updated .NET badge to 9.0
 
 ### Removed
 
-- Guard class (replaced with built-in .NET methods and recommendation for Ardalis.GuardClauses)
-- GuardTests.cs (no longer needed after Guard class removal)
+- N/A
 
 ### Fixed
 
@@ -127,7 +187,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Version History
 
 - **[Unreleased]** - Active development on `develop` branch
-- **[0.0.1]** - 2025-10-05 - Initial repository setup
+- **[0.1.0]** - 2025-10-08 - Phase 1: Platform Foundation (Result, CQRS, Decorators)
+- **[0.0.1]** - 2025-10-05 - Phase 0: Discovery & Guardrails
 
 ---
 
@@ -159,4 +220,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 **Maintained by**: idevs.work team  
-**Last Updated**: 2025-10-07
+**Last Updated**: 2025-10-08
