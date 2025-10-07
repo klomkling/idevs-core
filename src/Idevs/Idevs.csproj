@@ -4,4 +4,14 @@
     <!-- Inherits net9.0 from Directory.Build.props -->
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Microsoft Extensions -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    
+    <!-- FluentValidation -->
+    <PackageReference Include="FluentValidation" />
+  </ItemGroup>
+
 </Project>
