@@ -156,18 +156,19 @@ These licenses are NOT used in this project:
 ### Before Adding Any New Package
 
 1. **Check License on NuGet.org**
+
    - Visit package page
    - Look for "License" section
    - Verify it's MIT, Apache 2.0, BSD, or similar
 
-2. **Review GitHub Repository**
+1. **Review GitHub Repository**
 
    ```bash
    # Check for LICENSE file
    curl https://raw.githubusercontent.com/org/repo/main/LICENSE
    ```
 
-3. **Use Automated Tools**
+1. **Use Automated Tools**
 
    ```bash
    # Install license checker
@@ -177,7 +178,8 @@ These licenses are NOT used in this project:
    dotnet-project-licenses --input /path/to/project.csproj
    ```
 
-4. **Verify with Legal Team**
+1. **Verify with Legal Team**
+
    - If license is unclear
    - If license is not MIT/Apache/BSD
    - If commercial use clause exists

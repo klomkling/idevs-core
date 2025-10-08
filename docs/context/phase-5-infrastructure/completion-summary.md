@@ -296,7 +296,7 @@ Phase 5 established the **Infrastructure Layer** for the Idevs framework by impl
 
 ### Outputs to Next Phase
 
-**Phase 6: Documentation, Samples & Release Readiness**
+#### Phase 6: Documentation, Samples & Release Readiness
 
 - Migration scripts and deployment guide
 - Performance tuning recommendations

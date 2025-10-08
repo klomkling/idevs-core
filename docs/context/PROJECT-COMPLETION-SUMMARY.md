@@ -308,7 +308,7 @@ Idevs Framework Packages:
    mkdir -p samples/{MinimalApi,TodoApi,MultiTenantShop}
    ```
 
-2. **Initialize Git Repository**
+1. **Initialize Git Repository**
 
    ```bash
    git init
@@ -317,13 +317,15 @@ Idevs Framework Packages:
    git commit -m "chore: initialize repository"
    ```
 
-3. **Setup CI/CD**
+1. **Setup CI/CD**
+
    - Copy GitHub Actions workflows
    - Configure GitVersion
    - Setup NuGet feed
    - Configure code coverage reports
 
-4. **Begin Implementation**
+1. **Begin Implementation**
+
    - Start with Phase 2 (Domain layer)
    - Implement Result pattern and primitives
    - Add unit tests for all components
