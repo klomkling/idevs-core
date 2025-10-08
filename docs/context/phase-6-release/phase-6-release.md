@@ -1,8 +1,8 @@
 # Phase 6: Documentation, Samples & Release Readiness
 
-**Phase Owner**: Release Team  
-**Last Updated**: 2025-10-04  
-**Status**: Planning  
+**Phase Owner**: Release Team
+**Last Updated**: 2025-10-04
+**Status**: Planning
 **Dependencies**: Phase 0 (Discovery & Guardrails), Phase 1 (Platform Scaffolding), Phase 2 (Domain & Contracts), Phase 3 (Application Layer), Phase 4 (Web Adapters), Phase 5 (Infrastructure)
 
 ---
@@ -119,7 +119,7 @@ namespace Idevs.Application.Abstractions;
 ///   <item>Logging (structured with correlation)</item>
 ///   <item>Transaction management</item>
 /// </list>
-/// 
+///
 /// Example usage:
 /// <code>
 /// var command = new CreateOrderCommand(
@@ -127,9 +127,9 @@ namespace Idevs.Application.Abstractions;
 ///     TotalAmount: 100.00m,
 ///     Currency: "USD"
 /// );
-/// 
+///
 /// var result = await _commandExecutor.ExecuteAsync(command, cancellationToken);
-/// 
+///
 /// if (result.IsSuccess)
 /// {
 ///     Console.WriteLine($"Order created: {result.Value}");
@@ -169,7 +169,7 @@ public interface ICommandExecutor
         CancellationToken cancellationToken = default)
         where TCommand : ICommand<TResult>;
 }
-```text
+```
 
 #### DocFX Configuration
 
@@ -231,7 +231,7 @@ public interface ICommandExecutor
     "disableGitFeatures": false
   }
 }
-```text
+```
 
 ---
 
@@ -266,7 +266,7 @@ dotnet add package Idevs.Application
 dotnet add package Idevs.Domain
 dotnet add package Idevs.Infrastructure.PostgreSQL
 dotnet add package Idevs.Web
-```text
+```
 
 ### 2. Configure Services
 
@@ -302,9 +302,9 @@ public sealed class Product : AggregateRoot<ProductId>
 {
     public string Name { get; private set; }
     public decimal Price { get; private set; }
-    
+
     private Product() { } // EF Core
-    
+
     public static Product Create(string name, decimal price)
     {
         var product = new Product
@@ -313,7 +313,7 @@ public sealed class Product : AggregateRoot<ProductId>
             Name = name,
             Price = price
         };
-        
+
         return product;
     }
 }
@@ -323,25 +323,25 @@ public sealed class Product : AggregateRoot<ProductId>
 
 ```csharp
 // Application/Products/CreateProductHandler.cs
-public sealed class CreateProductHandler 
+public sealed class CreateProductHandler
     : ICommandHandler<CreateProductCommand, ProductId>
 {
     private readonly IRepository<Product> _repository;
-    
+
     public CreateProductHandler(IRepository<Product> repository)
     {
         _repository = repository;
     }
-    
+
     public async Task<Result<ProductId>> HandleAsync(
         CreateProductCommand command,
         CancellationToken cancellationToken)
     {
         var product = Product.Create(command.Name, command.Price);
-        
+
         _repository.Add(product);
         await _repository.SaveChangesAsync(cancellationToken);
-        
+
         return Result.Success(product.Id);
     }
 }
@@ -361,7 +361,7 @@ public class ProductsController : ApiControllerBase
         : base(commandExecutor, queryExecutor)
     {
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Create(
         CreateProductCommand command,
@@ -471,7 +471,7 @@ app.MapGet("/api/products", async (IQueryExecutor executor) =>
 app.MapPost("/api/products", async (CreateProductCommand command, ICommandExecutor executor) =>
 {
     var result = await executor.ExecuteAsync(command);
-    return result.IsSuccess 
+    return result.IsSuccess
         ? Results.Created($"/api/products/{result.Value}", result.Value)
         : Results.BadRequest(result.Errors);
 });
@@ -510,14 +510,14 @@ packages/
     <LangVersion>12.0</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    
+
     <!-- Package Metadata -->
     <PackageId>Idevs</PackageId>
     <Version>1.0.0</Version>
     <Authors>Idevs Team</Authors>
     <Company>idevs.work</Company>
     <Description>
-      Core abstractions for the Idevs framework - a CQRS-centric, 
+      Core abstractions for the Idevs framework - a CQRS-centric,
       multi-tenant building block library for modern .NET applications.
     </Description>
     <PackageTags>cqrs;ddd;multi-tenant;framework;clean-architecture</PackageTags>
@@ -527,11 +527,11 @@ packages/
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/idevs/idevs-core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    
+
     <!-- Documentation -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
-    
+
     <!-- SourceLink -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -605,48 +605,48 @@ env:
 jobs:
   release:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-    
+
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0
       with:
         versionSpec: '5.x'
-    
+
     - name: Determine Version
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0
       with:
         useConfigFile: true
-    
+
     - name: Display Version
       run: |
         echo "Version: ${{ steps.gitversion.outputs.semVer }}"
         echo "NuGetVersion: ${{ steps.gitversion.outputs.nuGetVersion }}"
-    
+
     - name: Restore
       run: dotnet restore
-    
+
     - name: Build
       run: dotnet build --configuration Release --no-restore /p:Version=${{ steps.gitversion.outputs.nuGetVersion }}
-    
+
     - name: Test
       run: dotnet test --configuration Release --no-build --verbosity normal
-    
+
     - name: Pack
       run: dotnet pack --configuration Release --no-build --output ./artifacts /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersion }}
-    
+
     - name: Push to NuGet
       run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
-    
+
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
@@ -739,11 +739,12 @@ dotnet test /p:CollectCoverage=true /p:CoverageReportsGenerator=html
 
 # Run specific test project
 dotnet test tests/Idevs.Application.Tests
-```text
+```
 
 ## Local Development Setup
 
 1. **Prerequisites**
+
    - .NET 8.0 SDK
    - PostgreSQL 12+
    - Docker (optional, for databases)
@@ -775,6 +776,8 @@ dotnet test tests/Idevs.Application.Tests
    docfx serve _site
    ```
 
+```markdown
+
 ## Documentation
 
 - All public APIs must have XML documentation
@@ -799,7 +802,7 @@ See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 By contributing, you agree that your contributions will be licensed under the MIT License.
 
-```text
+```
 
 ---
 
@@ -819,14 +822,14 @@ By contributing, you agree that your contributions will be licensed under the MI
 **Before (v1.x)**:
 ```csharp
 Task<Result> ExecuteAsync(ICommand command);
-```text
+```
 
 **After (v2.0)**:
 
 ```csharp
 Task<Result> ExecuteAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default)
     where TCommand : ICommand;
-```text
+```
 
 **Migration Steps**:
 
@@ -842,7 +845,7 @@ var result = await _executor.ExecuteAsync(command);
 
 // After
 var result = await _executor.ExecuteAsync(command, cancellationToken);
-```text
+```
 
 ### 2. Repository Interface Changes
 
@@ -850,13 +853,13 @@ var result = await _executor.ExecuteAsync(command, cancellationToken);
 
 ```csharp
 Task<TEntity?> GetByIdAsync(Guid id);
-```text
+```
 
 **After (v2.0)**:
 
 ```csharp
 Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-```text
+```
 
 **Migration Steps**:
 
@@ -872,7 +875,7 @@ services.AddIdevs(options =>
 {
     options.ConnectionString = connectionString;
 });
-```text
+```
 
 **After (v2.0)**:
 
@@ -883,7 +886,7 @@ services.AddIdevs(builder =>
     builder.UseMultiTenancy();
     builder.UseAuditLogging();
 });
-```text
+```
 
 ## Deprecated Features
 
@@ -983,10 +986,10 @@ public class CommandExecutorBenchmarks
     {
         var services = new ServiceCollection();
         services.AddIdevs(options => { /* config */ });
-        
+
         var provider = services.BuildServiceProvider();
         _executor = provider.GetRequiredService<ICommandExecutor>();
-        
+
         _command = new CreateOrderCommand(
             CustomerEmail: "test@example.com",
             TotalAmount: 100.00m,
@@ -1360,7 +1363,7 @@ products.MapPut("/{id:guid}", async (
 {
     if (id != command.Id)
         return Results.BadRequest("ID mismatch");
-    
+
     var result = await executor.ExecuteAsync(command);
     return result.IsSuccess ? Results.NoContent() : Results.BadRequest(result.Errors);
 })
@@ -1385,6 +1388,6 @@ app.Run();
 
 ---
 
-**Last Updated**: 2025-10-04  
-**Document Version**: 1.0  
+**Last Updated**: 2025-10-04
+**Document Version**: 1.0
 **Total Lines**: ~1,600

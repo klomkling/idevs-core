@@ -318,12 +318,14 @@ Idevs Framework Packages:
    ```
 
 1. **Setup CI/CD**
+
    - Copy GitHub Actions workflows
    - Configure GitVersion
    - Setup NuGet feed
    - Configure code coverage reports
 
 1. **Begin Implementation**
+
    - Start with Phase 2 (Domain layer)
    - Implement Result pattern and primitives
    - Add unit tests for all components
