@@ -2,7 +2,6 @@
 
 > **Navigation:** [Index](README.md) • [Part 1](02-value-objects-base.md) • [Part 2](02-value-objects-examples.md)
 
-
 > **Phase:** 2 - Domain & Contracts  
 > **Guide:** 02 of 09  
 > **Estimated Time:** 2-3 hours
@@ -102,6 +101,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
 ```
 
 **Design Rationale:**
+
 - Abstract `GetEqualityComponents()` forces subclasses to define equality
 - `SequenceEqual` compares component order (important for multi-field VOs)
 - Unchecked hash aggregation prevents overflow exceptions
@@ -166,6 +166,7 @@ public sealed class Email : ValueObject
 ```
 
 **Design Rationale:**
+
 - Private constructor + static factory enforces validation
 - Returns `Result<Email>` for composability
 - Normalizes emails (lowercase, trim) for consistent comparison
@@ -264,12 +265,12 @@ public sealed class Money : ValueObject
 ```
 
 **Design Rationale:**
+
 - Enforces ISO 4217 currency codes (3 letters)
 - Rounds to 2 decimal places (prevents floating-point errors)
 - Arithmetic operations return `Result<Money>` for currency mismatch errors
 - Comparison operators throw (not common operations, should be explicit)
 - Zero factory method for initial values
-
 
 ---
 

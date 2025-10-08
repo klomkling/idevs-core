@@ -2,7 +2,6 @@
 
 > **Navigation:** [Index](README.md) • [Part 1](07-repository-pattern.md) • [Part 2](07-unit-of-work.md)
 
-
 > **Phase:** 2 - Domain & Contracts  
 > **Guide:** 07 of 09  
 > **Estimated Time:** 3-4 hours
@@ -120,6 +119,7 @@ public interface IRepository<TEntity, TKey>
 ```
 
 **Design Rationale:**
+
 - Generic interface for all aggregate roots
 - Async methods for I/O operations
 - Expression<Func<>> for type-safe queries
@@ -161,6 +161,7 @@ public interface IUnitOfWork : IDisposable
 ```
 
 **Design Rationale:**
+
 - Single commit point for all repositories
 - Explicit transaction management when needed
 - Dispatches events after successful commit
@@ -211,6 +212,7 @@ public interface IReadOnlyRepository<TEntity, TKey>
 ```
 
 **Design Rationale:**
+
 - Separate interface for CQRS query side
 - Includes pagination support
 - Count operations for UIs
@@ -253,6 +255,7 @@ public interface ICustomerRepository : IRepository<Customer, Guid>
 ```
 
 **Design Rationale:**
+
 - Extends generic repository with domain-specific methods
 - Business-meaningful method names
 - Query methods return domain entities (not DTOs)

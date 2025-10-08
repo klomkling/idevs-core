@@ -8,6 +8,7 @@
         }
     }
 }
+
 ```
 
 **Design Rationale:**
@@ -182,6 +183,7 @@ public class CreateCustomerCommandHandler
 ```
 
 ### Query Operations
+
 ```csharp
 // Get by ID
 var customer = await _repository.GetByIdAsync(customerId);
@@ -199,6 +201,7 @@ var customer = await _customerRepository.GetByEmailAsync("test@example.com");
 ## Unit of Work Pattern
 
 ### Automatic Transaction
+
 ```csharp
 // Repositories share same UnitOfWork
 await _customerRepository.AddAsync(customer);
@@ -209,6 +212,7 @@ await _unitOfWork.CommitAsync(); // Also dispatches events
 ```
 
 ### Explicit Transaction
+
 ```csharp
 try
 {
@@ -260,6 +264,7 @@ public interface IOrderRepository : IRepository<Order, Guid>
 ## Best Practices
 
 ### ✅ DO
+
 - One repository per aggregate root
 - Return domain entities from repositories
 - Use UnitOfWork for transaction coordination
@@ -267,6 +272,7 @@ public interface IOrderRepository : IRepository<Order, Guid>
 - Test with InMemoryRepository
 
 ### ❌ DON'T
+
 - Create repositories for child entities (access through aggregate root)
 - Return IQueryable (leaks persistence concerns)
 - Mix data access code in command handlers (use repositories)
@@ -276,11 +282,13 @@ public interface IOrderRepository : IRepository<Order, Guid>
 ## EF Core Implementation (Phase 5)
 
 EF Core implementation will:
+
 - Use DbContext as UnitOfWork
 - Implement repositories with DbSet<T>
 - Apply global query filters (tenant, soft-delete)
 - Dispatch domain events in SaveChangesAsync
 - Add audit interceptors (CreatedAt, UpdatedAt)
+
 ```
 
 ## Verification Checklist
@@ -308,6 +316,7 @@ return customer.Id;
 ```
 
 ### ❌ Creating Repositories for Child Entities
+
 ```csharp
 // BAD - breaks aggregate boundary
 public interface IOrderLineRepository : IRepository<OrderLine, Guid> { }
@@ -318,6 +327,7 @@ var orderLine = order.OrderLines.First(ol => ol.Id == lineId);
 ```
 
 ### ❌ Returning IQueryable
+
 ```csharp
 // BAD - leaks EF Core details
 public IQueryable<Customer> Query() => _dbContext.Customers;

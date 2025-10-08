@@ -2,7 +2,6 @@
 
 > **Navigation:** [Index](README.md) • [Part 1](09-specifications-pattern.md) • [Part 2](09-specifications-examples.md)
 
-
 > **Phase:** 2 - Domain & Contracts  
 > **Guide:** 09 of 09  
 > **Estimated Time:** 2-3 hours
@@ -71,6 +70,7 @@ public interface ISpecification<T>
 ```
 
 **Design Rationale:**
+
 - Expression<Func<T, bool>> for use with IQueryable (EF Core)
 - IsSatisfiedBy for in-memory evaluation
 - Generic T for any entity type
@@ -132,6 +132,7 @@ public abstract class Specification<T> : ISpecification<T>
 ```
 
 **Design Rationale:**
+
 - Abstract class provides composition methods
 - IsSatisfiedBy compiles expression for in-memory use
 - Fluent API (And, Or, Not) for readability
@@ -282,6 +283,7 @@ internal sealed class ReplaceExpressionVisitor : ExpressionVisitor
 ```
 
 **Design Rationale:**
+
 - Replaces parameter instances in combined expressions
 - Required for And/Or to work with expression trees
 - Ensures EF Core can translate to SQL

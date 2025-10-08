@@ -72,6 +72,7 @@ Ask the agent to split files one-by-one:
 ```
 
 The agent will:
+
 1. Read lines 267-863 from the original file
 2. Create the examples file with proper nav
 3. Archive the original

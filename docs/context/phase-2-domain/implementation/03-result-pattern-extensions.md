@@ -52,6 +52,7 @@ public static class DomainErrors
                 $"User cannot perform {action} on {resource}");
     }
 }
+
 ```
 
 ### 7. Write Comprehensive Tests
@@ -272,6 +273,7 @@ return result.Match(
 ## Common Pitfalls
 
 ### ❌ Throwing Exceptions for Expected Errors
+
 ```csharp
 // BAD - exceptions for flow control
 public Customer GetCustomer(Guid id)
@@ -293,6 +295,7 @@ public Result<Customer> GetCustomer(Guid id)
 ```
 
 ### ❌ Not Handling Failure Path
+
 ```csharp
 // BAD - assumes success
 var result = GetCustomer(id);

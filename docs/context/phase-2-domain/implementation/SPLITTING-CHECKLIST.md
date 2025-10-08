@@ -22,6 +22,7 @@
 ## Automation Note
 
 Due to the large size and complexity of these files, the agent recommends:
+
 1. Manual splitting using your preferred editor
 2. Following the split points documented in SPLIT-STRATEGY.md
 3. Adding navigation blocks to each split file
@@ -30,4 +31,3 @@ Due to the large size and complexity of these files, the agent recommends:
 OR
 
 Ask the agent to split files one-by-one interactively.
-

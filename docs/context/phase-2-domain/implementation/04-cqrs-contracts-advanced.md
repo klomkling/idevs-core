@@ -85,6 +85,7 @@ public class CqrsContractsTests
         (query is IQuery<CustomerDto>).ShouldBeTrue();
     }
 }
+
 ```
 
 ### 10. Run Tests
@@ -111,6 +112,7 @@ services.AddScoped<IQueryHandler<GetCustomerByIdQuery, CustomerDto>, GetCustomer
 ```
 
 ### Assembly Scanning (Phase 3)
+
 ```csharp
 // Register all handlers in assembly
 services.AddHandlers(typeof(CreateCustomerCommand).Assembly);
@@ -119,6 +121,7 @@ services.AddHandlers(typeof(CreateCustomerCommand).Assembly);
 ## Command Pattern
 
 ### Command Definition
+
 ```csharp
 public record CreateOrderCommand(
     Guid CustomerId,
@@ -126,6 +129,7 @@ public record CreateOrderCommand(
 ```
 
 ### Handler Implementation
+
 ```csharp
 public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, Guid>
 {
@@ -162,6 +166,7 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, Gui
 ## Query Pattern
 
 ### Query Definition
+
 ```csharp
 public record GetOrdersByCustomerQuery(
     Guid CustomerId,
@@ -170,6 +175,7 @@ public record GetOrdersByCustomerQuery(
 ```
 
 ### Handler Implementation
+
 ```csharp
 public class GetOrdersByCustomerQueryHandler 
     : IQueryHandler<GetOrdersByCustomerQuery, PagedResult<OrderDto>>
@@ -203,6 +209,7 @@ public class GetOrdersByCustomerQueryHandler
 ## Decorator Pattern (Phase 3)
 
 Handlers can be wrapped with decorators for:
+
 - **Validation:** FluentValidation integration
 - **Logging:** Log command/query execution
 - **Caching:** Cache query results
@@ -210,6 +217,7 @@ Handlers can be wrapped with decorators for:
 - **Authorization:** Check permissions
 
 Example decorator:
+
 ```csharp
 public class LoggingCommandHandlerDecorator<TCommand, TResponse> 
     : ICommandHandler<TCommand, TResponse>
@@ -236,6 +244,7 @@ public class LoggingCommandHandlerDecorator<TCommand, TResponse>
     }
 }
 ```
+
 ```
 
 ## Verification Checklist
@@ -262,6 +271,7 @@ public record CreateCustomerCommand(...) : ICommand<Guid>;
 ```
 
 ### ❌ Queries with Side Effects
+
 ```csharp
 // BAD - query modifies state
 public class GetCustomerQueryHandler : IQueryHandler<GetCustomerQuery, CustomerDto>
@@ -286,6 +296,7 @@ public class GetCustomerQueryHandler : IQueryHandler<GetCustomerQuery, CustomerD
 ```
 
 ### ❌ Not Using CancellationToken
+
 ```csharp
 // BAD - ignores cancellation
 public async Task<Result<CustomerDto>> HandleAsync(

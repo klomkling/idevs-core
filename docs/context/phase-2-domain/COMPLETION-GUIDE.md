@@ -30,6 +30,7 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 #### ✅ Guide 01: Entity Interfaces
 
 **Files to Create:**
+
 - [ ] `src/Idevs/Contracts/Entities/IEntity.cs`
 - [ ] `src/Idevs/Contracts/Entities/IAuditable.cs`
 - [ ] `src/Idevs/Contracts/Entities/ISoftDeletable.cs`
@@ -38,10 +39,12 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 - [ ] `src/Idevs/Contracts/Entities/README.md`
 
 **Tests to Create:**
+
 - [ ] `tests/Idevs.Tests/Contracts/EntityInterfacesTests.cs`
 - [ ] All 4+ unit tests passing
 
 **Verification:**
+
 - [ ] All interfaces use nullable reference types correctly
 - [ ] DateTimeOffset used (not DateTime)
 - [ ] Generic constraint `IEquatable<TKey>` applied
@@ -52,6 +55,7 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 #### ✅ Guide 03: Result Patterns
 
 **Files to Create:**
+
 - [ ] `src/Idevs/Results/Error.cs`
 - [ ] `src/Idevs/Results/Result.cs`
 - [ ] `src/Idevs/Results/ResultExtensions.cs`
@@ -59,11 +63,13 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 - [ ] `src/Idevs/Results/DomainErrors.cs`
 
 **Tests to Create:**
+
 - [ ] `tests/Idevs.Tests/Results/ResultTests.cs`
 - [ ] `tests/Idevs.Tests/Results/PagedResultTests.cs`
 - [ ] All 13+ unit tests passing
 
 **Verification:**
+
 - [ ] Result<T> with Success/Failure factory methods
 - [ ] Extension methods: Map, Bind, Match, Tap
 - [ ] Implicit operators working
@@ -74,6 +80,7 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 #### ✅ Guide 04: CQRS Contracts
 
 **Files to Create:**
+
 - [ ] `src/Idevs/CQRS/Unit.cs`
 - [ ] `src/Idevs/CQRS/Commands/ICommand.cs`
 - [ ] `src/Idevs/CQRS/Commands/ICommandHandler.cs`
@@ -86,10 +93,12 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 - [ ] `src/Idevs/CQRS/README.md`
 
 **Tests to Create:**
+
 - [ ] `tests/Idevs.Tests/CQRS/CqrsContractsTests.cs`
 - [ ] All 7+ unit tests passing
 
 **Verification:**
+
 - [ ] Unit type defined
 - [ ] All handlers return `Task<Result<T>>`
 - [ ] CancellationToken support
@@ -102,6 +111,7 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 #### ✅ Guide 02: Value Objects
 
 **Files to Create:**
+
 - [ ] `src/Idevs/Domain/ValueObjects/ValueObject.cs`
 - [ ] `src/Idevs/Domain/ValueObjects/Email.cs`
 - [ ] `src/Idevs/Domain/ValueObjects/Money.cs`
@@ -109,10 +119,12 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 - [ ] `src/Idevs/Domain/ValueObjects/DateRange.cs`
 
 **Tests to Create:**
+
 - [ ] `tests/Idevs.Tests/Domain/ValueObjectTests.cs`
 - [ ] All 16+ unit tests passing
 
 **Verification:**
+
 - [ ] All value objects immutable
 - [ ] Factory methods return Result<T>
 - [ ] Structural equality working
@@ -123,6 +135,7 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 #### ✅ Guide 05: Aggregates & Entities
 
 **Files to Create:**
+
 - [ ] `src/Idevs/Domain/Entities/Entity.cs`
 - [ ] `src/Idevs/Domain/Entities/AggregateRoot.cs`
 - [ ] `src/Idevs/Domain/Guards/Guard.cs`
@@ -130,12 +143,14 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 - [ ] `src/Idevs/Domain/Events/Examples/CustomerEvents.cs`
 
 **Tests to Create:**
+
 - [ ] `tests/Idevs.Tests/Domain/EntityTests.cs`
 - [ ] `tests/Idevs.Tests/Domain/AggregateRootTests.cs`
 - [ ] `tests/Idevs.Tests/Domain/CustomerTests.cs`
 - [ ] All 15+ unit tests passing
 
 **Verification:**
+
 - [ ] Identity-based equality working
 - [ ] Domain events raised on state changes
 - [ ] Private setters on aggregates
@@ -148,6 +163,7 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 #### ✅ Guide 06: Tenant & User Context
 
 **Files to Create:**
+
 - [ ] `src/Idevs/Context/TenantInfo.cs`
 - [ ] `src/Idevs/Context/ITenantContext.cs`
 - [ ] `src/Idevs/Context/UserInfo.cs`
@@ -156,11 +172,13 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 - [ ] `src/Idevs/Context/Testing/TestCurrentUser.cs`
 
 **Tests to Create:**
+
 - [ ] `tests/Idevs.Tests/Context/TenantContextTests.cs`
 - [ ] `tests/Idevs.Tests/Context/CurrentUserTests.cs`
 - [ ] All 13+ unit tests passing
 
 **Verification:**
+
 - [ ] TenantInfo validation working
 - [ ] UserInfo role helpers functional
 - [ ] Test implementations complete
@@ -172,6 +190,7 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 #### ✅ Guide 07: Repository & Unit of Work
 
 **Files to Create:**
+
 - [ ] `src/Idevs/Data/Repositories/IRepository.cs`
 - [ ] `src/Idevs/Data/UnitOfWork/IUnitOfWork.cs`
 - [ ] `src/Idevs/Data/Repositories/IReadOnlyRepository.cs`
@@ -180,10 +199,12 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 - [ ] `src/Idevs/Data/README.md`
 
 **Tests to Create:**
+
 - [ ] `tests/Idevs.Tests/Data/RepositoryTests.cs`
 - [ ] All 6+ unit tests passing
 
 **Verification:**
+
 - [ ] Generic repository interface complete
 - [ ] InMemoryRepository for testing
 - [ ] Expression<Func<>> support
@@ -194,6 +215,7 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 #### ✅ Guide 08: Domain Events
 
 **Files to Create:**
+
 - [ ] `src/Idevs/Domain/Events/IDomainEvent.cs`
 - [ ] `src/Idevs/Domain/Events/IDomainEventHandler.cs`
 - [ ] `src/Idevs/Domain/Events/DomainEventBase.cs`
@@ -204,11 +226,13 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 - [ ] `src/Idevs/Domain/Events/README.md`
 
 **Tests to Create:**
+
 - [ ] `tests/Idevs.Tests/Domain/DomainEventTests.cs`
 - [ ] `tests/Idevs.Tests/Domain/DomainEventDispatcherTests.cs`
 - [ ] All 6+ unit tests passing
 
 **Verification:**
+
 - [ ] Event interface with metadata
 - [ ] Handler interface with async support
 - [ ] Dispatcher implementation working
@@ -219,6 +243,7 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 #### ✅ Guide 09: Specifications
 
 **Files to Create:**
+
 - [ ] `src/Idevs/Domain/Specifications/ISpecification.cs`
 - [ ] `src/Idevs/Domain/Specifications/Specification.cs`
 - [ ] `src/Idevs/Domain/Specifications/AndSpecification.cs`
@@ -231,10 +256,12 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 - [ ] `src/Idevs/Domain/Specifications/README.md`
 
 **Tests to Create:**
+
 - [ ] `tests/Idevs.Tests/Domain/SpecificationTests.cs`
 - [ ] All 7+ unit tests passing
 
 **Verification:**
+
 - [ ] And/Or/Not composition working
 - [ ] Expression tree compilation correct
 - [ ] IsSatisfiedBy for in-memory evaluation
@@ -309,11 +336,13 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 ## Verification Commands
 
 ### Run All Tests
+
 ```bash
 dotnet test tests/Idevs.Tests/Idevs.Tests.csproj
 ```
 
 ### Run Specific Test Categories
+
 ```bash
 # Entity tests
 dotnet test --filter "FullyQualifiedName~EntityTests"
@@ -332,6 +361,7 @@ dotnet test --filter "FullyQualifiedName~RepositoryTests"
 ```
 
 ### Build Commands
+
 ```bash
 # Restore packages
 dotnet restore
@@ -347,6 +377,7 @@ dotnet format
 ```
 
 ### Coverage Report (if configured)
+
 ```bash
 dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 ```
@@ -371,6 +402,7 @@ public string Name { get; set; } // Warning!
 ### Issue: Circular Dependencies
 
 **Solution:** Keep dependencies unidirectional:
+
 - Domain → never depends on infrastructure
 - Application → depends on domain contracts
 - Infrastructure → depends on domain & application
@@ -416,6 +448,7 @@ Once Phase 2 is complete:
 ---
 
 **Status Legend:**
+
 - ⬜ Not Started
 - 🔄 In Progress
 - ✅ Complete
@@ -423,6 +456,7 @@ Once Phase 2 is complete:
 - ❌ Failed
 
 **Priority Legend:**
+
 - 🔴 Critical - Must complete first
 - 🟡 High - Complete soon after critical
 - 🟢 Medium - Complete when able

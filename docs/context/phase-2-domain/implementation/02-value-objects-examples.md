@@ -79,6 +79,7 @@ public sealed class Address : ValueObject
 ```
 
 **Design Rationale:**
+
 - All fields required (nullable parameters make validation explicit)
 - Normalizes postal code and country (uppercase)
 - ISO 3166-1 alpha-2 country codes
@@ -137,6 +138,7 @@ public sealed class DateRange : ValueObject
 ```
 
 **Design Rationale:**
+
 - Uses `DateOnly` (no time zone issues)
 - Computed `Days` property (inclusive range)
 - Overlap detection for scheduling logic
@@ -407,6 +409,7 @@ public Result<Order> CreateOrder(decimal amount, string currency, string custome
 ## Common Pitfalls
 
 ### ❌ Mutable Value Objects
+
 ```csharp
 // BAD - mutable value object
 public class Email : ValueObject
@@ -423,6 +426,7 @@ public class Email : ValueObject
 ```
 
 ### ❌ Not Validating in Factory Method
+
 ```csharp
 // BAD - allows invalid state
 public static Email Create(string value)
@@ -444,6 +448,7 @@ public static Result<Email> Create(string? value)
 ```
 
 ### ❌ Forgetting Equality Components
+
 ```csharp
 // BAD - incomplete equality
 protected override IEnumerable<object?> GetEqualityComponents()

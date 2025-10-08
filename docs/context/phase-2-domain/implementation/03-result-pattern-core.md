@@ -2,7 +2,6 @@
 
 > **Navigation:** [Index](README.md) • [Part 1](03-result-pattern-core.md) • [Part 2](03-result-pattern-extensions.md)
 
-
 > **Phase:** 2 - Domain & Contracts  
 > **Guide:** 03 of 09  
 > **Estimated Time:** 3-4 hours
@@ -104,6 +103,7 @@ public sealed class Error : IEquatable<Error>
 ```
 
 **Design Rationale:**
+
 - Immutable by design (init-only properties)
 - Metadata for structured error context (e.g., field names in validation)
 - Sentinel values (None, NullValue) avoid null checks
@@ -189,6 +189,7 @@ public class Result<T>
 ```
 
 **Design Rationale:**
+
 - Private fields with explicit access control prevent misuse
 - Throws on invalid access (helps catch bugs early)
 - Implicit operators enable clean syntax: `return customer;` or `return error;`
@@ -250,6 +251,7 @@ public static class ResultExtensions
 ```
 
 **Design Rationale:**
+
 - `Map` transforms value (keeps error path unchanged)
 - `Bind` enables chaining result-returning operations
 - `Match` forces handling both success and failure
@@ -303,6 +305,7 @@ public sealed class PagedResult<T> : Result<IReadOnlyList<T>>
 ```
 
 **Design Rationale:**
+
 - Inherits from Result<IReadOnlyList<T>> for consistency
 - Computed properties (TotalPages, HasNextPage) reduce client logic
 - Immutable pagination metadata

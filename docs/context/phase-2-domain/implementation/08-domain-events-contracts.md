@@ -2,7 +2,6 @@
 
 > **Navigation:** [Index](README.md) • [Part 1](08-domain-events-contracts.md) • [Part 2](08-domain-events-impl.md)
 
-
 > **Phase:** 2 - Domain & Contracts  
 > **Guide:** 08 of 09  
 > **Estimated Time:** 2-3 hours
@@ -69,6 +68,7 @@ public interface IDomainEvent
 ```
 
 **Design Rationale:**
+
 - Marker interface for runtime discovery
 - Default implementation for OccurredAt (auto-populated)
 - Optional CorrelationId for distributed tracing
@@ -96,6 +96,7 @@ public interface IDomainEventHandler<in TEvent>
 ```
 
 **Design Rationale:**
+
 - Contravariant `in TEvent` for flexible handler registration
 - Async by default (most handlers do I/O)
 - CancellationToken for long-running handlers
@@ -147,6 +148,7 @@ public abstract record DomainEventBase : IDomainEvent
 ```
 
 **Design Rationale:**
+
 - Record type for immutability and value equality
 - Auto-populated EventId and OccurredAt
 - Optional metadata (TenantId, UserId) for tracing
@@ -179,6 +181,7 @@ public interface IDomainEventDispatcher
 ```
 
 **Design Rationale:**
+
 - Abstract interface (implementation in Phase 3)
 - Batch dispatch for performance
 - CancellationToken support
@@ -239,6 +242,7 @@ public sealed class InMemoryDomainEventDispatcher : IDomainEventDispatcher
 ```
 
 **Design Rationale:**
+
 - Uses reflection for dynamic handler discovery
 - Dispatches sequentially (consider parallel in production)
 - Supports multiple handlers per event
@@ -321,6 +325,7 @@ public sealed class CustomerCreatedEventHandler : IDomainEventHandler<CustomerCr
 ```
 
 **Design Rationale:**
+
 - Handlers are independent (one failure doesn't affect others)
 - Logging for observability
 - Side effects isolated from domain logic

@@ -36,6 +36,7 @@
         eventWithCorrelation.CorrelationId.ShouldBe(correlationId);
     }
 }
+
 ```
 
 **File:** `tests/Idevs.Tests/Domain/DomainEventDispatcherTests.cs`
@@ -198,12 +199,14 @@ public class OrderPlacedEventHandler : IDomainEventHandler<OrderPlacedEvent>
 ## Registering Handlers (DI)
 
 ### Manual Registration
+
 ```csharp
 services.AddTransient<IDomainEventHandler<OrderPlacedEvent>, OrderPlacedEventHandler>();
 services.AddTransient<IDomainEventHandler<OrderPlacedEvent>, InventoryUpdateHandler>();
 ```
 
 ### Assembly Scanning (Phase 3)
+
 ```csharp
 services.AddDomainEventHandlers(typeof(OrderPlacedEvent).Assembly);
 ```
@@ -219,6 +222,7 @@ services.AddDomainEventHandlers(typeof(OrderPlacedEvent).Assembly);
 ## Best Practices
 
 ### ✅ DO
+
 - Use past tense event names
 - Keep events immutable (records)
 - Include all relevant data in event
@@ -226,6 +230,7 @@ services.AddDomainEventHandlers(typeof(OrderPlacedEvent).Assembly);
 - Log event processing for observability
 
 ### ❌ DON'T
+
 - Access database in event constructor
 - Modify aggregate state in event handler
 - Throw exceptions from handlers (use logging instead)
@@ -260,6 +265,7 @@ public async Task OrderPlacedHandler_SendsConfirmationEmail()
 - **Event Store:** Dedicated persistence for events
 - **Event Replay:** Re-process historical events
 - **Saga Pattern:** Coordinate distributed transactions
+
 ```
 
 ## Verification Checklist
@@ -288,6 +294,7 @@ await _unitOfWork.CommitAsync(); // UnitOfWork dispatches events
 ```
 
 ### ❌ Modifying Aggregate in Event Handler
+
 ```csharp
 // BAD - event handler modifies aggregate
 public class OrderPlacedEventHandler : IDomainEventHandler<OrderPlacedEvent>
@@ -312,6 +319,7 @@ public class OrderPlacedEventHandler : IDomainEventHandler<OrderPlacedEvent>
 ```
 
 ### ❌ Not Handling Failures Gracefully
+
 ```csharp
 // BAD - exception breaks entire flow
 public async Task HandleAsync(OrderPlacedEvent e)

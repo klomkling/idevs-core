@@ -9,6 +9,7 @@
 Phase 2 establishes the domain foundation with DDD patterns, CQRS contracts, multi-tenancy support, and composable query specifications. This phase is critical as all application logic builds on these abstractions.
 
 **Documentation Stats:**
+
 - 📄 **12 documents** (10,033 lines total)
 - 📚 **9 implementation guides** (6,151 lines)
 - ✅ **90+ unit tests** defined
@@ -17,12 +18,15 @@ Phase 2 establishes the domain foundation with DDD patterns, CQRS contracts, mul
 ## 🚀 Quick Start
 
 ### New to Phase 2?
+
 1. **Read:** [phase-2-domain-NEW.md](phase-2-domain-NEW.md) - High-level overview
 2. **Review:** [COMPLETION-GUIDE.md](COMPLETION-GUIDE.md) - Implementation checklist
 3. **Follow:** [implementation/](implementation/) - Step-by-step guides
 
 ### Ready to Implement?
+
 Start with the critical path:
+
 1. [Entity Interfaces](implementation/01-entity-interfaces.md) → Base contracts
 2. [Result Patterns](implementation/03-result-pattern-core.md) → Error handling
 3. [CQRS Contracts](implementation/04-cqrs-contracts-basic.md) → Command/Query separation
@@ -56,6 +60,7 @@ All guides follow consistent structure: Prerequisites → Objectives → Steps �
 ## 🎯 What You'll Build
 
 ### Core Interfaces
+
 ```csharp
 IEntity<TKey>         // Base entity with identity
 IAuditable            // Created/Updated tracking
@@ -64,6 +69,7 @@ ITenant               // Multi-tenant isolation
 ```
 
 ### Value Objects
+
 ```csharp
 Email                 // Validated email addresses
 Money                 // Currency-aware amounts
@@ -72,6 +78,7 @@ DateRange             // Temporal ranges
 ```
 
 ### Result Pattern
+
 ```csharp
 Result<T>             // Success/failure monads
 Error                 // Structured errors
@@ -80,6 +87,7 @@ DomainErrors          // Common error codes
 ```
 
 ### CQRS Contracts
+
 ```csharp
 ICommand<TResponse>   // Write operations
 IQuery<TResponse>     // Read operations
@@ -88,6 +96,7 @@ IQueryHandler         // Query processors
 ```
 
 ### Aggregates & Entities
+
 ```csharp
 Entity<TKey>          // Identity-based equality
 AggregateRoot<TKey>   // Domain event management
@@ -95,6 +104,7 @@ Guard                 // Invariant validation
 ```
 
 ### Multi-Tenancy
+
 ```csharp
 ITenantContext        // Current tenant access
 ICurrentUser          // Authenticated user
@@ -103,6 +113,7 @@ UserInfo              // User metadata
 ```
 
 ### Data Access
+
 ```csharp
 IRepository<T, TKey>  // Generic repository
 IUnitOfWork           // Transaction coordination
@@ -110,6 +121,7 @@ ISpecification<T>     // Composable queries
 ```
 
 ### Domain Events
+
 ```csharp
 IDomainEvent          // Event marker
 IDomainEventHandler   // Event processors
@@ -119,6 +131,7 @@ IDomainEventDispatcher // Event publishing
 ## 🏗️ Architecture Principles
 
 ### Domain-Driven Design (DDD)
+
 - **Ubiquitous Language:** Align code with business terminology
 - **Bounded Contexts:** Clear domain boundaries
 - **Aggregates:** Consistency boundaries with root entities
@@ -126,16 +139,19 @@ IDomainEventDispatcher // Event publishing
 - **Domain Events:** Decouple business logic
 
 ### CQRS (Command Query Responsibility Segregation)
+
 - **Separation:** Commands (write) vs Queries (read)
 - **Composability:** Decorators for cross-cutting concerns
 - **Testability:** Mock handlers, not services
 
 ### Railway-Oriented Programming
+
 - **Explicit Errors:** Result<T> instead of exceptions
 - **Composition:** Map, Bind, Match for functional flow
 - **Type Safety:** Compiler-enforced error handling
 
 ### Multi-Tenancy
+
 - **Isolation:** Tenant ID on all entities
 - **Security:** Row-level filtering at query level
 - **Context:** Ambient tenant/user access
@@ -143,6 +159,7 @@ IDomainEventDispatcher // Event publishing
 ## 📝 Usage Examples
 
 ### Creating Aggregates
+
 ```csharp
 var result = Customer.Create(
     tenantId,
@@ -159,6 +176,7 @@ await _unitOfWork.CommitAsync(); // Dispatches domain events
 ```
 
 ### CQRS Handlers
+
 ```csharp
 public class CreateCustomerCommandHandler 
     : ICommandHandler<CreateCustomerCommand, Guid>
@@ -177,6 +195,7 @@ public class CreateCustomerCommandHandler
 ```
 
 ### Specifications
+
 ```csharp
 var spec = new CustomerSpecifications.ByTenant(tenantId)
     .And(new CustomerSpecifications.IsActive())
@@ -188,6 +207,7 @@ var customers = await _repository.FindAsync(spec);
 ## ✅ Success Criteria
 
 ### Must Have (Blocking)
+
 - [ ] All 9 implementation guides followed
 - [ ] All 90+ unit tests passing
 - [ ] Zero build warnings in Release mode
@@ -199,6 +219,7 @@ var customers = await _repository.FindAsync(spec);
 - [ ] Specifications enable composable queries
 
 ### Quality Metrics
+
 - **Test Coverage:** ≥80% on domain logic
 - **Build Time:** <30s for clean build
 - **Code Quality:** No `System.Reflection` usage
@@ -207,6 +228,7 @@ var customers = await _repository.FindAsync(spec);
 ## 🧪 Testing Strategy
 
 ### Unit Tests
+
 ```bash
 # Run all tests
 dotnet test
@@ -218,6 +240,7 @@ dotnet test --filter "FullyQualifiedName~CqrsContractsTests"
 ```
 
 ### Test Doubles
+
 - **InMemoryRepository** - Database-free testing
 - **TestTenantContext** - Tenant context for tests
 - **TestCurrentUser** - User context for tests
@@ -225,6 +248,7 @@ dotnet test --filter "FullyQualifiedName~CqrsContractsTests"
 ## 📦 Deliverables
 
 ### Source Files
+
 ```
 src/Idevs/
 ├── Contracts/Entities/          # Entity interfaces
@@ -243,6 +267,7 @@ src/Idevs/
 ```
 
 ### Test Files
+
 ```
 tests/Idevs.Tests/
 ├── Contracts/                   # Interface tests
@@ -256,10 +281,12 @@ tests/Idevs.Tests/
 ## 🔗 Dependencies
 
 ### Prerequisites
+
 - **Phase 0:** Design principles & ADRs
 - **Phase 1:** Solution structure & build config
 
 ### Enables
+
 - **Phase 3:** Application layer (handlers, validation)
 - **Phase 4:** Web layer (API controllers, mapping)
 - **Phase 5:** Infrastructure (EF Core, database)
@@ -267,19 +294,23 @@ tests/Idevs.Tests/
 ## 🎓 Learning Path
 
 ### Beginner → Intermediate
+
 1. Read Eric Evans' DDD (Blue Book) - Chapters 5-7
 2. Watch: Greg Young on CQRS
 3. Follow implementation guides in order
 4. Study Customer aggregate example
 
 ### Intermediate → Advanced
+
 1. Read Vaughn Vernon's IDDD (Red Book) - Chapters 5-12
 2. Study railway-oriented programming
 3. Implement custom aggregates
 4. Explore event sourcing patterns
 
 ### Resources
+
 See [REFERENCES.md](REFERENCES.md) for curated links to:
+
 - Books & articles
 - Video courses
 - Conference talks
@@ -289,6 +320,7 @@ See [REFERENCES.md](REFERENCES.md) for curated links to:
 ## ⚠️ Common Pitfalls
 
 ### Don't
+
 - ❌ Use `System.Reflection` (violates framework rules)
 - ❌ Make aggregates with public setters
 - ❌ Return `IQueryable` from repositories
@@ -298,6 +330,7 @@ See [REFERENCES.md](REFERENCES.md) for curated links to:
 - ❌ Modify aggregates in domain event handlers
 
 ### Do
+
 - ✅ Use Result<T> for expected failures
 - ✅ Encapsulate invariants in aggregates
 - ✅ Raise domain events for state changes
@@ -308,6 +341,7 @@ See [REFERENCES.md](REFERENCES.md) for curated links to:
 ## 🔄 Next Steps
 
 ### After Phase 2 Completion
+
 1. **Validate Integration**
    - Run full test suite
    - Check code coverage
@@ -326,12 +360,15 @@ See [REFERENCES.md](REFERENCES.md) for curated links to:
 ## 📞 Support
 
 ### Questions?
+
 - Review [REFERENCES.md](REFERENCES.md) for external resources
 - Check implementation guides for specific topics
 - Consult original [phase-2-domain.md](phase-2-domain.md) for additional context
 
 ### Contributing
+
 Found an issue or improvement?
+
 1. Document the problem
 2. Propose a solution
 3. Update relevant guides
@@ -340,12 +377,14 @@ Found an issue or improvement?
 ## 📊 Progress Tracking
 
 Use [COMPLETION-GUIDE.md](COMPLETION-GUIDE.md) to track:
+
 - [ ] Phase 2.1: Core Interfaces & Patterns
 - [ ] Phase 2.2: Value Objects & Aggregates
 - [ ] Phase 2.3: Multi-Tenancy & Context
 - [ ] Phase 2.4: Data Access & Patterns
 
 **Status Indicators:**
+
 - ⬜ Not Started
 - 🔄 In Progress
 - ✅ Complete
@@ -365,6 +404,7 @@ Use [COMPLETION-GUIDE.md](COMPLETION-GUIDE.md) to track:
 ---
 
 **Quick Links:**
+
 - [Overview](phase-2-domain-NEW.md)
 - [Completion Guide](COMPLETION-GUIDE.md)
 - [References](REFERENCES.md)

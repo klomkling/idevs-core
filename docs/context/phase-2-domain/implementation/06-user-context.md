@@ -74,6 +74,7 @@ public class TenantContextTests
         context.TenantId.ShouldBeNull();
     }
 }
+
 ```
 
 **File:** `tests/Idevs.Tests/Context/CurrentUserTests.cs`
@@ -296,6 +297,7 @@ public class TenantAuthorizationHandler : AuthorizationHandler<TenantRequirement
 ## Common Pitfalls
 
 ### ❌ Forgetting Tenant Context in Commands
+
 ```csharp
 // BAD - no tenant isolation
 public async Task<Result<Guid>> HandleAsync(CreateOrderCommand command)
@@ -322,6 +324,7 @@ public async Task<Result<Guid>> HandleAsync(CreateOrderCommand command)
 ```
 
 ### ❌ Using Context in Domain Layer
+
 ```csharp
 // BAD - domain layer depends on infrastructure
 public class Order : Entity<Guid>
@@ -345,6 +348,7 @@ public class Order : Entity<Guid>
 ```
 
 ### ❌ Not Handling Anonymous Users
+
 ```csharp
 // BAD - assumes authenticated user
 var userId = _currentUser.UserId;

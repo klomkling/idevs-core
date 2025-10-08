@@ -2,7 +2,6 @@
 
 > **Navigation:** [Index](README.md) • [Part 1](04-cqrs-contracts-basic.md) • [Part 2](04-cqrs-contracts-advanced.md)
 
-
 > **Phase:** 2 - Domain & Contracts  
 > **Guide:** 04 of 09  
 > **Estimated Time:** 2-3 hours
@@ -72,6 +71,7 @@ public readonly struct Unit : IEquatable<Unit>
 ```
 
 **Design Rationale:**
+
 - Replaces `void` in generic contexts (can't use `Result<void>`)
 - Value type (struct) with zero memory overhead
 - Singleton pattern via `Unit.Value`
@@ -100,6 +100,7 @@ public interface ICommand<out TResponse> : ICommand
 ```
 
 **Design Rationale:**
+
 - Non-generic `ICommand` for runtime discovery
 - Generic `ICommand<TResponse>` for type-safe responses
 - Covariant `out TResponse` allows contravariant handler assignments
@@ -140,6 +141,7 @@ public interface ICommandHandler<in TCommand> : ICommandHandler<TCommand, Unit>
 ```
 
 **Design Rationale:**
+
 - Contravariant `in TCommand` for flexible handler registration
 - Returns `Task<Result<TResponse>>` for async + railway pattern
 - `CancellationToken` default parameter for convenience
@@ -169,6 +171,7 @@ public interface IQuery<out TResponse> : IQuery
 ```
 
 **Design Rationale:**
+
 - Identical structure to commands (consistency)
 - Semantic separation (intent is different)
 - Enables different middleware pipelines
@@ -200,6 +203,7 @@ public interface IQueryHandler<in TQuery, TResponse>
 ```
 
 **Design Rationale:**
+
 - Symmetric with command handler interface
 - Queries always return data (no parameterless version)
 - CancellationToken for long-running queries

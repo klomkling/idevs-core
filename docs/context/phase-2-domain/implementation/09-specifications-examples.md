@@ -17,6 +17,7 @@
         }
     }
 }
+
 ```
 
 **Design Rationale:**
@@ -204,6 +205,7 @@ var activeCustomersInTenant =
 ```
 
 ### Using in Repositories
+
 ```csharp
 public async Task<IReadOnlyList<Customer>> GetActiveCustomersAsync(
     Guid tenantId,
@@ -217,6 +219,7 @@ public async Task<IReadOnlyList<Customer>> GetActiveCustomersAsync(
 ```
 
 ### In-Memory Evaluation
+
 ```csharp
 var customer = await _repository.GetByIdAsync(customerId);
 var spec = new CustomerSpecifications.IsActive();
@@ -230,6 +233,7 @@ if (spec.IsSatisfiedBy(customer))
 ## Composition
 
 ### AND Logic
+
 ```csharp
 var spec = new CustomerSpecifications.ByTenant(tenantId)
     .And(new CustomerSpecifications.IsActive())
@@ -239,6 +243,7 @@ var customers = await _repository.FindAsync(spec);
 ```
 
 ### OR Logic
+
 ```csharp
 var spec = new CustomerSpecifications.ByEmail("test@example.com")
     .Or(new CustomerSpecifications.ByEmail("admin@example.com"));
@@ -247,6 +252,7 @@ var customers = await _repository.FindAsync(spec);
 ```
 
 ### NOT Logic
+
 ```csharp
 var activeSpec = new CustomerSpecifications.IsActive();
 var inactiveSpec = activeSpec.Not();
@@ -255,6 +261,7 @@ var inactiveCustomers = await _repository.FindAsync(inactiveSpec);
 ```
 
 ### Complex Combinations
+
 ```csharp
 // (Active AND InTenant) OR HasVIPStatus
 var spec = new CustomerSpecifications.IsActive()
@@ -282,6 +289,7 @@ public static class RepositoryExtensions
 ## Best Practices
 
 ### ✅ DO
+
 - Create one specification class per business rule
 - Make specifications immutable (no state changes)
 - Use meaningful names (IsActive, not ActiveFilter)
@@ -289,6 +297,7 @@ public static class RepositoryExtensions
 - Compose specifications for complex queries
 
 ### ❌ DON'T
+
 - Include repository or database access in specifications
 - Make specifications mutable
 - Use specifications for commands (only for queries)
@@ -317,6 +326,7 @@ public void CombinedSpec_MatchesAllConditions()
     spec.IsSatisfiedBy(customer).ShouldBeTrue();
 }
 ```
+
 ```
 
 ## Verification Checklist
@@ -353,6 +363,7 @@ public override Expression<Func<Customer, bool>> ToExpression()
 ```
 
 ### ❌ Including Navigation Properties
+
 ```csharp
 // BAD - EF Core may not translate
 public override Expression<Func<Order, bool>> ToExpression()
@@ -368,6 +379,7 @@ public Task<IReadOnlyList<Order>> GetOrdersWithLargeQuantitiesAsync()
 ```
 
 ### ❌ Mutable Specifications
+
 ```csharp
 // BAD - mutable state
 public class ByTenantSpec : Specification<Customer>
@@ -390,6 +402,7 @@ public class ByTenantSpec : Specification<Customer>
 ## Next Steps
 
 **Phase 2 Complete!** Continue to:
+
 - **[Phase 3: Application Layer](../../phase-3-application/phase-3-application.md)** - Command/query handlers, validation
 - **[Phase 5: Infrastructure](../../phase-5-infrastructure/phase-5-infrastructure.md)** - EF Core implementation
 

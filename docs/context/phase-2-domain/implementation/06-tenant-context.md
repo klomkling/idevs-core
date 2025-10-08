@@ -2,7 +2,6 @@
 
 > **Navigation:** [Index](README.md) • [Part 1](06-tenant-context.md) • [Part 2](06-user-context.md)
 
-
 > **Phase:** 2 - Domain & Contracts  
 > **Guide:** 06 of 09  
 > **Estimated Time:** 2-3 hours
@@ -92,6 +91,7 @@ public sealed class TenantInfo
 ```
 
 **Design Rationale:**
+
 - Immutable by design (init-only properties)
 - Validation in constructor prevents invalid state
 - Metadata dictionary for extensibility (feature flags, tenant-specific config)
@@ -127,6 +127,7 @@ public interface ITenantContext
 ```
 
 **Design Rationale:**
+
 - `TenantId` nullable for system operations (background jobs, migrations)
 - `GetTenantInfo()` for full tenant details (lazy load if needed)
 - `HasTenant` for explicit checks before tenant-scoped operations
@@ -203,6 +204,7 @@ public sealed class UserInfo
 ```
 
 **Design Rationale:**
+
 - String-based UserId (supports various identity providers)
 - Immutable design with read-only collections
 - Helper methods for role checks (case-insensitive)
@@ -253,6 +255,7 @@ public interface ICurrentUser
 ```
 
 **Design Rationale:**
+
 - Nullable properties for anonymous requests
 - `IsAuthenticated` flag for guard clauses
 - Convenience methods (IsInRole, GetClaimValue) reduce boilerplate
@@ -360,6 +363,7 @@ public sealed class TestCurrentUser : ICurrentUser
 ```
 
 **Design Rationale:**
+
 - Test doubles for unit testing without authentication middleware
 - Mutable for test setup (SetTenant, SetUser, Clear)
 - Null-safe implementations return false/null when not set

@@ -67,6 +67,7 @@ public interface IEntity<TKey> : IEntity where TKey : IEquatable<TKey>
 ```
 
 **Design Rationale:**
+
 - Non-generic `IEntity` enables runtime type discovery without knowing TKey
 - Generic constraint `IEquatable<TKey>` ensures IDs support equality comparison
 - Supports Guid, long, int, or custom strongly-typed IDs
@@ -106,6 +107,7 @@ public interface IAuditable
 ```
 
 **Design Rationale:**
+
 - `DateTimeOffset` for timezone-aware timestamps
 - `CreatedAt` required, `UpdatedAt` nullable (not set on creation)
 - `string?` for user IDs (supports various identity providers)
@@ -141,6 +143,7 @@ public interface ISoftDeletable
 ```
 
 **Design Rationale:**
+
 - Boolean flag for quick filtering (indexed in DB)
 - Timestamp and actor for audit trail
 - EF Core global query filter will exclude `IsDeleted == true` by default
@@ -166,6 +169,7 @@ public interface ITenant
 ```
 
 **Design Rationale:**
+
 - `Guid` for globally unique tenant IDs
 - Required property (non-nullable) — every tenant entity MUST have a tenant
 - EF Core will enforce tenant filter at query level (Phase 5)
@@ -187,6 +191,7 @@ public interface ITenantEntity<TKey> : IEntity<TKey>, ITenant, IAuditable, ISoft
 ```
 
 **Design Rationale:**
+
 - Most SaaS entities need all four concerns
 - Reduces boilerplate in entity declarations
 - Example: `public class Customer : Entity<Guid>, ITenantEntity<Guid> { }`
@@ -304,6 +309,7 @@ public class Category : IEntity<int>, IAuditable, ISoftDeletable
 ```
 
 ### Multi-Tenant Entity
+
 ```csharp
 public class Product : IEntity<Guid>, ITenantEntity<Guid>
 {
@@ -326,12 +332,14 @@ public class Product : IEntity<Guid>, ITenantEntity<Guid>
 ## Integration with EF Core
 
 These interfaces enable:
+
 - **Audit Interceptors:** Auto-populate CreatedAt/UpdatedAt on SaveChanges
 - **Global Query Filters:** Exclude soft-deleted entities automatically
 - **Tenant Filters:** Scope queries to current tenant context
 - **Convention-Based Config:** Detect interfaces and apply indexes
 
 See Phase 5 (Infrastructure) for implementation details.
+
 ```
 
 ## Verification Checklist
@@ -356,6 +364,7 @@ public DateTimeOffset CreatedAt { get; set; }
 ```
 
 ### ❌ Making TenantId Nullable
+
 ```csharp
 // BAD - allows orphaned entities
 public Guid? TenantId { get; set; }
@@ -365,6 +374,7 @@ public Guid TenantId { get; set; }
 ```
 
 ### ❌ Forgetting Generic Constraint
+
 ```csharp
 // BAD - IDs can't be compared
 public interface IEntity<TKey> { TKey Id { get; set; } }
@@ -376,6 +386,7 @@ public interface IEntity<TKey> : IEntity where TKey : IEquatable<TKey>
 ## Next Steps
 
 Continue to:
+
 - **[02-value-objects.md](02-value-objects.md)** - Value object base classes
 - **[03-result-patterns.md](03-result-patterns.md)** - Result<T> for error handling
 
