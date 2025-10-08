@@ -381,4 +381,6 @@ For deeper coding standards and repository-specific rules, see:
 
 ---
 
-**Thank you for contributing to Idevs! 🚀**
+## Thank You
+
+Thank you for contributing to Idevs! 🚀

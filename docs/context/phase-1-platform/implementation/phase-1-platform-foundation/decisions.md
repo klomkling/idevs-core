@@ -259,7 +259,6 @@ services.AddCommandHandler<CreateOrder, CreateOrderHandler>(
 ---
 
 **Last Updated**: 2025-10-07
----
 
 ## Phase 1 Status: ✅ COMPLETE
 
@@ -291,25 +290,25 @@ services.AddCommandHandler<CreateOrder, CreateOrderHandler>(
 
 ### Medium Priority Items
 
-4. **Additional Decorators**
+1. **Additional Decorators**
    - Retry decorator (Polly integration)
    - Circuit breaker decorator
    - Caching decorator for queries
    - Authorization decorator
 
-5. **Real Metrics Integration**
+2. **Real Metrics Integration**
    - Replace NoOpMetrics with OpenTelemetry
    - Prometheus exporter
    - Custom dimensions and tags
 
 ### Low Priority Items
 
-6. **Performance Optimization**
+1. **Performance Optimization**
    - BenchmarkDotNet performance suite
    - Memory allocation profiling
    - Decorator overhead optimization
 
-7. **Advanced Documentation**
+2. **Advanced Documentation**
    - Migration guide from MediatR
    - Real-world integration examples
    - Best practices guide

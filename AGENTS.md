@@ -6,7 +6,7 @@ A .NET building-block framework for modern SaaS and ERP applications. It powers 
 **Packages**: `Idevs.*` namespace (e.g., `Idevs`, `Idevs.Application`, `Idevs.Data.PostgreSQL`)  
 **Repository**: `idevs-core` (GitHub repo and solution name)
 
-# Repository Guidelines
+## Repository Guidelines
 
 The Idevs framework ships as a C# library published to GitHub Packages and NuGet with GitVersion-managed releases.
 

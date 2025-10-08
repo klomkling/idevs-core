@@ -35,7 +35,7 @@ This document outlines testing strategy, coverage targets, and intentional gaps 
 
 ### Test Pyramid
 
-```
+```text
         ┌─────────────┐
         │   E2E/Int   │  10% - DI pipeline integration
         └─────────────┘
@@ -53,7 +53,7 @@ This document outlines testing strategy, coverage targets, and intentional gaps 
 
 ### Folder Structure
 
-```
+```text
 tests/Idevs.Tests/
 ├── Abstractions/
 │   ├── CommandHandlerTests.cs

@@ -16,7 +16,7 @@ This document summarizes the handler registration and decorator composition stra
 
 The decorators are composed in the following order (outermost to innermost):
 
-```
+```text
 ┌─────────────────────────────────────┐
 │  LoggingDecorator                   │  ← Outermost (executed first)
 │  ├─────────────────────────────┐   │

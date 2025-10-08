@@ -56,11 +56,11 @@
 
 ### ⏳ Remaining (5 tasks)
 
-24. ⏳ Build compile-checked sample project
-25. ⏳ CI and automation (GitHub Actions)
-26. ⏳ Stakeholder reviews and sign-off
-27. ⏳ Finalize and publish
-28. ⏳ Create follow-up tasks for implementation
+1. ⏳ Build compile-checked sample project
+2. ⏳ CI and automation (GitHub Actions)
+3. ⏳ Stakeholder reviews and sign-off
+4. ⏳ Finalize and publish
+5. ⏳ Create follow-up tasks for implementation
 
 ---
 
@@ -264,13 +264,13 @@ Documented decorators for cross-cutting concerns:
 
 ### For Future Implementation (Optional)
 
-4. **Build Sample Project** (Step 24)
+1. **Build Sample Project** (Step 24)
    - Create .NET 8 project with domain abstractions
    - Port code examples to compilable files
    - Add unit tests for examples
    - Wire build/test validation script
 
-5. **CI Automation** (Step 25)
+2. **CI Automation** (Step 25)
    - GitHub Actions for sample project build
    - Link checker automation
    - Reflection usage guard (Roslyn analyzer)
