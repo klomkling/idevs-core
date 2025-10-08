@@ -387,8 +387,8 @@ public interface IEntity<TKey> : IEntity where TKey : IEquatable<TKey>
 
 Continue to:
 
-- **[02-value-objects.md](02-value-objects.md)** - Value object base classes
-- **[03-result-patterns.md](03-result-patterns.md)** - Result<T> for error handling
+- **[02-value-objects-base.md](02-value-objects-base.md)** - Value object base classes
+- **[03-result-pattern-core.md](03-result-pattern-core.md)** - Result<T> for error handling
 
 ## References
 
@@ -398,4 +398,4 @@ Continue to:
 
 ---
 
-**[← Back to Phase 2 Overview](../phase-2-domain-NEW.md)** | **[Next Guide: Value Objects →](02-value-objects.md)**
+**[← Back to Phase 2 Overview](../phase-2-domain.md)** | **[Next Guide: Value Objects →](02-value-objects-base.md)**

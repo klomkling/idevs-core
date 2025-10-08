@@ -120,7 +120,7 @@ See implementation guides for detailed steps. Typical order:
 
 - [COMPLETION-GUIDE.md](COMPLETION-GUIDE.md) - Implementation checklist
 - [REFERENCES.md](REFERENCES.md) - DDD resources and documentation
-- [phase-2-domain-ORIGINAL.md](phase-2-domain-ORIGINAL.md) - Complete original documentation
+- [phase-2-domain-ORIGINAL.md](archive/phase-2-domain-ORIGINAL.md) - Complete original documentation
 
 ## Next Steps
 
