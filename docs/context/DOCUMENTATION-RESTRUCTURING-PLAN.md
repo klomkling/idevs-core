@@ -1,7 +1,7 @@
 # Documentation Restructuring Master Plan
 
-> **Status:** Planning  
-> **Created:** 2025-10-08  
+> **Status:** Planning
+> **Created:** 2025-10-08
 > **Last Updated:** 2025-10-08
 
 ## Executive Summary
@@ -425,7 +425,7 @@ At completion:
 
 - ✅ All 17 target documents restructured
 - ✅ 100% markdownlint compliance
-- ✅ All files < 450 lines
+- ✅ All files should be < 450 lines but if it contains examples code blocks allow limit to < 1000 lines
 - ✅ Consistent folder structure
 - ✅ Cross-linking complete
 - ✅ Navigation clear and intuitive
