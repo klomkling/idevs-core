@@ -24,8 +24,8 @@ Phase 2 establishes the domain foundation with DDD patterns, CQRS contracts, mul
 ### Ready to Implement?
 Start with the critical path:
 1. [Entity Interfaces](implementation/01-entity-interfaces.md) → Base contracts
-2. [Result Patterns](implementation/03-result-patterns.md) → Error handling
-3. [CQRS Contracts](implementation/04-cqrs-contracts.md) → Command/Query separation
+2. [Result Patterns](implementation/03-result-pattern-core.md) → Error handling
+3. [CQRS Contracts](implementation/04-cqrs-contracts-basic.md) → Command/Query separation
 
 ## 📚 Documentation Structure
 
@@ -44,14 +44,14 @@ All guides follow consistent structure: Prerequisites → Objectives → Steps �
 | Guide | Topic | Lines | Priority | Time |
 |-------|-------|-------|----------|------|
 | [01-entity-interfaces.md](implementation/01-entity-interfaces.md) | Entity contracts | 390 | 🔴 Critical | 2-3h |
-| [02-value-objects.md](implementation/02-value-objects.md) | Value objects | 742 | 🟡 High | 2-3h |
-| [03-result-patterns.md](implementation/03-result-patterns.md) | Error handling | 630 | 🔴 Critical | 3-4h |
-| [04-cqrs-contracts.md](implementation/04-cqrs-contracts.md) | CQRS interfaces | 626 | 🔴 Critical | 2-3h |
-| [05-aggregates-entities.md](implementation/05-aggregates-entities.md) | Domain models | 863 | 🔴 Critical | 3-4h |
-| [06-tenant-user-context.md](implementation/06-tenant-user-context.md) | Multi-tenancy | 738 | 🔴 Critical | 2-3h |
-| [07-repository-uow.md](implementation/07-repository-uow.md) | Data access | 672 | 🔴 Critical | 3-4h |
-| [08-domain-events.md](implementation/08-domain-events.md) | Event-driven | 690 | 🟡 High | 2-3h |
-| [09-specifications.md](implementation/09-specifications.md) | Query patterns | 800 | 🟢 Medium | 2-3h |
+| [02-value-objects.md](implementation/02-value-objects-base.md) | Value objects | 742 | 🟡 High | 2-3h |
+| [03-result-patterns.md](implementation/03-result-pattern-core.md) | Error handling | 630 | 🔴 Critical | 3-4h |
+| [04-cqrs-contracts.md](implementation/04-cqrs-contracts-basic.md) | CQRS interfaces | 626 | 🔴 Critical | 2-3h |
+| [05-aggregates-entities.md](implementation/05-aggregates-base.md) | Domain models | 863 | 🔴 Critical | 3-4h |
+| [06-tenant-user-context.md](implementation/06-tenant-context.md) | Multi-tenancy | 738 | 🔴 Critical | 2-3h |
+| [07-repository-uow.md](implementation/07-repository-pattern.md) | Data access | 672 | 🔴 Critical | 3-4h |
+| [08-domain-events.md](implementation/08-domain-events-contracts.md) | Event-driven | 690 | 🟡 High | 2-3h |
+| [09-specifications.md](implementation/09-specifications-pattern.md) | Query patterns | 800 | 🟢 Medium | 2-3h |
 
 ## 🎯 What You'll Build
 

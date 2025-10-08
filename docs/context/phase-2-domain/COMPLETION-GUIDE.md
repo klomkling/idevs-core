@@ -12,14 +12,14 @@ This guide provides a comprehensive checklist for implementing Phase 2: Domain &
 | Guide | Status | Est. Time | Priority |
 |-------|--------|-----------|----------|
 | [01-entity-interfaces](implementation/01-entity-interfaces.md) | ⬜ Not Started | 2-3 hours | 🔴 Critical |
-| [02-value-objects](implementation/02-value-objects.md) | ⬜ Not Started | 2-3 hours | 🟡 High |
-| [03-result-patterns](implementation/03-result-patterns.md) | ⬜ Not Started | 3-4 hours | 🔴 Critical |
-| [04-cqrs-contracts](implementation/04-cqrs-contracts.md) | ⬜ Not Started | 2-3 hours | 🔴 Critical |
-| [05-aggregates-entities](implementation/05-aggregates-entities.md) | ⬜ Not Started | 3-4 hours | 🔴 Critical |
-| [06-tenant-user-context](implementation/06-tenant-user-context.md) | ⬜ Not Started | 2-3 hours | 🔴 Critical |
-| [07-repository-uow](implementation/07-repository-uow.md) | ⬜ Not Started | 3-4 hours | 🔴 Critical |
-| [08-domain-events](implementation/08-domain-events.md) | ⬜ Not Started | 2-3 hours | 🟡 High |
-| [09-specifications](implementation/09-specifications.md) | ⬜ Not Started | 2-3 hours | 🟢 Medium |
+| [02-value-objects](implementation/02-value-objects-base.md) | ⬜ Not Started | 2-3 hours | 🟡 High |
+| [03-result-patterns](implementation/03-result-pattern-core.md) | ⬜ Not Started | 3-4 hours | 🔴 Critical |
+| [04-cqrs-contracts](implementation/04-cqrs-contracts-basic.md) | ⬜ Not Started | 2-3 hours | 🔴 Critical |
+| [05-aggregates-entities](implementation/05-aggregates-base.md) | ⬜ Not Started | 3-4 hours | 🔴 Critical |
+| [06-tenant-user-context](implementation/06-tenant-context.md) | ⬜ Not Started | 2-3 hours | 🔴 Critical |
+| [07-repository-uow](implementation/07-repository-pattern.md) | ⬜ Not Started | 3-4 hours | 🔴 Critical |
+| [08-domain-events](implementation/08-domain-events-contracts.md) | ⬜ Not Started | 2-3 hours | 🟡 High |
+| [09-specifications](implementation/09-specifications-pattern.md) | ⬜ Not Started | 2-3 hours | 🟢 Medium |
 
 **Total Estimated Time:** 22-28 hours
 

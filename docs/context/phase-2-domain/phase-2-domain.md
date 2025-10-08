@@ -28,23 +28,23 @@ Detailed implementation steps for each domain component:
 ### Core Abstractions
 
 - **[Core Entity Interfaces](implementation/01-entity-interfaces.md)** - IEntity, IAuditable, ISoftDeletable, ITenant
-- **[Value Objects](implementation/02-value-objects.md)** - Base classes, equality, immutability patterns
-- **[Result Patterns](implementation/03-result-patterns.md)** - Result<T>, PagedResult<T>, ValidationResult
+- **[Value Objects](implementation/02-value-objects-base.md)** - Base classes, equality, immutability patterns
+- **[Result Patterns](implementation/03-result-pattern-core.md)** - Result<T>, PagedResult<T>, ValidationResult
 
 ### CQRS & Handlers
 
-- **[CQRS Contracts](implementation/04-cqrs-contracts.md)** - Command/Query interfaces, handler signatures
-- **[Aggregate Roots & Entities](implementation/05-aggregates-entities.md)** - Base classes, invariant enforcement
+- **[CQRS Contracts](implementation/04-cqrs-contracts-basic.md)** - Command/Query interfaces, handler signatures
+- **[Aggregate Roots & Entities](implementation/05-aggregates-base.md)** - Base classes, invariant enforcement
 
 ### Multi-Tenancy & Context
 
-- **[Tenant & User Context](implementation/06-tenant-user-context.md)** - ITenantContext, ICurrentUser, tenant isolation
+- **[Tenant & User Context](implementation/06-tenant-context.md)** - ITenantContext, ICurrentUser, tenant isolation
 
 ### Data Access Patterns
 
-- **[Repository & Unit of Work](implementation/07-repository-uow.md)** - Repository pattern, Unit of Work, transaction management
-- **[Domain Events](implementation/08-domain-events.md)** - IDomainEvent, event raising, handlers
-- **[Specification Pattern](implementation/09-specifications.md)** - ISpecification<T>, query composition
+- **[Repository & Unit of Work](implementation/07-repository-pattern.md)** - Repository pattern, Unit of Work, transaction management
+- **[Domain Events](implementation/08-domain-events-contracts.md)** - IDomainEvent, event raising, handlers
+- **[Specification Pattern](implementation/09-specifications-pattern.md)** - ISpecification<T>, query composition
 
 ## Key Deliverables
 
@@ -112,9 +112,9 @@ Detailed implementation steps for each domain component:
 See implementation guides for detailed steps. Typical order:
 
 1. Start with [Entity Interfaces](implementation/01-entity-interfaces.md)
-2. Implement [Result Patterns](implementation/03-result-patterns.md)
-3. Define [CQRS Contracts](implementation/04-cqrs-contracts.md)
-4. Build [Aggregates & Entities](implementation/05-aggregates-entities.md)
+2. Implement [Result Patterns](implementation/03-result-pattern-core.md)
+3. Define [CQRS Contracts](implementation/04-cqrs-contracts-basic.md)
+4. Build [Aggregates & Entities](implementation/05-aggregates-base.md)
 
 ## Reference
 
@@ -125,8 +125,8 @@ See implementation guides for detailed steps. Typical order:
 ## Next Steps
 
 1. Review [Entity Interfaces](implementation/01-entity-interfaces.md) for base contracts
-2. Understand [Result Patterns](implementation/03-result-patterns.md) for error handling
-3. Explore [CQRS Contracts](implementation/04-cqrs-contracts.md) for command/query separation
+2. Understand [Result Patterns](implementation/03-result-pattern-core.md) for error handling
+3. Explore [CQRS Contracts](implementation/04-cqrs-contracts-basic.md) for command/query separation
 
 ---
 
