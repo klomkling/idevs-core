@@ -687,4 +687,4 @@ public async Task HandleAsync(OrderPlacedEvent e)
 
 ---
 
-**[← Back to Phase 2](../phase-2-domain-NEW.md)** | **[Next: Specifications →](09-specifications.md)**
+**[← Back to Phase 2](../phase-2-domain.md)** | **[Next: Specifications →](09-specifications.md)**

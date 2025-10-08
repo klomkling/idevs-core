@@ -797,4 +797,4 @@ public class ByTenantSpec : Specification<Customer>
 
 ---
 
-**[← Back to Phase 2](../phase-2-domain-NEW.md)** | **[Phase 3: Application Layer →](../../phase-3-application/phase-3-application.md)**
+**[← Back to Phase 2](../phase-2-domain.md)** | **[Phase 3: Application Layer →](../../phase-3-application/phase-3-application.md)**

@@ -739,4 +739,4 @@ protected override IEnumerable<object?> GetEqualityComponents()
 
 ---
 
-**[← Back to Phase 2](../phase-2-domain-NEW.md)** | **[Next: Result Patterns →](03-result-patterns.md)**
+**[← Back to Phase 2](../phase-2-domain.md)** | **[Next: Result Patterns →](03-result-patterns.md)**

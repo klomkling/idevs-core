@@ -627,4 +627,4 @@ var name = GetCustomer(id).Match(
 
 ---
 
-**[← Back to Phase 2](../phase-2-domain-NEW.md)** | **[Next: CQRS Contracts →](04-cqrs-contracts.md)**
+**[← Back to Phase 2](../phase-2-domain.md)** | **[Next: CQRS Contracts →](04-cqrs-contracts.md)**

@@ -440,7 +440,7 @@ Once Phase 2 is complete:
 
 ## Support & Resources
 
-- **Documentation:** [phase-2-domain-NEW.md](phase-2-domain-NEW.md)
+- **Documentation:** [phase-2-domain.md](phase-2-domain.md)
 - **References:** [REFERENCES.md](REFERENCES.md)
 - **Guides:** [implementation/](implementation/)
 - **Original:** [phase-2-domain-ORIGINAL.md](phase-2-domain-ORIGINAL.md)

@@ -30,7 +30,7 @@ This plan addresses discrepancies between the phase-2-domain folder's current st
 
 ### ❌ Structure Issues
 
-- Multiple overview files (phase-2-domain.md, phase-2-domain-NEW.md, README.md)
+- Multiple overview files (phase-2-domain.md, phase-2-domain.md, README.md)
 - Old 1,359-line file not archived
 - 6 tracking files cluttering root
 - No clear navigation between split files

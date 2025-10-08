@@ -21,7 +21,7 @@ Phase 2 establishes the domain foundation with DDD patterns, CQRS contracts, mul
 
 ### New to Phase 2?
 
-1. **Read:** [phase-2-domain-NEW.md](phase-2-domain-NEW.md) - High-level overview
+1. **Read:** [phase-2-domain.md](phase-2-domain.md) - High-level overview
 2. **Review:** [COMPLETION-GUIDE.md](COMPLETION-GUIDE.md) - Implementation checklist
 3. **Follow:** [implementation/](implementation/) - Step-by-step guides
 
@@ -39,7 +39,7 @@ Start with the critical path:
 
 | Document | Purpose | Lines | Audience |
 |----------|---------|-------|----------|
-| **[phase-2-domain-NEW.md](phase-2-domain-NEW.md)** | Main overview & navigation | 133 | Everyone |
+| **[phase-2-domain.md](phase-2-domain.md)** | Main overview & navigation | 133 | Everyone |
 | **[COMPLETION-GUIDE.md](COMPLETION-GUIDE.md)** | Implementation checklist | 433 | Developers |
 | **[REFERENCES.md](REFERENCES.md)** | Learning resources | 393 | Everyone |
 
@@ -407,7 +407,7 @@ Use [COMPLETION-GUIDE.md](COMPLETION-GUIDE.md) to track:
 
 **Quick Links:**
 
-- [Overview](phase-2-domain-NEW.md)
+- [Overview](phase-2-domain.md)
 - [Completion Guide](COMPLETION-GUIDE.md)
 - [References](REFERENCES.md)
 - [Implementation Guides](implementation/)

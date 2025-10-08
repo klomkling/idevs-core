@@ -735,4 +735,4 @@ order.AssignTo(_currentUser.UserId!);
 
 ---
 
-**[← Back to Phase 2](../phase-2-domain-NEW.md)** | **[Next: Repository & UoW →](07-repository-uow.md)**
+**[← Back to Phase 2](../phase-2-domain.md)** | **[Next: Repository & UoW →](07-repository-uow.md)**

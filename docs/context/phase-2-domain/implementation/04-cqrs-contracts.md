@@ -623,4 +623,4 @@ public async Task<Result<CustomerDto>> HandleAsync(
 
 ---
 
-**[← Back to Phase 2](../phase-2-domain-NEW.md)** | **[Next: Aggregates & Entities →](05-aggregates-entities.md)**
+**[← Back to Phase 2](../phase-2-domain.md)** | **[Next: Aggregates & Entities →](05-aggregates-entities.md)**

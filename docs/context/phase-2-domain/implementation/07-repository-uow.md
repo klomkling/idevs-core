@@ -669,4 +669,4 @@ public Task<IReadOnlyList<Customer>> FindAsync(Expression<Func<Customer, bool>> 
 
 ---
 
-**[← Back to Phase 2](../phase-2-domain-NEW.md)** | **[Next: Specifications →](09-specifications.md)**
+**[← Back to Phase 2](../phase-2-domain.md)** | **[Next: Specifications →](09-specifications.md)**
