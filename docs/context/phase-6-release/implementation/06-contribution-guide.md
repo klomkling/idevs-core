@@ -400,6 +400,7 @@ See [Release Pipeline](05-release-pipeline.md) for full details.
 ## Recognition
 
 Contributors are recognized in:
+
 - `CONTRIBUTORS.md` file
 - Release notes
 - Package metadata (for significant contributions)

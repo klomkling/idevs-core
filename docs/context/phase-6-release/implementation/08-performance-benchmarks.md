@@ -246,7 +246,7 @@ public class Program
 
 ### Example Output
 
-```
+```text
 BenchmarkDotNet v0.13.12, macOS 14.0 (23A344)
 Apple M1, 1 CPU, 8 logical and 8 physical cores
 .NET SDK 8.0.100

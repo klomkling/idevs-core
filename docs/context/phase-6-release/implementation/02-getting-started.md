@@ -182,9 +182,7 @@ Now that you have a working application, explore these topics:
 
 ## Troubleshooting
 
-### Common Issues
-
-**Connection String Not Found**
+### Connection String Not Found
 
 Ensure your `appsettings.json` contains:
 
@@ -196,7 +194,7 @@ Ensure your `appsettings.json` contains:
 }
 ```
 
-**Migrations Not Found**
+### Migrations Not Found
 
 Install EF Core tools:
 
@@ -204,7 +202,7 @@ Install EF Core tools:
 dotnet tool install --global dotnet-ef
 ```
 
-**Swagger Not Showing**
+### Swagger Not Showing
 
 Add Swagger services in `Program.cs`:
 

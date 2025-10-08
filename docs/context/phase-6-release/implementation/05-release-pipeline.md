@@ -235,6 +235,7 @@ git push origin main
 ```
 
 Triggers:
+
 1. Production package publish to NuGet.org
 2. GitHub Release creation with changelog
 3. Version tagging
